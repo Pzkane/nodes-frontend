@@ -18,7 +18,7 @@ target_include_directories(mainLib PUBLIC ${SFML_INCLUDE_DIR} ${OPENGL_INCLUDE_D
 
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${OPENGL_INCLUDE_DIRS} ${LOCAL_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} sfml-window sfml-system ${OPENGL_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} sfml-window sfml-system sfml-graphics ${OPENGL_LIBRARIES})
 
 
 # INSTALL
