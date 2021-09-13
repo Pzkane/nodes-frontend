@@ -3,7 +3,7 @@
 
 #include "Flags.hpp"
 
-class LoopFlags : Flags
+class LoopFlags : public Flags
 {
 public:
     bool f_t_ep_done = false;

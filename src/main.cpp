@@ -7,6 +7,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "LoopFlags.hpp"
+#include "SceneSwitcher.hpp"
+#include "MainScene.hpp"
 
 template <typename Tw>
 void event_pool(Tw &main_window, std::queue<sf::Event> &event_queue, bool &ep_done)
@@ -50,8 +52,12 @@ void event_pool(Tw &main_window, std::queue<sf::Event> &event_queue, bool &ep_do
                 break;
 
             case sf::Event::Resized:
+            {
                 glViewport(0, 0, event.size.width, event.size.height);
+                sf::View new_view(sf::FloatRect(0, 0, event.size.width, event.size.height));
+                main_window.setView(new_view);
                 break;
+            }
 
             default:
                 break;
@@ -77,61 +83,16 @@ int main()
     window.setFramerateLimit(75);
     window.setActive(true);
 
-    sf::CircleShape gr_node(50);
-    gr_node.setFillColor(sf::Color::Red);
-    gr_node.setPosition(sf::Vector2f(50, 50));
+    MainScene main_scene;
+
+    SceneSwitcher ss(window);
+    ss.switchTo(main_scene);
 
     while (running)
     {
         sf::Event event;
         if (window.pollEvent(event))
             event_queue.push(event);
-
-        // Prepare for drawing
-        // Clear color and depth buffer
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        //select projection matrix
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0, 800, 0, 600, 0, 1); //choose an orthographic projection
-                                       //same size as window
-                                       //coordinates will have a 1-1 correspondance with pixels
-
-        //draw a green triangle
-        glColor3d(0, 1, 0);
-        glBegin(GL_TRIANGLES);
-        glVertex2d(0, 0);
-        glVertex2d(400, 0);
-        glVertex2d(400, 300);
-        glRotatef(30, 0, 0, 0);
-        glEnd();
-
-        glPushMatrix();
-        glTranslatef(250, 250, 0.0);   // 3. Translate to the object's position.
-        glRotatef(30, 0.0, 0.0, 1.0);  // 2. Rotate the object.
-        glTranslatef(-250, -250, 0.0); // 1. Translate to the origin.
-
-        //draw an orange triangle
-        glColor3d(1, 0.5, 0);
-        glBegin(GL_TRIANGLES);
-        glVertex2d(0, 0);
-        glVertex2d(400, 0);
-        glVertex2d(400, 300);
-        glRotatef(30, 0, 0, 0);
-        glEnd();
-
-        glPopMatrix();
-
-        glPushMatrix();
-        window.resetGLStates();
-
-        sf::CircleShape cs(50);
-        cs.setFillColor(sf::Color::Red);
-        cs.setPosition(sf::Vector2f(50.f, 50.f));
-
-        window.draw(cs);
-        glPopMatrix();
 
         window.display();
 
