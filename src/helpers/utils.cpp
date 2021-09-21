@@ -1,7 +1,7 @@
 #include "utils.hpp"
 
 template <typename T>
-T get_random_number(T from, T to)
+T Utils::get_random_number(T from, T to)
 {
     std::random_device dev;
     std::mt19937 rng(dev());
@@ -10,5 +10,5 @@ T get_random_number(T from, T to)
     return dist(rng);
 }
 
-template int get_random_number<int>(int from, int to);
-template float get_random_number<float>(float from, float to);
+template int Utils::get_random_number<int>(int, int);
+template float Utils::get_random_number<float>(float, float);

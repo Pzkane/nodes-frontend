@@ -15,7 +15,7 @@ add_subdirectory(scenes)
 add_library(shapesLib)
 add_subdirectory(shapes)
 
-
+target_link_libraries(scenesLib helpersLib)
 target_link_libraries(${PROJECT_NAME}
     mainLib
     helpersLib

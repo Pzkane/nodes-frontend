@@ -7,11 +7,11 @@
 
 class SceneSwitcher
 {
-    Scene *m_curr_scene;
+    Scene *m_curr_scene = nullptr;
     sf::RenderWindow *p_window;
 
 public:
-    SceneSwitcher(sf::RenderWindow &window) : p_window(&window) {}
+    explicit SceneSwitcher(sf::RenderWindow &window) : p_window(&window) {}
     ~SceneSwitcher() = default;
     void switchTo(Scene &scene);
 };

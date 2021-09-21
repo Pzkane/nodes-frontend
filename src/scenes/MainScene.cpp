@@ -7,7 +7,7 @@ MainScene::MainScene() : Scene()
     {
         sf::CircleShape *cs = new sf::CircleShape(40);
         cs->setFillColor(sf::Color::Red);
-        cs->setPosition(sf::Vector2f(get_random_number<float>(0.f, 500.f), get_random_number<float>(0.f, 500.f)));
+        cs->setPosition(sf::Vector2f(Utils::get_random_number<float>(0.f, 500.f), Utils::get_random_number<float>(0.f, 500.f)));
         pushDrawable(cs);
     }
 }

@@ -3,7 +3,10 @@
 
 #include <random>
 
-template <typename T>
-T get_random_number(T from, T to);
+namespace Utils
+{
+    template <typename T>
+    T get_random_number(T from, T to);
+}
 
 #endif // SRC_HELPERS_UTILS_HPP_INCLUDED
