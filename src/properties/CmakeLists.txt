@@ -1,0 +1,6 @@
+target_sources(propertiesLib
+    PRIVATE
+        Draggable.cpp
+)
+
+target_include_directories(propertiesLib PUBLIC ${SFML_INCLUDE_DIR} ${LOCAL_INCLUDE_DIR})

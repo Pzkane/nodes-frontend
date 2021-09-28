@@ -8,12 +8,13 @@
 class SceneSwitcher
 {
     Scene *m_curr_scene = nullptr;
-    sf::RenderWindow *p_window;
 
 public:
-    explicit SceneSwitcher(sf::RenderWindow &window) : p_window(&window) {}
+    explicit SceneSwitcher() {}
     ~SceneSwitcher() = default;
     void switchTo(Scene &scene);
+    void updateScene();
+    void drawScene();
 };
 
 #endif // SRC_SCENES_SCENESWITCHER_HPP_INCLUDED

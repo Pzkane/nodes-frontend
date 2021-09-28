@@ -83,9 +83,9 @@ int main()
     window.setFramerateLimit(75);
     window.setActive(true);
 
-    MainScene main_scene;
+    MainScene main_scene(window);
 
-    SceneSwitcher ss(window);
+    SceneSwitcher ss;
     ss.switchTo(main_scene);
 
     while (running)
@@ -94,6 +94,8 @@ int main()
         if (window.pollEvent(event))
             event_queue.push(event);
 
+        ss.updateScene();
+        ss.drawScene();
         window.display();
 
         if (lf.switchedOff())

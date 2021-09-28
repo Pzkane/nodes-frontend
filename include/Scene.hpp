@@ -7,19 +7,19 @@
 class Scene
 {
     bool m_state = false;
-    sf::RenderWindow *p_window = nullptr;
 
 protected:
+    sf::RenderWindow *const p_window = nullptr;
     std::vector<sf::Drawable *> m_drawables;
 
 public:
-    Scene() {}
+    explicit Scene(sf::RenderWindow &window) : p_window(&window) {}
     virtual ~Scene() = default;
+    virtual void update() = 0;
     virtual void draw();
-    void pushDrawable(sf::Drawable *drawable, size_t at = -1);
-    void popDrawable(size_t at = -1);
+    void pushDrawable(sf::Drawable *drawable, int at = -1);
+    void popDrawable(int at = -1);
     void setActive(bool state);
-    void setWindow(const sf::RenderWindow *window);
 };
 
 #endif // SRC_SCENES_SCENE_HPP_INCLUDED
