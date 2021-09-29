@@ -5,7 +5,7 @@
 
 MainScene::MainScene(sf::RenderWindow &window) : Scene(window)
 {
-    for (int i = 0; i < 50; ++i)
+    for (int i = 0; i < 1; ++i)
     {
         Node *node = new Node(40);
         node->setFillColor(sf::Color::Red);

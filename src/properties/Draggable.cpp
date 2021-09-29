@@ -17,8 +17,12 @@ void Draggable::drag()
 
 void Draggable::checkMousePointer(const sf::RenderWindow &window)
 {
-    std::cout << getMousePosf(window).x << ":" << getMousePosf(window).y << std::endl;
-    std::cout << getPosition().x << ":" << getPosition().y << std::endl;
+    // std::cout << getMousePosf(window).x << ":" << getMousePosf(window).y << std::endl;
+    // std::cout << getPosition().x << ":" << getPosition().y << std::endl;
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) { std::cout<<"PRESS"<<std::endl; 
+        std::cout << "M: "<<getMousePosf(window).x << ":" << getMousePosf(window).y << std::endl;
+        std::cout << "POS: "<<getPosition().x << ":" << getPosition().y << std::endl<<std::endl;
+    }
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && getPosition() == getMousePosf(window))
     {
         setPosition(getMousePosf(window));
