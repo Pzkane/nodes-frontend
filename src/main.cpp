@@ -97,6 +97,7 @@ int main()
         ss.updateScene();
         ss.drawScene();
         window.display();
+        window.clear();
 
         if (lf.switchedOff())
             running = false;

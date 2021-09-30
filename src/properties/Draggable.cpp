@@ -7,23 +7,9 @@ sf::Vector2f Draggable::getMousePosf(const sf::RenderWindow &window)
     return sf::Vector2f(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
 }
 
-void Draggable::drag()
-{
-    // if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && getPosition() == getMousePosf())
-    // {
-    //     setPosition(getMousePosf());
-    // }
-}
-
 void Draggable::checkMousePointer(const sf::RenderWindow &window)
 {
-    // std::cout << getMousePosf(window).x << ":" << getMousePosf(window).y << std::endl;
-    // std::cout << getPosition().x << ":" << getPosition().y << std::endl;
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) { std::cout<<"PRESS"<<std::endl; 
-        std::cout << "M: "<<getMousePosf(window).x << ":" << getMousePosf(window).y << std::endl;
-        std::cout << "POS: "<<getPosition().x << ":" << getPosition().y << std::endl<<std::endl;
-    }
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && getPosition() == getMousePosf(window))
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && mouseInside(getMousePosf(window)))
     {
         setPosition(getMousePosf(window));
     }

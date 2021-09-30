@@ -1,6 +1,7 @@
-#ifndef SRC_PROPERTIES_CIRCLESHAPE_HPP_INCLUDED
-#define SRC_PROPERTIES_CIRCLESHAPE_HPP_INCLUDED
+#ifndef SRC_SHAPES_CIRCLESHAPE_HPP_INCLUDED
+#define SRC_SHAPES_CIRCLESHAPE_HPP_INCLUDED
 
+#include <SFML/Graphics.hpp>
 #include "Draggable.hpp"
 
 class CircleShape : public sf::CircleShape, public Draggable
@@ -8,11 +9,12 @@ class CircleShape : public sf::CircleShape, public Draggable
     bool m_is_dragged = false;
 
 public:
-    explicit CircleShape(float radius = 0, std::size_t pointCount = 30) : sf::CircleShape(radius, pointCount) {}
+    explicit CircleShape(const float radius = 0, const std::size_t pointCount = 30) : sf::CircleShape(radius, pointCount) {}
     ~CircleShape() = default;
-    void setPosition(float x, float y);
-    void setPosition(const sf::Vector2f& position);
-    sf::Vector2f getPosition();
+    void setPosition(const float x, const float y);
+    void setPosition(const sf::Vector2f &position);
+    bool checkPosAgainstShape(const sf::Vector2f &position);
+    bool mouseInside(const sf::Vector2f &position);
 };
 
-#endif // SRC_PROPERTIES_CIRCLESHAPE_HPP_INCLUDED
+#endif // SRC_SHAPES_CIRCLESHAPE_HPP_INCLUDED
