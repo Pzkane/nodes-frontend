@@ -1,8 +1,6 @@
 #include "MainScene.hpp"
 #include "utils.hpp"
 
-#include <iostream>
-
 MainScene::MainScene(sf::RenderWindow &window) : Scene(window)
 {
     for (int i = 0; i < 1; ++i)
@@ -11,18 +9,13 @@ MainScene::MainScene(sf::RenderWindow &window) : Scene(window)
         node->setFillColor(sf::Color::Red);
         node->sf::CircleShape::setPosition(sf::Vector2f(Utils::get_random_number<float>(0.f, 500.f), Utils::get_random_number<float>(0.f, 500.f)));
         pushNode(node);
-
-        // CircleShape *cs = new CircleShape(40);
-        // cs->setFillColor(sf::Color::Blue);
-        // cs->sf::CircleShape::setPosition(sf::Vector2f(Utils::get_random_number<float>(0.f, 500.f), Utils::get_random_number<float>(0.f, 500.f)));
-        // pushDrawable(cs);
     }
 }
 
 void MainScene::update()
 {
     for (auto *node : m_nodes)
-        node->update(*p_window);
+        node->update(*p_window, ef);
 }
 
 void MainScene::draw()
@@ -38,4 +31,21 @@ void MainScene::pushNode(Node *node, int at)
         m_nodes.push_back(std::move(node));
     else if (at <= m_drawables.size())
         m_nodes.emplace(m_nodes.begin() + at, std::move(node));
+}
+
+void MainScene::updateInput(const sf::Event &event)
+{
+    switch (event.type)
+    {
+    case sf::Event::MouseButtonPressed:
+        ef.f_lmb = true;
+        break;
+
+    case sf::Event::MouseButtonReleased:
+        ef.f_lmb = false;
+        break;
+
+    default:
+        break;
+    }
 }

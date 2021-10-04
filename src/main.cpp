@@ -11,45 +11,18 @@
 #include "MainScene.hpp"
 
 template <typename Tw>
-void event_pool(Tw &main_window, std::queue<sf::Event> &event_queue, bool &ep_done)
+void event_pool(Tw &main_window, std::queue<sf::Event> &event_queue, SceneSwitcher ss, bool &ep_done)
 {
     while (true)
         while (!event_queue.empty())
         {
             auto event = event_queue.front();
+            ss.updateInput(event);
             switch (event.type)
             {
             case sf::Event::Closed:
                 ep_done = true;
                 return;
-
-            case sf::Event::KeyPressed:
-                std::cout << "EVENT POOL::KEYPRESS ";
-                switch (event.key.code)
-                {
-                case sf::Keyboard::A:
-                    std::cout << "'A'";
-                    glRotatef(30, 0, 0, 0);
-                    break;
-
-                case sf::Keyboard::D:
-                    std::cout << "'D'";
-                    break;
-
-                case sf::Keyboard::R:
-                    std::cout << "'R'";
-                    glLoadIdentity();
-                    break;
-
-                default:
-                    break;
-                }
-                std::cout << std::endl;
-                break;
-
-            case sf::Event::MouseButtonPressed:
-                std::cout << "EVENT POOL::MOUSEPRESS" << std::endl;
-                break;
 
             case sf::Event::Resized:
             {
@@ -78,16 +51,15 @@ int main()
     settings.minorVersion = 0;
     sf::RenderWindow window(sf::VideoMode(800, 500), "OpenGL Tree visualizer [ Pavels Zuravlovs ]", sf::Style::Default, settings);
     std::queue<sf::Event> event_queue;
-    std::thread t_event_pool(event_pool<sf::RenderWindow>, std::ref(window), std::ref(event_queue), std::ref(lf.f_t_ep_done));
 
     window.setFramerateLimit(75);
     window.setActive(true);
 
-    MainScene main_scene(window);
-
     SceneSwitcher ss;
+    MainScene main_scene(window);
     ss.switchTo(main_scene);
 
+    std::thread t_event_pool(event_pool<sf::RenderWindow>, std::ref(window), std::ref(event_queue), std::ref(ss), std::ref(lf.f_t_ep_done));
     while (running)
     {
         sf::Event event;

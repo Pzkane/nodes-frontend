@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include "EventFlags.hpp"
 
 class Scene
 {
@@ -20,6 +21,7 @@ public:
     void pushDrawable(sf::Drawable *drawable, int at = -1);
     void popDrawable(int at = -1);
     void setActive(bool state);
+    virtual void updateInput(const sf::Event &event) = 0;
 };
 
 #endif // SRC_SCENES_SCENE_HPP_INCLUDED

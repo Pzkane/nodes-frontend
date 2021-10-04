@@ -6,7 +6,7 @@
 
 class Draggable
 {
-    bool m_is_dragged = false;
+    bool m_successDrag = false;
 
 public:
     Draggable() {}
@@ -17,6 +17,7 @@ public:
     virtual void setPosition(const float x, const float y) = 0;
     virtual void setPosition(const sf::Vector2f &position) = 0;
     virtual bool mouseInside(const sf::Vector2f &position) = 0;
+    virtual bool getLMBState() = 0;
 };
 
 #endif // SRC_PROPERTIES_DRAGGABLE_HPP_INCLUDED

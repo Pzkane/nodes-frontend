@@ -5,8 +5,8 @@ class Flags
 {
 public:
     Flags() {}
-    ~Flags() = default;
-    virtual bool switchedOff() = 0;
+    virtual ~Flags() = default;
+    virtual bool switchedOff() { return false; }
 };
 
 #endif // SRC_HELPERS_FLAGS_HPP_INCLUDED

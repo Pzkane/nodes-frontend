@@ -1,9 +1,9 @@
 #ifndef SRC_SCENES_SCENESWITCHER_HPP_INCLUDED
 #define SRC_SCENES_SCENESWITCHER_HPP_INCLUDED
 
-#include "Scene.hpp"
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include "Scene.hpp"
 
 class SceneSwitcher
 {
@@ -15,6 +15,7 @@ public:
     void switchTo(Scene &scene);
     void updateScene();
     void drawScene();
+    void updateInput(const sf::Event &event);
 };
 
 #endif // SRC_SCENES_SCENESWITCHER_HPP_INCLUDED

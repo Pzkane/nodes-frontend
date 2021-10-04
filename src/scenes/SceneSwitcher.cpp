@@ -17,3 +17,8 @@ void SceneSwitcher::drawScene()
 {
     m_curr_scene->draw();
 }
+
+void SceneSwitcher::updateInput(const sf::Event &event)
+{
+    m_curr_scene->updateInput(event);
+}

@@ -2,6 +2,7 @@
 #define SRC_ENTITIES_NODE_HPP_INCLUDED
 
 #include "CircleShape.hpp"
+#include "EventFlags.hpp"
 
 class Node : public CircleShape
 {
@@ -11,7 +12,7 @@ public:
     explicit Node(float radius = 0, std::size_t pointCount = 30);
     Node(const Node *node) {}
     ~Node() = default;
-    void update(const sf::RenderWindow &window);
+    void update(const sf::RenderWindow &window, const EventFlags &ev);
 };
 
 #endif // SRC_ENTITIES_NODE_HPP_INCLUDED

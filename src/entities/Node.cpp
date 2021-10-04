@@ -7,7 +7,8 @@ Node::Node(float radius, std::size_t pointCount) : CircleShape(radius, pointCoun
     CircleShape::setOrigin(center.x + R, center.y + R);
 }
 
-void Node::update(const sf::RenderWindow &window)
+void Node::update(const sf::RenderWindow &window, const EventFlags &ef)
 {
+    CircleShape::setEventFlags(ef);
     checkMousePointer(window);
 }

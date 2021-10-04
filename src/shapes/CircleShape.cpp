@@ -24,3 +24,13 @@ bool CircleShape::checkPosAgainstShape(const sf::Vector2f &position)
         return true;
     return false;
 }
+
+void CircleShape::setEventFlags(const EventFlags &ef)
+{
+    m_event_flags = ef;
+}
+
+bool CircleShape::getLMBState()
+{
+    return m_event_flags.f_lmb;
+}

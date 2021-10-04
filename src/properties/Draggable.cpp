@@ -1,7 +1,5 @@
 #include "Draggable.hpp"
 
-#include <iostream>
-
 sf::Vector2f Draggable::getMousePosf(const sf::RenderWindow &window)
 {
     return sf::Vector2f(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
@@ -9,7 +7,16 @@ sf::Vector2f Draggable::getMousePosf(const sf::RenderWindow &window)
 
 void Draggable::checkMousePointer(const sf::RenderWindow &window)
 {
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && mouseInside(getMousePosf(window)))
+    if (!getLMBState())
+    {
+        m_successDrag = false;
+        return;
+    }
+
+    if (getLMBState() && mouseInside(getMousePosf(window)) || m_successDrag)
+        m_successDrag = true;
+
+    if (m_successDrag)
     {
         setPosition(getMousePosf(window));
     }
