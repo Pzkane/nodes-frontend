@@ -4,7 +4,7 @@ Node::Node(float radius, std::size_t pointCount) : CircleShape(radius, pointCoun
 {
     const sf::Vector2f center = CircleShape::getPosition();
     const float R = CircleShape::getRadius();
-    CircleShape::setOrigin(center.x + R, center.y + R);
+    sf::CircleShape::setOrigin(center.x + R, center.y + R);
 }
 
 void Node::update(const sf::RenderWindow &window, const EventFlags &ef)

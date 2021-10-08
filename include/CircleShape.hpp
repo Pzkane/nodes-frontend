@@ -15,10 +15,14 @@ public:
     ~CircleShape() = default;
     void setPosition(const float x, const float y);
     void setPosition(const sf::Vector2f &position);
+    sf::Vector2f getPosition();
     bool checkPosAgainstShape(const sf::Vector2f &position);
     bool mouseInside(const sf::Vector2f &position);
     void setEventFlags(const EventFlags &ef);
     bool getLMBState();
+    void setOrigin(sf::Vector2f &origin);
+    sf::Vector2f getOrigin();
+    sf::FloatRect getGlobalBounds();
 };
 
 #endif // SRC_SHAPES_CIRCLESHAPE_HPP_INCLUDED

@@ -13,11 +13,19 @@ void Draggable::checkMousePointer(const sf::RenderWindow &window)
         return;
     }
 
-    if (getLMBState() && mouseInside(getMousePosf(window)) || m_successDrag)
+    sf::Vector2f mousepos = getMousePosf(window);
+
+    if (getLMBState() && mouseInside(mousepos) && !m_successDrag)
+    {
+        sf::FloatRect bounds = getGlobalBounds();
+        sf::Vector2f origin = getOrigin();
+        sf::Vector2f gOrigin(bounds.left + origin.x, bounds.top + origin.y);
+        m_offsetMousepos = sf::Vector2f(mousepos.x - gOrigin.x, mousepos.y - gOrigin.y);
         m_successDrag = true;
+    }
 
     if (m_successDrag)
     {
-        setPosition(getMousePosf(window));
+        setPosition(sf::Vector2f(mousepos.x-m_offsetMousepos.x, mousepos.y-m_offsetMousepos.y));
     }
 }

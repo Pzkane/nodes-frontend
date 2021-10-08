@@ -22,6 +22,7 @@ target_include_directories(mainLib PUBLIC ${SFML_INCLUDE_DIR} ${OPENGL_INCLUDE_D
 target_include_directories(${PROJECT_NAME} PUBLIC ${OPENGL_INCLUDE_DIRS} ${LOCAL_INCLUDE_DIR})
 target_link_libraries(${PROJECT_NAME} sfml-window sfml-system sfml-graphics ${OPENGL_LIBRARIES})
 
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 
 # INSTALL
 install(TARGETS ${PROJECT_NAME} DESTINATION ${SFML_PREFIX}/bin)

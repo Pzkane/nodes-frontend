@@ -7,7 +7,8 @@ MainScene::MainScene(sf::RenderWindow &window) : Scene(window)
     {
         Node *node = new Node(40);
         node->setFillColor(sf::Color::Red);
-        node->sf::CircleShape::setPosition(sf::Vector2f(Utils::get_random_number<float>(0.f, 500.f), Utils::get_random_number<float>(0.f, 500.f)));
+        node->sf::CircleShape::setPosition(sf::Vector2f(0, 0));
+        // node->sf::CircleShape::setPosition(sf::Vector2f(Utils::get_random_number<float>(0.f, 500.f), Utils::get_random_number<float>(0.f, 500.f)));
         pushNode(node);
     }
 }

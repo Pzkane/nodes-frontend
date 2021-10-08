@@ -34,3 +34,23 @@ bool CircleShape::getLMBState()
 {
     return m_event_flags.f_lmb;
 }
+
+void CircleShape::setOrigin(sf::Vector2f &origin)
+{
+    sf::CircleShape::setOrigin(origin);
+}
+
+sf::Vector2f CircleShape::getOrigin()
+{
+    return sf::CircleShape::getOrigin();
+}
+
+sf::FloatRect CircleShape::getGlobalBounds()
+{
+    return sf::CircleShape::getGlobalBounds();
+}
+
+sf::Vector2f CircleShape::getPosition()
+{
+    return sf::CircleShape::getPosition();
+}
