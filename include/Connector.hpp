@@ -12,8 +12,6 @@ class Connector
 public:
     Connector(sf::Color color = sf::Color::White);
     ~Connector() = default;
-    void start(Node *const node);
-    void end(Node *const node);
 
     sf::VertexArray& getDrawable();
 };

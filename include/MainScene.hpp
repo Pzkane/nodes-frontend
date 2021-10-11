@@ -14,9 +14,10 @@ class MainScene : public Scene
 
 public:
     MainScene(sf::RenderWindow &window);
-    ~MainScene() = default;
+    ~MainScene();
     void createNode();
     void pushNode(Node *node, int at = -1);
+    void popNode(int at = -1);
     void pushConnector(Connector *node, int at = -1);
 
     void update();

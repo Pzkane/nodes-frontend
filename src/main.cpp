@@ -18,7 +18,6 @@ void event_pool(Tw &main_window, std::queue<sf::Event> &event_queue, SceneSwitch
         while (!event_queue.empty())
         {
             auto event = event_queue.front();
-            say(event.type);
             ss.updateInput(event);
             switch (event.type)
             {

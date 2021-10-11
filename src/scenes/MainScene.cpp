@@ -4,6 +4,23 @@
 MainScene::MainScene(sf::RenderWindow &window) : Scene(window)
 {}
 
+MainScene::~MainScene()
+{
+    for (auto it = m_connectors.begin(); it != m_connectors.end();)
+    {
+        auto tmp_ = it;
+        ++it;
+        delete *tmp_;
+    }
+    
+    for (auto it = m_nodes.begin(); it != m_nodes.end();)
+    {
+        auto tmp_ = it;
+        ++it;
+        delete *tmp_;
+    }
+}
+
 void MainScene::createNode()
 {
     Node *node = new Node(40);
@@ -18,6 +35,22 @@ void MainScene::pushNode(Node *node, int at)
         m_nodes.push_back(node);
     else if (at <= m_nodes.size())
         m_nodes.emplace(m_nodes.begin() + at, node);
+}
+
+void MainScene::popNode(int at)
+{
+    if (!m_nodes.size())
+        return;
+
+    if (at < 0)
+    {
+        delete m_nodes[m_nodes.size() - 1];
+        m_nodes.pop_back();
+    }
+    else if (at < m_nodes.size()) {
+        delete m_nodes[at];
+        m_nodes.erase(m_nodes.begin() + at);
+    }
 }
 
 void MainScene::pushConnector(Connector *node, int at)
@@ -37,18 +70,24 @@ void MainScene::update()
         pushConnector(ef.p_start_node->connectTo(ef.p_end_node));
         ef.p_start_node = nullptr;
         ef.p_end_node = nullptr;
+        /* Force RMB flag release to avoid setting starting node */
+        ef.f_rmb = false;
+        say("BUTTONS CLEARED");
     }
 }
 
 void MainScene::draw()
 {
-    for (int i = 0; i < m_nodes.size(); ++i)
+    for (auto it : m_connectors)
     {
-        if (i < m_connectors.size())
-            p_window->draw(m_connectors[i]->getDrawable());
-        p_window->draw(*m_nodes[i]);
+        p_window->draw(it->getDrawable());
     }
-    Scene::draw();
+    
+
+    for (auto it : m_nodes)
+    {
+        p_window->draw(*it);
+    }
 }
 
 void MainScene::updateInput(const sf::Event &event)
