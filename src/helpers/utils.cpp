@@ -10,5 +10,9 @@ T Utils::get_random_number(T from, T to)
     return dist(rng);
 }
 
+sf::Vector2f Utils::getMousePosf(const sf::RenderWindow &window)
+{
+    return sf::Vector2f(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
+}
 template int Utils::get_random_number<int>(int, int);
 template float Utils::get_random_number<float>(float, float);

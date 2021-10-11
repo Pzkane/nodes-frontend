@@ -3,10 +3,16 @@
 
 #include "Flags.hpp"
 
+/* Forward declaration */
+class Node;
+
 class EventFlags : public Flags
 {
 public:
     bool f_lmb = false;
+    bool f_rmb = false;
+    Node *p_start_node = nullptr;
+    Node *p_end_node = nullptr;
     EventFlags() : Flags() {}
     ~EventFlags() = default;
 };

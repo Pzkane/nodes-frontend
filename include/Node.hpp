@@ -3,16 +3,21 @@
 
 #include "CircleShape.hpp"
 #include "EventFlags.hpp"
+#include "Connector.hpp"
+
+class Connector;
 
 class Node : public CircleShape
 {
     bool m_is_dragged = false;
+    sf::Vertex *p_connector_end = nullptr;
 
 public:
     explicit Node(float radius = 0, std::size_t pointCount = 30);
     Node(const Node *node) {}
     ~Node() = default;
-    void update(const sf::RenderWindow &window, const EventFlags &ev);
+    Connector* connectTo(Node *const p_node);
+    void update(const sf::RenderWindow &window, EventFlags &ev);
 };
 
 #endif // SRC_ENTITIES_NODE_HPP_INCLUDED
