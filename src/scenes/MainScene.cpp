@@ -2,7 +2,8 @@
 #include "utils.hpp"
 
 MainScene::MainScene(sf::RenderWindow &window) : Scene(window)
-{}
+{
+}
 
 MainScene::~MainScene()
 {
@@ -12,7 +13,7 @@ MainScene::~MainScene()
         ++it;
         delete *tmp_;
     }
-    
+
     for (auto &&it = m_nodes.begin(); it != m_nodes.end();)
     {
         auto tmp_ = it;
@@ -47,7 +48,8 @@ void MainScene::popNode(int at)
         delete m_nodes[m_nodes.size() - 1];
         m_nodes.pop_back();
     }
-    else if (at < m_nodes.size()) {
+    else if (at < m_nodes.size())
+    {
         delete m_nodes[at];
         m_nodes.erase(m_nodes.begin() + at);
     }
@@ -82,7 +84,6 @@ void MainScene::draw()
     {
         p_window->draw(it->getDrawable());
     }
-    
 
     for (auto &&it : m_nodes)
     {
@@ -132,7 +133,7 @@ void MainScene::updateInput(const sf::Event &event)
         case sf::Keyboard::LControl:
             createNode();
             break;
-        
+
         default:
             break;
         }

@@ -1,5 +1,4 @@
 #include <thread>
-#include <iostream>
 #include <queue>
 
 #include <SFML/Window.hpp>
@@ -11,12 +10,10 @@
 #include "MainScene.hpp"
 #include "utils.hpp"
 
-#include <typeinfo>
-
 template <typename Tw>
-void event_pool(Tw &main_window, std::queue<sf::Event> &event_queue, SceneSwitcher ss, LoopFlags &flags)
+void event_pool(Tw &main_window, std::queue<sf::Event> &event_queue, SceneSwitcher &ss, LoopFlags &flags)
 {
-    while (true)
+    while (!flags.f_t_ep_done)
         while (event_queue.size())
         {
             auto event = event_queue.front();
@@ -24,7 +21,6 @@ void event_pool(Tw &main_window, std::queue<sf::Event> &event_queue, SceneSwitch
             switch (event.type)
             {
             case sf::Event::Closed:
-                // ep_done = true;
                 flags.f_t_delete_active_scene = true;
                 break;
 
@@ -61,7 +57,7 @@ int main()
 
     SceneSwitcher ss;
     MainScene *main_scene = new MainScene(window);
-    ss.switchTo(*main_scene);
+    ss.switchTo(main_scene);
 
     std::thread t_event_pool(event_pool<sf::RenderWindow>, std::ref(window), std::ref(event_queue), std::ref(ss), std::ref(lf));
     while (running)
@@ -76,7 +72,9 @@ int main()
             main_scene = nullptr;
             ss.unsetScene();
             lf.f_t_delete_active_scene = false;
+            lf.f_t_ep_done = true;
         }
+
         ss.updateScene();
         ss.drawScene();
         window.display();
@@ -85,8 +83,6 @@ int main()
         if (lf.switchedOff())
             running = false;
     }
-
-    say(lf.switchedOff());
 
     t_event_pool.join();
 

@@ -17,17 +17,17 @@ Node::~Node()
         {
             auto tmp_ = it;
             ++it;
-            if (tmp_->conn)
+            if (tmp_->p_conn)
             {
                 tmp_->p_connector_end = nullptr;
-                delete tmp_->conn;
-                tmp_->conn = nullptr;
+                delete tmp_->p_conn;
+                tmp_->p_conn = nullptr;
             }
         }
     }
 }
 
-Connector* Node::connectTo(Node *const p_node)
+Connector *Node::connectTo(Node *const p_node)
 {
     say("CONNECTOR CREATED");
     Connector *conn = new Connector();
@@ -43,10 +43,16 @@ void Node::update(const sf::RenderWindow &window, EventFlags &ef)
     if (m_connectors.size())
         for (auto &&connRef : m_connectors)
             connRef.p_connector_end->position = getPosition();
-    
+
     if (mouseInside(Utils::getMousePosf(window)) && ef.f_rmb)
         if (!ef.p_start_node && ef.p_end_node != this)
-            {say("START_NODE"); ef.p_start_node = this;}
+        {
+            say("START_NODE");
+            ef.p_start_node = this;
+        }
         else if (!ef.p_end_node && ef.p_start_node != this)
-            {say("END_NODE"); ef.p_end_node = this;}
+        {
+            say("END_NODE");
+            ef.p_end_node = this;
+        }
 }

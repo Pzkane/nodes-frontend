@@ -7,12 +7,13 @@
 
 class SceneSwitcher
 {
+public:
     Scene *m_curr_scene = nullptr;
 
 public:
     explicit SceneSwitcher() {}
     ~SceneSwitcher() = default;
-    void switchTo(Scene &scene);
+    void switchTo(Scene *scene);
     void updateScene();
     void drawScene();
     void unsetScene() { m_curr_scene = nullptr; }
