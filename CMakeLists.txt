@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 project(tree_visualizer)
 
 set(CMAKE_CXX_FLAGS ${CXXFLAGS})
+add_definitions(-DDEBUG=${DEBUGFLAG})
 
 set(LOCAL_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/include)
 set(SFML_PREFIX "D:/disk_backup/C++/libraries/SFML-2.5.1")

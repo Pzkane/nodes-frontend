@@ -6,14 +6,14 @@ MainScene::MainScene(sf::RenderWindow &window) : Scene(window)
 
 MainScene::~MainScene()
 {
-    for (auto it = m_connectors.begin(); it != m_connectors.end();)
+    for (auto &&it = m_connectors.begin(); it != m_connectors.end();)
     {
-        auto tmp_ = it;
+        auto &&tmp_ = it;
         ++it;
         delete *tmp_;
     }
     
-    for (auto it = m_nodes.begin(); it != m_nodes.end();)
+    for (auto &&it = m_nodes.begin(); it != m_nodes.end();)
     {
         auto tmp_ = it;
         ++it;
@@ -63,7 +63,7 @@ void MainScene::pushConnector(Connector *node, int at)
 
 void MainScene::update()
 {
-    for (auto *node : m_nodes)
+    for (auto &&node : m_nodes)
         node->update(*p_window, ef);
     if (ef.p_start_node != nullptr && ef.p_end_node != nullptr)
     {
@@ -78,13 +78,13 @@ void MainScene::update()
 
 void MainScene::draw()
 {
-    for (auto it : m_connectors)
+    for (auto &&it : m_connectors)
     {
         p_window->draw(it->getDrawable());
     }
     
 
-    for (auto it : m_nodes)
+    for (auto &&it : m_nodes)
     {
         p_window->draw(*it);
     }

@@ -11,19 +11,22 @@
 #include "MainScene.hpp"
 #include "utils.hpp"
 
+#include <typeinfo>
+
 template <typename Tw>
-void event_pool(Tw &main_window, std::queue<sf::Event> &event_queue, SceneSwitcher ss, bool &ep_done)
+void event_pool(Tw &main_window, std::queue<sf::Event> &event_queue, SceneSwitcher ss, LoopFlags &flags)
 {
     while (true)
-        while (!event_queue.empty())
+        while (event_queue.size())
         {
             auto event = event_queue.front();
             ss.updateInput(event);
             switch (event.type)
             {
             case sf::Event::Closed:
-                ep_done = true;
-                return;
+                // ep_done = true;
+                flags.f_t_delete_active_scene = true;
+                break;
 
             case sf::Event::Resized:
             {
@@ -57,16 +60,23 @@ int main()
     window.setActive(true);
 
     SceneSwitcher ss;
-    MainScene main_scene(window);
-    ss.switchTo(main_scene);
+    MainScene *main_scene = new MainScene(window);
+    ss.switchTo(*main_scene);
 
-    std::thread t_event_pool(event_pool<sf::RenderWindow>, std::ref(window), std::ref(event_queue), std::ref(ss), std::ref(lf.f_t_ep_done));
+    std::thread t_event_pool(event_pool<sf::RenderWindow>, std::ref(window), std::ref(event_queue), std::ref(ss), std::ref(lf));
     while (running)
     {
         sf::Event event;
         if (window.pollEvent(event))
             event_queue.push(event);
 
+        if (lf.f_t_delete_active_scene)
+        {
+            delete main_scene;
+            main_scene = nullptr;
+            ss.unsetScene();
+            lf.f_t_delete_active_scene = false;
+        }
         ss.updateScene();
         ss.drawScene();
         window.display();
@@ -75,6 +85,8 @@ int main()
         if (lf.switchedOff())
             running = false;
     }
+
+    say(lf.switchedOff());
 
     t_event_pool.join();
 

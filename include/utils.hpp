@@ -5,7 +5,12 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#ifdef DEBUG
 #define say(something) {std::cout << something <<std::endl;}
+#else
+#define say(something) {}
+#endif
+
 
 namespace Utils
 {

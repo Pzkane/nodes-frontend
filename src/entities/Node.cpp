@@ -13,7 +13,7 @@ Node::~Node()
 {
     if (m_connectors.size())
     {
-        for (auto it = m_connectors.begin(); it != m_connectors.end();)
+        for (auto &&it = m_connectors.begin(); it != m_connectors.end();)
         {
             auto tmp_ = it;
             ++it;
@@ -41,7 +41,7 @@ void Node::update(const sf::RenderWindow &window, EventFlags &ef)
     CircleShape::setEventFlags(ef);
     checkMousePointer(window);
     if (m_connectors.size())
-        for (auto connRef : m_connectors)
+        for (auto &&connRef : m_connectors)
             connRef.p_connector_end->position = getPosition();
     
     if (mouseInside(Utils::getMousePosf(window)) && ef.f_rmb)

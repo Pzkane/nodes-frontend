@@ -3,7 +3,7 @@
 void Scene::draw()
 {
     if (m_state)
-        for (auto drawable : m_drawables)
+        for (auto &&drawable : m_drawables)
             p_window->draw(*drawable);
 }
 

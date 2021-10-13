@@ -10,15 +10,15 @@ void SceneSwitcher::switchTo(Scene &scene)
 
 void SceneSwitcher::updateScene()
 {
-    m_curr_scene->update();
+    if (m_curr_scene) m_curr_scene->update();
 }
 
 void SceneSwitcher::drawScene()
 {
-    m_curr_scene->draw();
+    if (m_curr_scene) m_curr_scene->draw();
 }
 
 void SceneSwitcher::updateInput(const sf::Event &event)
 {
-    m_curr_scene->updateInput(event);
+    if (m_curr_scene) m_curr_scene->updateInput(event);
 }

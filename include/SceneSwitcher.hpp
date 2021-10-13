@@ -15,6 +15,7 @@ public:
     void switchTo(Scene &scene);
     void updateScene();
     void drawScene();
+    void unsetScene() { m_curr_scene = nullptr; }
     void updateInput(const sf::Event &event);
 };
 
