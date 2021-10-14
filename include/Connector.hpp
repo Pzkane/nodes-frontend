@@ -7,13 +7,22 @@
 class Connector
 {
     sf::VertexArray line;
+    struct NodeRef
+    {
+        Node *start = nullptr;
+        Node *end = nullptr;
+    };
+
+    NodeRef nodeRef;
 
     friend class Node;
+
 public:
-    Connector(sf::Color color = sf::Color::White);
+    Connector(Node *const &start_node, Node *const &end_node, sf::Color color = sf::Color::White);
     ~Connector() = default;
 
-    sf::VertexArray& getDrawable();
+    sf::VertexArray &getDrawable();
+    void update();
 };
 
 #endif // SRC_ENTITIES_CONNECTOR_HPP_INCLUDED

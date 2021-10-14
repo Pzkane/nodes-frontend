@@ -1,4 +1,5 @@
 #include "MainScene.hpp"
+#include "Connector.hpp"
 #include "utils.hpp"
 
 MainScene::MainScene(sf::RenderWindow &window) : Scene(window)
@@ -9,7 +10,7 @@ MainScene::~MainScene()
 {
     for (auto &&it = m_connectors.begin(); it != m_connectors.end();)
     {
-        auto &&tmp_ = it;
+        auto tmp_ = it;
         ++it;
         delete *tmp_;
     }
@@ -67,9 +68,13 @@ void MainScene::update()
 {
     for (auto &&node : m_nodes)
         node->update(*p_window, ef);
+
+    for (auto &&conn : m_connectors)
+        conn->update();
+
     if (ef.p_start_node != nullptr && ef.p_end_node != nullptr)
     {
-        pushConnector(ef.p_start_node->connectTo(ef.p_end_node));
+        pushConnector(new Connector(ef.p_start_node, ef.p_end_node));
         ef.p_start_node = nullptr;
         ef.p_end_node = nullptr;
         /* Force RMB flag release to avoid setting starting node */

@@ -9,40 +9,10 @@ Node::Node(float radius, std::size_t pointCount) : CircleShape(radius, pointCoun
     sf::CircleShape::setOrigin(center.x + R, center.y + R);
 }
 
-Node::~Node()
-{
-    if (m_connectors.size())
-    {
-        for (auto &&it = m_connectors.begin(); it != m_connectors.end();)
-        {
-            auto tmp_ = it;
-            ++it;
-            if (tmp_->p_conn)
-            {
-                tmp_->p_connector_end = nullptr;
-                delete tmp_->p_conn;
-                tmp_->p_conn = nullptr;
-            }
-        }
-    }
-}
-
-Connector *Node::connectTo(Node *const p_node)
-{
-    say("CONNECTOR CREATED");
-    Connector *conn = new Connector();
-    m_connectors.push_back({conn, &conn->line[0]});
-    p_node->m_connectors.push_back({conn, &conn->line[1]});
-    return conn;
-}
-
 void Node::update(const sf::RenderWindow &window, EventFlags &ef)
 {
     CircleShape::setEventFlags(ef);
     checkMousePointer(window);
-    if (m_connectors.size())
-        for (auto &&connRef : m_connectors)
-            connRef.p_connector_end->position = getPosition();
 
     if (mouseInside(Utils::getMousePosf(window)) && ef.f_rmb)
         if (!ef.p_start_node && ef.p_end_node != this)

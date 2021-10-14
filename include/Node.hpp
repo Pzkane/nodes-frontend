@@ -11,19 +11,11 @@ class Connector;
 class Node : public CircleShape
 {
     bool m_is_dragged = false;
-    struct ConnectorRef
-    {
-        Connector *p_conn = nullptr;
-        sf::Vertex *p_connector_end = nullptr;
-    };
-
-    std::vector<ConnectorRef> m_connectors;
 
 public:
     explicit Node(float radius = 0, std::size_t pointCount = 30);
-    Node(const Node *node) {}
-    ~Node();
-    Connector *connectTo(Node *const p_node);
+    explicit Node(const Node *node) {}
+    ~Node() = default;
     void update(const sf::RenderWindow &window, EventFlags &ev);
 };
 
