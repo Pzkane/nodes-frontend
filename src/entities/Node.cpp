@@ -11,6 +11,7 @@ Node::Node(float radius, std::size_t pointCount) : CircleShape(radius, pointCoun
 
 void Node::update(const sf::RenderWindow &window, EventFlags &ef)
 {
+    text.setPosition(getPosition());
     CircleShape::setEventFlags(ef);
     checkMousePointer(window);
 
@@ -25,4 +26,16 @@ void Node::update(const sf::RenderWindow &window, EventFlags &ef)
             say("END_NODE");
             ef.p_end_node = this;
         }
+}
+
+void Node::draw(sf::RenderWindow &window)
+{
+    window.draw(*this);
+    window.draw(text);
+}
+
+void Node::setText(const std::string &text)
+{
+    this->text.setString(text);
+    this->text.setFillColor(sf::Color::Black);
 }

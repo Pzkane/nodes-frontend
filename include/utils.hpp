@@ -11,6 +11,7 @@
 #define say(something) {}
 #endif
 
+#define error(message) {std::cout << "ERR: " << message << std::endl;}
 
 namespace Utils
 {
