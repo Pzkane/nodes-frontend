@@ -13,6 +13,7 @@ class Node : public CircleShape
 {
     bool m_is_dragged = false;
     sf::Text text;
+    void updateText();
 
 public:
     explicit Node(float radius = 0, std::size_t pointCount = 30);

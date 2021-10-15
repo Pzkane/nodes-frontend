@@ -28,7 +28,7 @@ void MainScene::createNode()
     Node *node = new Node(40);
     node->setFillColor(sf::Color::Red);
     node->sf::CircleShape::setPosition(Utils::getMousePosf(*p_window));
-    node->setText("Testing");
+    node->setText("Testing!");
     pushNode(node);
 }
 

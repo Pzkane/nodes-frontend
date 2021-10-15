@@ -9,7 +9,7 @@ Flags::Flags()
     if (font.getInfo().family.empty() || font.getInfo().family == "\n")
     {
         say("Loading fonts");
-        if (!font.loadFromFile("./arial.ttf"))
+        if (!font.loadFromFile("resources/Inconsolata-Medium.ttf"))
             error("Could not load fonts");
     }
 }

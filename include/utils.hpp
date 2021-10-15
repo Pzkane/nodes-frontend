@@ -13,6 +13,8 @@
 
 #define error(message) {std::cout << "ERR: " << message << std::endl;}
 
+#include "SafeQueue.hpp"
+
 namespace Utils
 {
     template <typename T>

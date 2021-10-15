@@ -11,7 +11,7 @@
 #include "utils.hpp"
 
 template <typename Tw>
-void event_pool(Tw &main_window, std::queue<sf::Event> &event_queue, SceneSwitcher &ss, LoopFlags &flags)
+void event_pool(Tw &main_window, Utils::SafeQueue<sf::Event> &event_queue, SceneSwitcher &ss, LoopFlags &flags)
 {
     while (!flags.f_t_ep_done)
         while (event_queue.size())
@@ -50,7 +50,7 @@ int main()
     settings.majorVersion = 3;
     settings.minorVersion = 0;
     sf::RenderWindow window(sf::VideoMode(800, 500), "OpenGL Tree visualizer [ Pavels Zuravlovs ]", sf::Style::Default, settings);
-    std::queue<sf::Event> event_queue;
+    Utils::SafeQueue<sf::Event> event_queue;
 
     window.setFramerateLimit(75);
     window.setActive(true);
