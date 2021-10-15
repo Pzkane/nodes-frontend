@@ -1,5 +1,4 @@
 #include <thread>
-#include <iostream>
 #include <queue>
 
 #include <SFML/Window.hpp>
@@ -9,20 +8,21 @@
 #include "LoopFlags.hpp"
 #include "SceneSwitcher.hpp"
 #include "MainScene.hpp"
+#include "utils.hpp"
 
 template <typename Tw>
-void event_pool(Tw &main_window, std::queue<sf::Event> &event_queue, SceneSwitcher ss, bool &ep_done)
+void event_pool(Tw &main_window, Utils::SafeQueue<sf::Event> &event_queue, SceneSwitcher &ss, LoopFlags &flags)
 {
-    while (true)
-        while (!event_queue.empty())
+    while (!flags.f_t_ep_done)
+        while (event_queue.size())
         {
             auto event = event_queue.front();
             ss.updateInput(event);
             switch (event.type)
             {
             case sf::Event::Closed:
-                ep_done = true;
-                return;
+                flags.f_t_delete_active_scene = true;
+                break;
 
             case sf::Event::Resized:
             {
@@ -50,21 +50,30 @@ int main()
     settings.majorVersion = 3;
     settings.minorVersion = 0;
     sf::RenderWindow window(sf::VideoMode(800, 500), "OpenGL Tree visualizer [ Pavels Zuravlovs ]", sf::Style::Default, settings);
-    std::queue<sf::Event> event_queue;
+    Utils::SafeQueue<sf::Event> event_queue;
 
     window.setFramerateLimit(75);
     window.setActive(true);
 
     SceneSwitcher ss;
-    MainScene main_scene(window);
+    MainScene *main_scene = new MainScene(window);
     ss.switchTo(main_scene);
 
-    std::thread t_event_pool(event_pool<sf::RenderWindow>, std::ref(window), std::ref(event_queue), std::ref(ss), std::ref(lf.f_t_ep_done));
+    std::thread t_event_pool(event_pool<sf::RenderWindow>, std::ref(window), std::ref(event_queue), std::ref(ss), std::ref(lf));
     while (running)
     {
         sf::Event event;
         if (window.pollEvent(event))
             event_queue.push(event);
+
+        if (lf.f_t_delete_active_scene)
+        {
+            delete main_scene;
+            main_scene = nullptr;
+            ss.unsetScene();
+            lf.f_t_delete_active_scene = false;
+            lf.f_t_ep_done = true;
+        }
 
         ss.updateScene();
         ss.drawScene();

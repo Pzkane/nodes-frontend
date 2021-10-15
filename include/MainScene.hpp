@@ -9,14 +9,19 @@ class MainScene : public Scene
 {
     bool m_b_mousePressed = false;
     std::vector<Node *> m_nodes;
+    std::vector<Connector *> m_connectors;
     EventFlags ef;
 
 public:
     MainScene(sf::RenderWindow &window);
-    ~MainScene() = default;
+    ~MainScene();
+    void createNode();
+    void pushNode(Node *node, int at = -1);
+    void popNode(int at = -1);
+    void pushConnector(Connector *node, int at = -1);
+
     void update();
     void draw();
-    void pushNode(Node *node, int at = -1);
     void updateInput(const sf::Event &event);
 };
 

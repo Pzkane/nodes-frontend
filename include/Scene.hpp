@@ -7,6 +7,7 @@
 
 class Scene
 {
+    /* Flag mainly to disable processing without destroying the scene */
     bool m_state = false;
 
 protected:

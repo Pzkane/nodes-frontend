@@ -21,6 +21,7 @@ add_subdirectory(entities)
 add_library(scenesLib)
 add_subdirectory(scenes)
 
+target_link_libraries(helpersLib sfml-graphics)
 target_link_libraries(shapesLib sfml-graphics propertiesLib)
 target_link_libraries(entitiesLib shapesLib)
 target_link_libraries(${PROJECT_NAME}
