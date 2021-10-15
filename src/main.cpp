@@ -1,5 +1,4 @@
 #include <thread>
-#include <queue>
 
 #include <SFML/Window.hpp>
 #include <SFML/OpenGL.hpp>
