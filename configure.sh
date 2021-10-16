@@ -1,10 +1,19 @@
 if [ $# -ne 0 ] ; then
-    cxx_flags=""
-    for flag in $@ ; do
-        cxx_flags="$cxx_flags $flag"
-    done
-    cmake -DCMAKE_BUILD_TYPE=Debug -DCXXFLAGS="$cxx_flags" -DDEBUGFLAG=1 -S ./ -B ./build/ -G "MSYS Makefiles"
+    if [ $1 == "dbg" ] ; then
+        if cmake -DCMAKE_BUILD_TYPE=Debug -DDEBUG=1 -DCXXFLAGS=-g -S ./ -B ./build/ -G "MSYS Makefiles" ; then
+            echo -n DEFAULT $(tput setaf 0;tput setab 3) DEBUG $(tput setaf 255;tput setab 0) CONFIGURATION
+        fi
+    else
+        params=""
+        for param in $@ ; do
+            params="$params -D$param"
+        done
+        cmake -DCMAKE_BUILD_TYPE=Debug -DDEBUG=1 $params -S ./ -B ./build/ -G "MSYS Makefiles"
+        echo $(tput setaf 0;tput setab 3) cmake -DCMAKE_BUILD_TYPE=Debug -DDEBUG=1 $params -S ./ -B ./build/ -G "MSYS Makefiles" $(tput setab 0)
+    fi
 else
-    cmake -DCMAKE_BUILD_TYPE=Release -S ./ -B ./build/ -G "MSYS Makefiles"
+    if cmake -DCMAKE_BUILD_TYPE=Release -DCXXFLAGS=-O3 -S ./ -B ./build/ -G "MSYS Makefiles" ; then
+        echo -n DEFAULT $(tput setaf 0;tput setab 2) RELEASE $(tput setaf 255;tput setab 0) CONFIGURATION
+    fi
 fi
 
