@@ -1,7 +1,7 @@
 #ifndef SRC_ENTITIES_NODE_HPP_INCLUDED
 #define SRC_ENTITIES_NODE_HPP_INCLUDED
 
-#include <vector>
+#include <list>
 #include <string>
 #include "CircleShape.hpp"
 #include "EventFlags.hpp"
@@ -15,7 +15,7 @@ class Node : public CircleShape
     bool m_is_dragged = false;
     sf::Text text;
     void updateText();
-    std::vector<Connector *> m_conns;
+    std::list<Connector *> m_conns;
 
 public:
     EntityFlags enf;

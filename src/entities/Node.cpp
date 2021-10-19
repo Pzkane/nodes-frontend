@@ -10,6 +10,7 @@ Node::Node(float radius, std::size_t pointCount) : CircleShape(radius, pointCoun
     const float R = CircleShape::getRadius();
     sf::CircleShape::setOrigin(center.x + R, center.y + R);
     text.setFont(Flags::font);
+    text.setScale(0, 0);
 }
 
 void Node::update(const sf::RenderWindow &window, EventFlags &ef)
