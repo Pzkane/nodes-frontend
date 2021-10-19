@@ -1,7 +1,7 @@
 if [ $# -ne 0 ] ; then
     if [ $1 == "dbg" ] ; then
         if cmake -DCMAKE_BUILD_TYPE=Debug -DDEBUG=1 -DCXXFLAGS=-g -S ./ -B ./build/ -G "MSYS Makefiles" ; then
-            echo -n DEFAULT $(tput setaf 0;tput setab 3) DEBUG $(tput setaf 255;tput setab 0) CONFIGURATION
+            echo -n  $(tput setaf 255;tput setab 0)DEFAULT $(tput setaf 0;tput setab 3) DEBUG $(tput setaf 255;tput setab 0) CONFIGURATION
         fi
     else
         params=""
@@ -13,7 +13,6 @@ if [ $# -ne 0 ] ; then
     fi
 else
     if cmake -DCMAKE_BUILD_TYPE=Release -DCXXFLAGS=-O3 -S ./ -B ./build/ -G "MSYS Makefiles" ; then
-        echo -n DEFAULT $(tput setaf 0;tput setab 2) RELEASE $(tput setaf 255;tput setab 0) CONFIGURATION
+        echo -n $(tput setaf 255;tput setab 0)DEFAULT $(tput setaf 0;tput setab 2) RELEASE $(tput setaf 255;tput setab 0) CONFIGURATION
     fi
 fi
-

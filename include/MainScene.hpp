@@ -8,17 +8,16 @@
 class MainScene : public Scene
 {
     bool m_b_mousePressed = false;
-    std::vector<Node *> m_nodes;
-    std::vector<Connector *> m_connectors;
+    std::list<Node *> m_nodes;
+    std::list<Connector *> m_connectors;
     EventFlags ef;
 
 public:
     MainScene(sf::RenderWindow &window);
     ~MainScene();
     void createNode();
-    void pushNode(Node *node, int at = -1);
-    void popNode(int at = -1);
-    void pushConnector(Connector *node, int at = -1);
+    void pushNode(Node *node);
+    void pushConnector(Connector *node);
 
     void update();
     void draw();

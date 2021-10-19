@@ -18,17 +18,29 @@ void Node::update(const sf::RenderWindow &window, EventFlags &ef)
     CircleShape::setEventFlags(ef);
     checkMousePointer(window);
 
-    if (mouseInside(Utils::getMousePosf(window)) && ef.f_rmb)
-        if (!ef.p_start_node && ef.p_end_node != this)
+    if (mouseInside(Utils::getMousePosf(window)))
+    {
+        if (ef.f_rmb)
+            if (!ef.p_start_node && ef.p_end_node != this)
+            {
+                say("START_NODE");
+                ef.p_start_node = this;
+            }
+            else if (!ef.p_end_node && ef.p_start_node != this)
+            {
+                say("END_NODE");
+                ef.p_end_node = this;
+            }
+
+        if (ef.f_lalt)
         {
-            say("START_NODE");
-            ef.p_start_node = this;
+            for (auto &&conn : m_conns)
+            {
+                conn->enf.f_del = true;
+            }
+            enf.f_del = true;
         }
-        else if (!ef.p_end_node && ef.p_start_node != this)
-        {
-            say("END_NODE");
-            ef.p_end_node = this;
-        }
+    }
 }
 
 void Node::updateText()
@@ -53,4 +65,9 @@ void Node::setText(const std::string &text)
 {
     this->text.setString(text);
     this->text.setFillColor(sf::Color::White);
+}
+
+void Node::pushConnector(Connector *const conn)
+{
+    m_conns.push_back(conn);
 }

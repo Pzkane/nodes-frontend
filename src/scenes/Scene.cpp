@@ -7,23 +7,17 @@ void Scene::draw()
             p_window->draw(*drawable);
 }
 
-void Scene::pushDrawable(sf::Drawable *drawable, int at)
+void Scene::pushDrawable(sf::Drawable *drawable)
 {
-    if (at < 0)
-        m_drawables.push_back(std::move(drawable));
-    else if (at <= m_drawables.size())
-        m_drawables.emplace(m_drawables.begin() + at, std::move(drawable));
+    m_drawables.push_back(std::move(drawable));
 }
 
-void Scene::popDrawable(int at)
+void Scene::popDrawable()
 {
     if (!m_drawables.size())
         return;
 
-    if (at < 0)
-        m_drawables.pop_back();
-    else
-        m_drawables.erase(m_drawables.begin() + at);
+    m_drawables.pop_back();
 }
 
 void Scene::setActive(bool state)

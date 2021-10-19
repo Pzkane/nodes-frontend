@@ -11,6 +11,7 @@ class EventFlags : public Flags
 public:
     bool f_lmb = false;
     bool f_rmb = false;
+    bool f_lalt = false;
     Node *p_start_node = nullptr;
     Node *p_end_node = nullptr;
     EventFlags() : Flags() {}

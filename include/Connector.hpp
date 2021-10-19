@@ -2,6 +2,7 @@
 #define SRC_ENTITIES_CONNECTOR_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
+#include "EntityFlags.hpp"
 #include "Node.hpp"
 
 class Connector
@@ -18,6 +19,7 @@ class Connector
     friend class Node;
 
 public:
+    EntityFlags enf;
     Connector(Node *const &start_node, Node *const &end_node, sf::Color color = sf::Color::White);
     ~Connector() = default;
 
