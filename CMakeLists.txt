@@ -23,7 +23,6 @@ find_package(OpenGL REQUIRED)
 
 add_library(mainLib)
 add_subdirectory(src)
-target_include_directories(mainLib PUBLIC ${SFML_INCLUDE_DIR} ${OPENGL_INCLUDE_DIRS} ${LOCAL_INCLUDE_DIR})
 
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${OPENGL_INCLUDE_DIRS} ${LOCAL_INCLUDE_DIR})
