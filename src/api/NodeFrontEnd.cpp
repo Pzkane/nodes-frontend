@@ -4,7 +4,6 @@
 
 #include <SFML/Window.hpp>
 #include <SFML/OpenGL.hpp>
-#include <SFML/Graphics.hpp>
 
 #include "LoopFlags.hpp"
 #include "SceneSwitcher.hpp"
@@ -40,7 +39,7 @@ static void event_pool(Tw &main_window, Utils::SafeQueue<sf::Event> &event_queue
         }
 }
 
-static int init()
+int NodeFrontEnd::init(const sf::VideoMode &video_mode, const char *title)
 {
     bool running = true;
     LoopFlags lf;
@@ -50,7 +49,7 @@ static int init()
     settings.antialiasingLevel = 4;
     settings.majorVersion = 3;
     settings.minorVersion = 0;
-    sf::RenderWindow window(sf::VideoMode(800, 500), "OpenGL Tree visualizer [ Pavels Zuravlovs ]", sf::Style::Default, settings);
+    sf::RenderWindow window(video_mode, title, sf::Style::Default, settings);
     Utils::SafeQueue<sf::Event> event_queue;
 
     window.setFramerateLimit(75);
@@ -79,7 +78,7 @@ static int init()
         ss.updateScene();
         ss.drawScene();
         window.display();
-        window.clear();
+        window.clear(m_backgroundColor);
 
         if (lf.switchedOff())
             running = false;
@@ -92,5 +91,15 @@ static int init()
 
 NodeFrontEnd::NodeFrontEnd()
 {
-    init();
+    init(sf::VideoMode(800, 500), "OpenGL Front End [ Pavels Zuravlovs ]");
+}
+
+NodeFrontEnd::NodeFrontEnd(const sf::VideoMode &video_mode, const char *title)
+{
+    init(video_mode, title);
+}
+
+void NodeFrontEnd::setWindowColor(const sf::Color &color)
+{
+    m_backgroundColor = color;
 }
