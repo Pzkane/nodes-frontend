@@ -20,8 +20,22 @@ void SceneSwitcher::drawScene()
         m_curr_scene->draw();
 }
 
-void SceneSwitcher::updateInput(const sf::Event &event)
+void *SceneSwitcher::updateInput(const sf::Event &event)
 {
     if (m_curr_scene)
-        m_curr_scene->updateInput(event);
+        return m_curr_scene->updateInput(event);
+    return nullptr;
+}
+
+void *SceneSwitcher::updateInput(const EventType &eventType)
+{
+    if (m_curr_scene)
+        return m_curr_scene->updateInput(eventType);
+    return nullptr;
+}
+
+void SceneSwitcher::deleteCurrScene()
+{
+    delete m_curr_scene;
+    m_curr_scene = nullptr;
 }

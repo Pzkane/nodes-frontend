@@ -4,6 +4,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "Scene.hpp"
+#include "EventType.hpp"
 
 class SceneSwitcher
 {
@@ -16,8 +17,9 @@ public:
     void switchTo(Scene *scene);
     void updateScene();
     void drawScene();
-    void unsetScene() { m_curr_scene = nullptr; }
-    void updateInput(const sf::Event &event);
+    void deleteCurrScene();
+    void *updateInput(const sf::Event &event);
+    void *updateInput(const EventType &eventType);
 };
 
 #endif // SRC_SCENES_SCENESWITCHER_HPP_INCLUDED

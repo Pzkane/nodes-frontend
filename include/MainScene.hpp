@@ -4,6 +4,7 @@
 #include <queue>
 #include "Scene.hpp"
 #include "Node.hpp"
+#include "EventType.hpp"
 
 class MainScene : public Scene
 {
@@ -15,13 +16,14 @@ class MainScene : public Scene
 public:
     MainScene(sf::RenderWindow &window);
     ~MainScene();
-    void createNode();
+    Node *createNode();
     void pushNode(Node *node);
     void pushConnector(Connector *node);
 
     void update();
     void draw();
-    void updateInput(const sf::Event &event);
+    void *updateInput(const sf::Event &event);
+    void *updateInput(const EventType &eventType);
 };
 
 #endif // SRC_SCENES_MAINSCENE_HPP_INCLUDED

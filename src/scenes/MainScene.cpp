@@ -32,13 +32,14 @@ MainScene::~MainScene()
     }
 }
 
-void MainScene::createNode()
+Node *MainScene::createNode()
 {
     Node *node = new Node(40);
     node->setFillColor(sf::Color::Red);
     node->sf::CircleShape::setPosition(Utils::getMousePosf(*p_window));
     node->setText("Testing!");
     pushNode(node);
+    return node;
 }
 
 void MainScene::pushNode(Node *node)
@@ -98,7 +99,7 @@ void MainScene::draw()
     }
 }
 
-void MainScene::updateInput(const sf::Event &event)
+void *MainScene::updateInput(const sf::Event &event)
 {
     ef.f_lalt = false;
     switch (event.type)
@@ -139,7 +140,7 @@ void MainScene::updateInput(const sf::Event &event)
         switch (event.key.code)
         {
         case sf::Keyboard::LControl:
-            createNode();
+            return createNode();
             break;
 
         case sf::Keyboard::LAlt:
@@ -152,4 +153,37 @@ void MainScene::updateInput(const sf::Event &event)
     default:
         break;
     }
+    return nullptr;
+}
+
+void *MainScene::updateInput(const EventType &eventType)
+{
+    ef.f_lalt = false;
+    switch (eventType)
+    {
+    // case sf::Mouse::Left:
+    //     ef.f_lmb = true;
+    //     break;
+
+    // case sf::Mouse::Right:
+    //     ef.f_rmb = true;
+    //     break;
+    // case sf::Mouse::Left:
+    //     ef.f_lmb = false;
+    //     break;
+
+    // case sf::Mouse::Right:
+    //     ef.f_rmb = false;
+    //     break;
+    case addNode:
+        return createNode();
+
+        // case sf::Keyboard::LAlt:
+        //     ef.f_lalt = true;
+        //     break;
+
+    default:
+        break;
+    }
+    return nullptr;
 }

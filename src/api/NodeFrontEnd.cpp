@@ -1,14 +1,10 @@
 #include "NodeFrontEnd.hpp"
 
-#include <thread>
-
 #include <SFML/Window.hpp>
 #include <SFML/OpenGL.hpp>
 
-#include "LoopFlags.hpp"
-#include "SceneSwitcher.hpp"
 #include "MainScene.hpp"
-#include "utils.hpp"
+#include "EventType.hpp"
 
 template <typename Tw>
 static void event_pool(Tw &main_window, Utils::SafeQueue<sf::Event> &event_queue, SceneSwitcher &ss, LoopFlags &flags)
@@ -39,67 +35,77 @@ static void event_pool(Tw &main_window, Utils::SafeQueue<sf::Event> &event_queue
         }
 }
 
-int NodeFrontEnd::init(const sf::VideoMode &video_mode, const char *title)
+void NodeFrontEnd::init()
 {
-    bool running = true;
-    LoopFlags lf;
     sf::ContextSettings settings;
     settings.depthBits = 24;
     settings.stencilBits = 8;
     settings.antialiasingLevel = 4;
     settings.majorVersion = 3;
     settings.minorVersion = 0;
-    sf::RenderWindow window(video_mode, title, sf::Style::Default, settings);
-    Utils::SafeQueue<sf::Event> event_queue;
-
-    window.setFramerateLimit(75);
-    window.setActive(true);
-
-    SceneSwitcher ss;
-    MainScene *main_scene = new MainScene(window);
+    window = new sf::RenderWindow(video_mode, title, sf::Style::Default, settings);
+    MainScene *main_scene = new MainScene(*window);
     ss.switchTo(main_scene);
+    t_event_pool = new std::thread(event_pool<sf::RenderWindow>, std::ref(*window), std::ref(event_queue), std::ref(ss), std::ref(lf));
+}
 
-    std::thread t_event_pool(event_pool<sf::RenderWindow>, std::ref(window), std::ref(event_queue), std::ref(ss), std::ref(lf));
+int NodeFrontEnd::launch()
+{
+    bool running = true;
+
+    window->setFramerateLimit(75);
+    window->setActive(true);
+
     while (running)
     {
         sf::Event event;
-        if (window.pollEvent(event))
+        if (window->pollEvent(event))
             event_queue.push(event);
 
         if (lf.f_t_delete_active_scene)
         {
-            delete main_scene;
-            main_scene = nullptr;
-            ss.unsetScene();
+            ss.deleteCurrScene();
             lf.f_t_delete_active_scene = false;
             lf.f_t_ep_done = true;
         }
 
         ss.updateScene();
         ss.drawScene();
-        window.display();
-        window.clear(m_backgroundColor);
+        window->display();
+        window->clear(m_backgroundColor);
 
         if (lf.switchedOff())
             running = false;
     }
 
-    t_event_pool.join();
+    t_event_pool->join();
 
     return 0;
 }
 
-NodeFrontEnd::NodeFrontEnd()
+NodeFrontEnd::NodeFrontEnd() : video_mode(sf::VideoMode(800, 500)), title("OpenGL Front End [ Pavels Zuravlovs ]")
 {
-    init(sf::VideoMode(800, 500), "OpenGL Front End [ Pavels Zuravlovs ]");
+    init();
 }
 
-NodeFrontEnd::NodeFrontEnd(const sf::VideoMode &video_mode, const char *title)
+NodeFrontEnd::NodeFrontEnd(const sf::VideoMode &video_mode, const char *title) : video_mode(video_mode), title(title)
 {
-    init(video_mode, title);
+    init();
+}
+
+NodeFrontEnd::~NodeFrontEnd()
+{
+    delete window;
+    window = nullptr;
 }
 
 void NodeFrontEnd::setWindowColor(const sf::Color &color)
 {
     m_backgroundColor = color;
+}
+
+Node *NodeFrontEnd::addNode(const char *text)
+{
+    auto p = reinterpret_cast<Node *>(ss.updateInput(EventType::addNode));
+    return p;
 }
