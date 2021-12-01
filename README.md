@@ -1,2 +1,2 @@
-# tree-visualizer
-Tree data structure visualizer
+# nodes-frontend
+Data structure visualizer
