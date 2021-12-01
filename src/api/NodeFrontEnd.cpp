@@ -47,6 +47,7 @@ void NodeFrontEnd::init()
     MainScene *main_scene = new MainScene(*window);
     ss.switchTo(main_scene);
     t_event_pool = new std::thread(event_pool<sf::RenderWindow>, std::ref(*window), std::ref(event_queue), std::ref(ss), std::ref(lf));
+    initizlized = true;
 }
 
 int NodeFrontEnd::launch()
@@ -79,24 +80,31 @@ int NodeFrontEnd::launch()
     }
 
     t_event_pool->join();
+    cleanup();
 
     return 0;
 }
 
 NodeFrontEnd::NodeFrontEnd() : video_mode(sf::VideoMode(800, 500)), title("OpenGL Front End [ Pavels Zuravlovs ]")
 {
-    init();
 }
 
 NodeFrontEnd::NodeFrontEnd(const sf::VideoMode &video_mode, const char *title) : video_mode(video_mode), title(title)
 {
-    init();
 }
 
 NodeFrontEnd::~NodeFrontEnd()
 {
-    delete window;
-    window = nullptr;
+    cleanup();
+}
+
+void NodeFrontEnd::cleanup()
+{
+    if (window)
+    {
+        delete window;
+        window = nullptr;
+    }
 }
 
 void NodeFrontEnd::setWindowColor(const sf::Color &color)
@@ -107,5 +115,6 @@ void NodeFrontEnd::setWindowColor(const sf::Color &color)
 Node *NodeFrontEnd::addNode(const char *text)
 {
     auto p = reinterpret_cast<Node *>(ss.updateInput(EventType::addNode));
+    p->setText(text);
     return p;
 }

@@ -11,6 +11,7 @@
 
 class NodeFrontEnd
 {
+    bool initizlized = false;
     LoopFlags lf;
     std::string title;
     sf::RenderWindow *window;
@@ -19,15 +20,17 @@ class NodeFrontEnd
     sf::VideoMode video_mode;
     sf::Color m_backgroundColor = sf::Color::Black;
     SceneSwitcher ss;
-    void init();
+    void cleanup();
 
 public:
     NodeFrontEnd(const sf::VideoMode &video_mode, const char *title);
     NodeFrontEnd();
     ~NodeFrontEnd();
+    void init();
     int launch();
     void setWindowColor(const sf::Color &color);
     Node *addNode(const char *text = "");
+    bool isInit() { return initizlized; };
 };
 
 #endif // SRC_API_NODEFRONTEND_HPP_INCLUDED

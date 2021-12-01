@@ -1,8 +1,8 @@
+#include <algorithm>
+
 #include "Node.hpp"
 #include "Connector.hpp"
 #include "utils.hpp"
-
-#include <algorithm>
 
 Node::Node(float radius, std::size_t pointCount) : CircleShape(radius, pointCount)
 {
@@ -46,14 +46,20 @@ void Node::update(const sf::RenderWindow &window, EventFlags &ef)
 
 void Node::updateText()
 {
+    const float PADDING = 0.3f;
     text.setOrigin(sf::Vector2f(text.getLocalBounds().width / 2, text.getLocalBounds().height / 1.4));
     text.setPosition(getPosition());
     const float D = 2 * sf::CircleShape::getRadius();
     const sf::FloatRect l_bounds = text.getLocalBounds();
-    const sf::Vector2f sizeScale(l_bounds.width / D, l_bounds.height / D);
+    const sf::Vector2f sizeScale(l_bounds.width / D + PADDING, l_bounds.height / D + PADDING);
     const float maxScale = std::max(sizeScale.x, sizeScale.y);
     if (maxScale > 1)
         text.setScale(1 / maxScale, 1 / maxScale);
+    else
+    {
+        text.setOrigin(sf::Vector2f(text.getLocalBounds().width / 2, text.getLocalBounds().height * 1.4));
+        text.setScale(1, 1);
+    }
 }
 
 void Node::draw(sf::RenderWindow &window)
