@@ -6,6 +6,6 @@ fi
 
 if [ $# -ne 0 ] ; then
     if [ $1 == "--run" ] ; then
-        /d/disk_backup/C++/libraries/SFML-2.5.1/bin/tree_visualizer.exe
+        /d/disk_backup/C++/libraries/SFML-2.5.1/bin/nodes_frontend_bin.exe
     fi
 fi

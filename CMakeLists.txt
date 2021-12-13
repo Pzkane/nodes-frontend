@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.13)
-project(tree_visualizer)
+project(nodes_frontend)
 
 set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} ${CXXFLAGS})
 if(${DEBUG})
@@ -21,15 +21,8 @@ find_package(SFML 2.5.1 COMPONENTS window system graphics REQUIRED)
 find_package(OpenGL REQUIRED)
 
 
-add_library(mainLib)
 add_subdirectory(src)
-
-
-target_include_directories(${PROJECT_NAME} PUBLIC ${OPENGL_INCLUDE_DIRS} ${LOCAL_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} sfml-window sfml-system sfml-graphics ${OPENGL_LIBRARIES})
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 
-# INSTALL
-install(TARGETS ${PROJECT_NAME} DESTINATION ${SFML_PREFIX}/bin)
-# install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/resources/Inconsolata-Medium.ttf DESTINATION ${SFML_PREFIX}/bin)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/resources/Inconsolata-Medium.ttf DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build)

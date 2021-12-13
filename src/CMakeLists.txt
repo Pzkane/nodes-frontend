@@ -1,13 +1,17 @@
-target_sources(mainLib
-    PRIVATE
-        main.cpp
-)
+set(EXECUTABLE_NAME ${PROJECT_NAME}_bin)
 
-target_include_directories(mainLib PUBLIC ${LOCAL_INCLUDE_DIR})
+add_library(merged INTERFACE)
 
-add_executable(${PROJECT_NAME} main.cpp)
+target_include_directories(merged INTERFACE ${OPENGL_INCLUDE_DIRS} ${LOCAL_INCLUDE_DIR})
+target_link_libraries(merged INTERFACE sfml-window sfml-system sfml-graphics ${OPENGL_LIBRARIES})
+# target_include_directories(${PROJECT_NAME} PUBLIC ${LOCAL_INCLUDE_DIR})
 
-add_library(apiLib)
+if(${EXAMPLE})
+    add_executable(${EXECUTABLE_NAME} main.cpp)
+endif(${EXAMPLE})
+
+set(apiLib ${PROJECT_NAME})
+add_library(${apiLib})
 add_subdirectory(api)
 
 add_library(helpersLib)
@@ -28,14 +32,19 @@ add_subdirectory(scenes)
 target_link_libraries(helpersLib sfml-graphics)
 target_link_libraries(shapesLib sfml-graphics propertiesLib)
 target_link_libraries(entitiesLib shapesLib)
-target_link_libraries(apiLib sfml-window sfml-system sfml-graphics ${OPENGL_LIBRARIES}
+target_link_libraries(${apiLib} sfml-window sfml-system sfml-graphics ${OPENGL_LIBRARIES}
     scenesLib
     shapesLib
     helpersLib
     entitiesLib
     propertiesLib
 )
-target_link_libraries(mainLib apiLib)
-target_link_libraries(${PROJECT_NAME}
-    mainLib
-)
+target_link_libraries(merged INTERFACE ${apiLib})
+if(${EXAMPLE})
+    target_link_libraries(${EXECUTABLE_NAME}
+        ${apiLib}
+    )
+    # INSTALL
+    install(TARGETS ${EXECUTABLE_NAME} DESTINATION ${SFML_PREFIX}/bin)
+    install(FILES ${CMAKE_SOURCE_DIR}/resources/Inconsolata-Medium.ttf DESTINATION ${SFML_PREFIX}/bin/resources)
+endif()
