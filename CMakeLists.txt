@@ -25,4 +25,5 @@ add_subdirectory(src)
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 
+# install fonts
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/resources/Inconsolata-Medium.ttf DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build)

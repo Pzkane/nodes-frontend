@@ -44,7 +44,16 @@ if(${EXAMPLE})
     target_link_libraries(${EXECUTABLE_NAME}
         ${apiLib}
     )
-    # INSTALL
+    # install binaries
     install(TARGETS ${EXECUTABLE_NAME} DESTINATION ${SFML_PREFIX}/bin)
     install(FILES ${CMAKE_SOURCE_DIR}/resources/Inconsolata-Medium.ttf DESTINATION ${SFML_PREFIX}/bin/resources)
-endif()
+endif(${EXAMPLE})
+
+# package everything into static library
+if(${COUPLED})
+    add_custom_command(
+        TARGET ${PROJECT_NAME}
+        POST_BUILD
+        COMMAND ${CMAKE_SOURCE_DIR}/couple.sh
+    )
+endif(${COUPLED})
