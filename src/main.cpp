@@ -38,8 +38,7 @@ int main()
     {
         begin = std::chrono::system_clock::now();
 
-        do
-        {
+        do {
             end = std::chrono::system_clock::now();
             /* do nothing */
         } while (std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() < 1);

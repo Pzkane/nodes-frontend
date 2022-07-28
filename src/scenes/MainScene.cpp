@@ -102,6 +102,7 @@ void MainScene::draw()
 void *MainScene::updateInput(const sf::Event &event)
 {
     ef.f_lalt = false;
+    ef.f_ralt = false;
     switch (event.type)
     {
     case sf::Event::MouseButtonPressed:
@@ -147,6 +148,10 @@ void *MainScene::updateInput(const sf::Event &event)
             ef.f_lalt = true;
             break;
 
+        case sf::Keyboard::RAlt:
+            ef.f_ralt = true;
+            break;
+
         default:
             break;
         }
@@ -158,30 +163,10 @@ void *MainScene::updateInput(const sf::Event &event)
 
 void *MainScene::updateInput(const EventType &eventType)
 {
-    ef.f_lalt = false;
     switch (eventType)
     {
-    // case sf::Mouse::Left:
-    //     ef.f_lmb = true;
-    //     break;
-
-    // case sf::Mouse::Right:
-    //     ef.f_rmb = true;
-    //     break;
-    // case sf::Mouse::Left:
-    //     ef.f_lmb = false;
-    //     break;
-
-    // case sf::Mouse::Right:
-    //     ef.f_rmb = false;
-    //     break;
     case addNode:
         return createNode();
-
-        // case sf::Keyboard::LAlt:
-        //     ef.f_lalt = true;
-        //     break;
-
     default:
         break;
     }

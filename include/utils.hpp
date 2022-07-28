@@ -1,9 +1,9 @@
 #ifndef SRC_HELPERS_UTILS_HPP_INCLUDED
 #define SRC_HELPERS_UTILS_HPP_INCLUDED
 
-#include <random>
-#include <SFML/Graphics.hpp>
 #include <iostream>
+#include <SFML/Graphics.hpp>
+#include "SafeQueue.hpp"
 
 #ifdef DEBUG
 #define say(something) {std::cout << something <<std::endl;}
@@ -12,8 +12,6 @@
 #endif
 
 #define error(message) {std::cout << "ERR: " << message << std::endl;}
-
-#include "SafeQueue.hpp"
 
 namespace Utils
 {

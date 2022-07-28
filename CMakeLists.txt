@@ -13,8 +13,10 @@ endif(${BENCHMARK})
 set(LOCAL_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/include)
 set(SFML_PREFIX "D:/disk_backup/C++/libraries/SFML-2.5.1")
 set(CMAKE_PREFIX_PATH ${SFML_PREFIX})
-set(SFML_DIR ${CMAKE_PREFIX_PATH}/build)
+set(LOCAL_BUILD_DIR ${CMAKE_CURRENT_LIST_DIR}/build)
 set(SFML_INCLUDE_DIR ${SFML_PREFIX}/include)
+set(SFML_BIN_DIR ${SFML_PREFIX}/bin)
+set(EXECUTABLE_NAME ${PROJECT_NAME}_bin)
 
 
 find_package(SFML 2.5.1 COMPONENTS window system graphics REQUIRED)
@@ -25,5 +27,10 @@ add_subdirectory(src)
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 
-# install fonts
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/resources/Inconsolata-Medium.ttf DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build)
+if(${EXAMPLE})
+    # install program
+    install(FILES ${LOCAL_BUILD_DIR}/src/${EXECUTABLE_NAME}.exe DESTINATION ${SFML_BIN_DIR})
+    # install fonts
+    install(FILES ${CMAKE_SOURCE_DIR}/resources/Inconsolata-Medium.ttf DESTINATION ${SFML_BIN_DIR}/resources)
+    # install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/resources/Inconsolata-Medium.ttf DESTINATION ${SFML_BIN_DIR})
+endif(${EXAMPLE})

@@ -1,5 +1,3 @@
-set(EXECUTABLE_NAME ${PROJECT_NAME}_bin)
-
 add_library(merged INTERFACE)
 
 target_include_directories(merged INTERFACE ${OPENGL_INCLUDE_DIRS} ${LOCAL_INCLUDE_DIR})
@@ -7,6 +5,7 @@ target_link_libraries(merged INTERFACE sfml-window sfml-system sfml-graphics ${O
 # target_include_directories(${PROJECT_NAME} PUBLIC ${LOCAL_INCLUDE_DIR})
 
 if(${EXAMPLE})
+    MESSAGE("-- Building binary example")
     add_executable(${EXECUTABLE_NAME} main.cpp)
 endif(${EXAMPLE})
 
@@ -44,9 +43,6 @@ if(${EXAMPLE})
     target_link_libraries(${EXECUTABLE_NAME}
         ${apiLib}
     )
-    # install binaries
-    install(TARGETS ${EXECUTABLE_NAME} DESTINATION ${SFML_PREFIX}/bin)
-    install(FILES ${CMAKE_SOURCE_DIR}/resources/Inconsolata-Medium.ttf DESTINATION ${SFML_PREFIX}/bin/resources)
 endif(${EXAMPLE})
 
 # package everything into static library

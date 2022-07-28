@@ -4,11 +4,17 @@
 #include "Connector.hpp"
 #include "utils.hpp"
 
-Node::Node(float radius, std::size_t pointCount) : CircleShape(radius, pointCount)
+Node::Node(float radius, std::size_t pointCount) : CircleShape(radius, pointCount, 50)
 {
     const sf::Vector2f center = CircleShape::getPosition();
     const float R = CircleShape::getRadius();
     sf::CircleShape::setOrigin(center.x + R, center.y + R);
+
+    auto setHelloText = [&](){
+        setText("Hello!");
+    };
+
+    CircleShape::setCallback(setHelloText);
     text.setFont(Flags::font);
     text.setScale(0, 0);
 }
@@ -40,6 +46,11 @@ void Node::update(const sf::RenderWindow &window, EventFlags &ef)
                 conn->enf.f_del = true;
             }
             enf.f_del = true;
+        }
+
+        if (ef.f_ralt)
+        {
+            invokeCallback();
         }
     }
 }

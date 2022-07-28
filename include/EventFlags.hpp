@@ -12,6 +12,7 @@ public:
     bool f_lmb = false;
     bool f_rmb = false;
     bool f_lalt = false;
+    bool f_ralt = false;
     Node *p_start_node = nullptr;
     Node *p_end_node = nullptr;
     EventFlags() : Flags() {}

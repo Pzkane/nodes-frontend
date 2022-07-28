@@ -7,4 +7,4 @@ g++ -o del_main del_main.cpp ./build/src/libnv.a -I./include -L../../libraries/S
 ```
 Copy into dir with SFML DLLs.
 
-#TODO: Resolve manual linking of: SFML (widdow, graphics, system), OpenGL
+#TODO: Resolve manual linking of: SFML (window, graphics, system), OpenGL
