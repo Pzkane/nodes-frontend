@@ -1,5 +1,7 @@
 #include "Scene.hpp"
 
+using namespace nf;
+
 void Scene::draw()
 {
     if (m_state)

@@ -3,12 +3,16 @@
 
 #include "Flags.hpp"
 
+namespace nf {
+
 class EntityFlags : public Flags
 {
 public:
-    bool f_del = false;
+    bool f_delete_self = false;
     EntityFlags() : Flags() {}
     ~EntityFlags() = default;
+};
+
 };
 
 #endif // SRC_HELPERS_ENTITYFLAGS_HPP_INCLUDED

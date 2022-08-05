@@ -1,5 +1,7 @@
 #include "GL_Triangle.hpp"
 
+using namespace nf;
+
 void GL_Triangle::draw()
 {
     glColor3d(0, 1, 0);

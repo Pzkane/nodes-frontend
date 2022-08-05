@@ -2,12 +2,14 @@
 #define SRC_ENTITIES_CONNECTOR_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
-#include "EntityFlags.hpp"
 #include "Node.hpp"
+#include "Line.hpp"
 
-class Connector
+namespace nf {
+
+class Connector : public Entity, public Line
 {
-    sf::VertexArray line;
+    Line line;
     struct NodeRef
     {
         Node *start = nullptr;
@@ -19,12 +21,13 @@ class Connector
     friend class Node;
 
 public:
-    EntityFlags enf;
     Connector(Node *const &start_node, Node *const &end_node, sf::Color color = sf::Color::White);
     ~Connector() = default;
 
     sf::VertexArray &getDrawable();
-    void update();
+    void update(const sf::RenderWindow &window, EventFlags &ef);
+};
+
 };
 
 #endif // SRC_ENTITIES_CONNECTOR_HPP_INCLUDED

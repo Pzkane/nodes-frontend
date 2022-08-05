@@ -3,6 +3,8 @@
 
 #include "Flags.hpp"
 
+namespace nf {
+
 /* Forward declaration */
 class Node;
 
@@ -17,6 +19,8 @@ public:
     Node *p_end_node = nullptr;
     EventFlags() : Flags() {}
     ~EventFlags() = default;
+};
+
 };
 
 #endif // SRC_HELPERS_EVENTFLAGS_HPP_INCLUDED

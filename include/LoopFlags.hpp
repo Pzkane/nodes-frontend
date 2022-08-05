@@ -3,6 +3,8 @@
 
 #include "Flags.hpp"
 
+namespace nf {
+
 class LoopFlags : public Flags
 {
 public:
@@ -11,6 +13,8 @@ public:
     LoopFlags() : Flags() {}
     ~LoopFlags() = default;
     bool switchedOff();
+};
+
 };
 
 #endif // SRC_HELPERS_LOOPFLAGS_HPP_INCLUDED

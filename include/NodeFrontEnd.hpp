@@ -2,12 +2,13 @@
 #define SRC_API_NODEFRONTEND_HPP_INCLUDED
 
 #include <thread>
-
 #include <SFML/Graphics.hpp>
 #include "LoopFlags.hpp"
 #include "SceneSwitcher.hpp"
 #include "Node.hpp"
 #include "utils.hpp"
+
+namespace nf {
 
 class NodeFrontEnd
 {
@@ -31,6 +32,8 @@ public:
     void setWindowColor(const sf::Color &color);
     Node *addNode(const char *text = "");
     bool isInit() { return initizlized; };
+};
+
 };
 
 #endif // SRC_API_NODEFRONTEND_HPP_INCLUDED

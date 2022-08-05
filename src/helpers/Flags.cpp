@@ -1,6 +1,8 @@
 #include "Flags.hpp"
 #include "utils.hpp"
 
+using namespace nf;
+
 sf::Font Flags::font;
 
 Flags::Flags()

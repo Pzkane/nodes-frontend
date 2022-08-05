@@ -1,6 +1,8 @@
 #include <random>
 #include "utils.hpp"
 
+namespace nf {
+
 template <typename T>
 T Utils::get_random_number(T from, T to)
 {
@@ -17,3 +19,5 @@ sf::Vector2f Utils::getMousePosf(const sf::RenderWindow &window)
 }
 template int Utils::get_random_number<int>(int, int);
 template float Utils::get_random_number<float>(float, float);
+
+};

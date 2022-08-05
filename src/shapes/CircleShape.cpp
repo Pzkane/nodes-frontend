@@ -1,6 +1,7 @@
+#include "cmath"
 #include "CircleShape.hpp"
 
-#include "cmath"
+using namespace nf;
 
 void CircleShape::setPosition(const float x, const float y)
 {
@@ -25,12 +26,7 @@ bool CircleShape::checkPosAgainstShape(const sf::Vector2f &position)
     return false;
 }
 
-void CircleShape::setEventFlags(const EventFlags &ef)
-{
-    m_event_flags = ef;
-}
-
-bool CircleShape::getLMBState()
+bool CircleShape::isLMBPressed()
 {
     return m_event_flags.f_lmb;
 }

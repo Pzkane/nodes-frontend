@@ -6,6 +6,8 @@
 #include "Scene.hpp"
 #include "EventType.hpp"
 
+namespace nf {
+
 class SceneSwitcher
 {
 public:
@@ -20,6 +22,8 @@ public:
     void deleteCurrScene();
     void *updateInput(const sf::Event &event);
     void *updateInput(const EventType &eventType);
+};
+
 };
 
 #endif // SRC_SCENES_SCENESWITCHER_HPP_INCLUDED

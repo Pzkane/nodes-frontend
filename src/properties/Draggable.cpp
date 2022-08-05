@@ -1,9 +1,11 @@
 #include "Draggable.hpp"
 #include "utils.hpp"
 
-void Draggable::checkMousePointer(const sf::RenderWindow &window)
+using namespace nf;
+
+void Draggable::trackMousePointer(const sf::RenderWindow &window)
 {
-    if (!getLMBState())
+    if (!m_movable || (m_movable && !isLMBPressed()))
     {
         m_successDrag = false;
         return;
@@ -11,7 +13,7 @@ void Draggable::checkMousePointer(const sf::RenderWindow &window)
 
     sf::Vector2f mousepos = Utils::getMousePosf(window);
 
-    if (getLMBState() && mouseInside(mousepos) && !m_successDrag)
+    if (isLMBPressed() && mouseInside(mousepos) && !m_successDrag)
     {
         sf::FloatRect bounds = getGlobalBounds();
         sf::Vector2f origin = getOrigin();
@@ -20,7 +22,7 @@ void Draggable::checkMousePointer(const sf::RenderWindow &window)
         m_successDrag = true;
     }
 
-    if (m_successDrag)
+    if (m_movable && m_successDrag)
     {
         setPosition(sf::Vector2f(mousepos.x-m_offsetMousepos.x, mousepos.y-m_offsetMousepos.y));
     }

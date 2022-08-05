@@ -4,6 +4,8 @@
 #include <queue>
 #include <mutex>
 
+namespace nf {
+
 namespace Utils
 {
     template <typename Tq>
@@ -58,5 +60,7 @@ namespace Utils
         return q.empty();
     }
 }
+
+};
 
 #endif // SRC_HELPERS_SAFEQUEUE_HPP_INCLUDED

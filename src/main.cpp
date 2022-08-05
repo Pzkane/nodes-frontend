@@ -6,7 +6,7 @@
 
 #include "NodeFrontEnd.hpp"
 
-void launchWindow(NodeFrontEnd &api, std::atomic<bool> &isDone)
+void launchWindow(nf::NodeFrontEnd &api, std::atomic<bool> &isDone)
 {
     api.init();
     api.launch();
@@ -16,7 +16,7 @@ void launchWindow(NodeFrontEnd &api, std::atomic<bool> &isDone)
 int main()
 {
     std::atomic<bool> done(false);
-    NodeFrontEnd api;
+    nf::NodeFrontEnd api;
     std::thread mainLoop(launchWindow, std::ref(api), std::ref(done));
 
     while (!api.isInit())
@@ -26,14 +26,15 @@ int main()
     api.setWindowColor(sf::Color(219, 189, 189));
     for (int i = 0; i < 1; ++i)
     {
-        Node *node = api.addNode("w");
+        nf::Node *node = api.addNode("w");
         node->setPosition(100, 100);
     }
 
     std::string txt;
     std::chrono::system_clock::time_point begin;
     std::chrono::system_clock::time_point end;
-    Node *node = api.addNode("ss");
+    nf::Node *node = api.addNode("ss");
+    node->setFillColor(sf::Color::Green); // overlap test
     for (int i = 0; i < 1; ++i)
     {
         begin = std::chrono::system_clock::now();

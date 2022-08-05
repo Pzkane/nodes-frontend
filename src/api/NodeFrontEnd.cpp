@@ -6,6 +6,8 @@
 #include "MainScene.hpp"
 #include "EventType.hpp"
 
+using namespace nf;
+
 template <typename Tw>
 static void event_pool(Tw &main_window, Utils::SafeQueue<sf::Event> &event_queue, SceneSwitcher &ss, LoopFlags &flags)
 {

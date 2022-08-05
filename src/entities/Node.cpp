@@ -4,6 +4,8 @@
 #include "Connector.hpp"
 #include "utils.hpp"
 
+using namespace nf;
+
 Node::Node(float radius, std::size_t pointCount) : CircleShape(radius, pointCount, 50)
 {
     const sf::Vector2f center = CircleShape::getPosition();
@@ -22,8 +24,8 @@ Node::Node(float radius, std::size_t pointCount) : CircleShape(radius, pointCoun
 void Node::update(const sf::RenderWindow &window, EventFlags &ef)
 {
     updateText();
-    CircleShape::setEventFlags(ef);
-    checkMousePointer(window);
+    setEventFlags(ef);
+    trackMousePointer(window);
 
     if (mouseInside(Utils::getMousePosf(window)))
     {
@@ -40,13 +42,7 @@ void Node::update(const sf::RenderWindow &window, EventFlags &ef)
             }
 
         if (ef.f_lalt)
-        {
-            for (auto &&conn : m_conns)
-            {
-                conn->enf.f_del = true;
-            }
-            enf.f_del = true;
-        }
+            enf.f_delete_self = true;
 
         if (ef.f_ralt)
         {
@@ -85,7 +81,13 @@ void Node::setText(const std::string &text)
     this->text.setFillColor(sf::Color::White);
 }
 
-void Node::pushConnector(Connector *const conn)
+void Node::pushConnNode(Node *const node)
 {
-    m_conns.push_back(conn);
+    m_connected_nodes.push_back(node);
 }
+
+std::list<Node*> Node::getConnectedNodes() const
+{
+    return m_connected_nodes;
+}
+

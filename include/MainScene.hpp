@@ -6,6 +6,8 @@
 #include "Node.hpp"
 #include "EventType.hpp"
 
+namespace nf {
+
 class MainScene : public Scene
 {
     bool m_b_mousePressed = false;
@@ -16,14 +18,16 @@ class MainScene : public Scene
 public:
     MainScene(sf::RenderWindow &window);
     ~MainScene();
-    Node *createNode();
+    Node *createNode(float radius);
     void pushNode(Node *node);
-    void pushConnector(Connector *node);
+    void pushConnector(Connector *conn);
 
     void update();
     void draw();
     void *updateInput(const sf::Event &event);
     void *updateInput(const EventType &eventType);
+};
+
 };
 
 #endif // SRC_SCENES_MAINSCENE_HPP_INCLUDED

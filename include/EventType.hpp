@@ -3,9 +3,13 @@
 
 #include <SFML/Window.hpp>
 
+namespace nf {
+
 enum EventType
 {
     addNode
+};
+
 };
 
 #endif // SRC_HELPERS_EVENTTYPES_HPP_INCLUDED

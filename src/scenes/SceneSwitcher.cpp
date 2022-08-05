@@ -1,5 +1,7 @@
 #include "SceneSwitcher.hpp"
 
+using namespace nf;
+
 void SceneSwitcher::switchTo(Scene *scene)
 {
     if (m_curr_scene)

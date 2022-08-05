@@ -1,5 +1,6 @@
 target_sources(entitiesLib
     PRIVATE
+        Entity.cpp
         Connector.cpp
         Node.cpp
 )

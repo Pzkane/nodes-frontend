@@ -13,11 +13,15 @@
 
 #define error(message) {std::cout << "ERR: " << message << std::endl;}
 
+namespace nf {
+
 namespace Utils
 {
     template <typename T>
     T get_random_number(T from, T to);
     sf::Vector2f getMousePosf(const sf::RenderWindow &window);
 }
+
+};
 
 #endif // SRC_HELPERS_UTILS_HPP_INCLUDED

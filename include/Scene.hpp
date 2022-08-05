@@ -6,6 +6,8 @@
 #include "EventFlags.hpp"
 #include "EventType.hpp"
 
+namespace nf {
+
 class Scene
 {
     /* Flag mainly to disable processing without destroying the scene */
@@ -25,6 +27,8 @@ public:
     void setActive(bool state);
     virtual void *updateInput(const sf::Event &event) = 0;
     virtual void *updateInput(const EventType &eventType) = 0;
+};
+
 };
 
 #endif // SRC_SCENES_SCENE_HPP_INCLUDED

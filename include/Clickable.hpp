@@ -1,13 +1,14 @@
-#ifndef SRC_PROPERTIES_CLICKABLE_HPP_INCLUDED
-#define SRC_PROPERTIES_CLICKABLE_HPP_INCLUDED
+#ifndef PROPERTIES_CLICKABLE_HPP_INCLUDED
+#define PROPERTIES_CLICKABLE_HPP_INCLUDED
 
 #include <chrono>
-#include <functional>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Mouse.hpp>
 
-using VoidCallback = std::function<void()>;
+#include "Callbacks.hpp"
+
+namespace nf {
 
 template<typename Tc>
 class Clickable
@@ -15,7 +16,7 @@ class Clickable
     bool m_successDrag = false;
     sf::Vector2f m_offsetMousepos;
     size_t click_delay_ms_;
-    VoidCallback callback_;
+    Tc callback_;
 
     const std::chrono::time_point<std::chrono::high_resolution_clock> null_timestamp_{}; // 1970-01-01
     std::chrono::time_point<std::chrono::high_resolution_clock> start_time_;
@@ -57,4 +58,6 @@ public:
     }
 };
 
-#endif // SRC_PROPERTIES_CLICKABLE_HPP_INCLUDED
+};
+
+#endif // PROPERTIES_CLICKABLE_HPP_INCLUDED
