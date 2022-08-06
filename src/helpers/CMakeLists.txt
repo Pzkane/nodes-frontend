@@ -1,7 +1,7 @@
 target_sources(helpersLib
     PRIVATE
         utils.cpp
-        Flags.cpp
+        FontFlags.cpp
         LoopFlags.cpp
 )
 

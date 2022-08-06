@@ -8,8 +8,7 @@ namespace nf {
 class Flags
 {
 public:
-    static sf::Font font;
-    Flags();
+    Flags() {}
     virtual ~Flags() = default;
     virtual bool switchedOff() { return false; }
 };

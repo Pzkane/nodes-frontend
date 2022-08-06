@@ -1,11 +1,11 @@
-#include "Flags.hpp"
+#include "FontFlags.hpp"
 #include "utils.hpp"
 
 using namespace nf;
 
-sf::Font Flags::font;
+sf::Font FontFlags::font;
 
-Flags::Flags()
+FontFlags::FontFlags() : Flags()
 {
     if (font.getInfo().family.empty() || font.getInfo().family == "\n")
     {

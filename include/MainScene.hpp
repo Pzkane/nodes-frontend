@@ -22,10 +22,10 @@ public:
     void pushNode(Node *node);
     void pushConnector(Connector *conn);
 
-    void update();
-    void draw();
-    void *updateInput(const sf::Event &event);
-    void *updateInput(const EventType &eventType);
+    void update() override;
+    void draw() override;
+    void *updateInput(const sf::Event &event) override;
+    void *updateInput(const EventType &eventType) override;
 };
 
 };

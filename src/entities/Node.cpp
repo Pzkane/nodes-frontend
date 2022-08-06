@@ -2,6 +2,8 @@
 
 #include "Node.hpp"
 #include "Connector.hpp"
+#include "LoopFlags.hpp"
+#include "FontFlags.hpp"
 #include "utils.hpp"
 
 using namespace nf;
@@ -17,7 +19,7 @@ Node::Node(float radius, std::size_t pointCount) : CircleShape(radius, pointCoun
     };
 
     CircleShape::setCallback(setHelloText);
-    text.setFont(Flags::font);
+    text.setFont(ff.font);
     text.setScale(0, 0);
 }
 
@@ -77,6 +79,7 @@ void Node::draw(sf::RenderWindow &window)
 
 void Node::setText(const std::string &text)
 {
+    if (lf.f_t_ep_done) return;
     this->text.setString(text);
     this->text.setFillColor(sf::Color::White);
 }

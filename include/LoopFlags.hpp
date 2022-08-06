@@ -15,6 +15,8 @@ public:
     bool switchedOff();
 };
 
+static LoopFlags lf;
+
 };
 
 #endif // SRC_HELPERS_LOOPFLAGS_HPP_INCLUDED

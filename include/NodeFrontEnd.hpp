@@ -12,26 +12,25 @@ namespace nf {
 
 class NodeFrontEnd
 {
-    bool initizlized = false;
-    LoopFlags lf;
-    std::string title;
-    sf::RenderWindow *window;
-    Utils::SafeQueue<sf::Event> event_queue;
-    std::thread *t_event_pool;
-    sf::VideoMode video_mode;
+    bool m_initizlized = false;
+    std::string m_title;
+    sf::RenderWindow *m_window;
+    Utils::SafeQueue<sf::Event> m_eventQueue;
+    std::thread *m_thEventPool;
+    sf::VideoMode m_videoMode;
     sf::Color m_backgroundColor = sf::Color::Black;
-    SceneSwitcher ss;
+    SceneSwitcher m_ss;
     void cleanup();
 
 public:
-    NodeFrontEnd(const sf::VideoMode &video_mode, const char *title);
-    NodeFrontEnd();
+    NodeFrontEnd(const sf::VideoMode &video_mode, const char *n_title) {};
+    NodeFrontEnd() {};
     ~NodeFrontEnd();
     void init();
     int launch();
     void setWindowColor(const sf::Color &color);
     Node *addNode(const char *text = "");
-    bool isInit() { return initizlized; };
+    bool isInit() { return m_initizlized; };
 };
 
 };

@@ -22,11 +22,12 @@ public:
     virtual ~Scene() = default;
     virtual void update() = 0;
     virtual void draw();
+    virtual void *updateInput(const sf::Event &event) = 0;
+    virtual void *updateInput(const EventType &eventType) = 0;
+
     void pushDrawable(sf::Drawable *drawable);
     void popDrawable();
     void setActive(bool state);
-    virtual void *updateInput(const sf::Event &event) = 0;
-    virtual void *updateInput(const EventType &eventType) = 0;
 };
 
 };

@@ -1,5 +1,6 @@
 target_sources(${apiLib}
     PRIVATE
+        NodeFrontEndWrapper.cpp
         NodeFrontEnd.cpp
 )
 
