@@ -28,6 +28,7 @@ public:
     void pushDrawable(sf::Drawable *drawable);
     void popDrawable();
     void setActive(bool state);
+    void centerView(const sf::Vector2f ptrPos);
 };
 
 };

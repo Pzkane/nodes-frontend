@@ -26,3 +26,10 @@ void Scene::setActive(bool state)
 {
     m_state = state;
 }
+
+void Scene::centerView(const sf::Vector2f ptrPos)
+{
+    sf::View currView = p_window->getView();
+    currView.setCenter(ptrPos);
+    p_window->setView(currView);
+}

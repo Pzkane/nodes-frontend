@@ -72,6 +72,20 @@ void MainScene::pushConnector(Connector *conn)
     m_connectors.push_back(conn);
 }
 
+void MainScene::centerView()
+{
+    sf::Vector2f oldMousePos = Utils::getMousePosf(*p_window);
+    // for (auto it = m_nodes.begin(); it != m_nodes.end(); ++it)
+    // {
+    //     sf::Vector2f currNodePos = (*it)->getPosition();
+    //     float offsetX = oldMousePos.x - currNodePos.x;
+    //     float offsetY = oldMousePos.y - currNodePos.y;
+    //     (*it)->setPosition(p_window->getView().getCenter().x + offsetX,
+    //                        p_window->getView().getCenter().y + offsetY);
+    // }
+    Scene::centerView(oldMousePos);
+}
+
 void MainScene::update()
 {
     for (auto it = m_connectors.begin(); it != m_connectors.end();)
@@ -168,6 +182,10 @@ void *MainScene::updateInput(const sf::Event &event)
             ef.f_lmb = true;
             break;
 
+        case sf::Mouse::Middle:
+            ef.f_mmb = true;
+            break;
+
         case sf::Mouse::Right:
             ef.f_rmb = true;
             break;
@@ -182,6 +200,10 @@ void *MainScene::updateInput(const sf::Event &event)
         {
         case sf::Mouse::Left:
             ef.f_lmb = false;
+            break;
+
+        case sf::Mouse::Middle:
+            ef.f_mmb = false;
             break;
 
         case sf::Mouse::Right:
@@ -214,6 +236,10 @@ void *MainScene::updateInput(const sf::Event &event)
     default:
         break;
     }
+
+    if (ef.f_mmb)
+        centerView();
+
     return nullptr;
 }
 

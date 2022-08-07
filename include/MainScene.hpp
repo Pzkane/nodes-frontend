@@ -21,6 +21,7 @@ public:
     Node *createNode(float radius);
     void pushNode(Node *node);
     void pushConnector(Connector *conn);
+    void centerView();
 
     void update() override;
     void draw() override;

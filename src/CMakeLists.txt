@@ -1,5 +1,13 @@
 add_library(merged INTERFACE)
 
+add_library(srcLib)
+
+target_sources(srcLib
+    PRIVATE
+        Cache.cpp
+)
+target_include_directories(srcLib PUBLIC ${SFML_INCLUDE_DIR} ${LOCAL_INCLUDE_DIR})
+
 target_include_directories(merged INTERFACE ${OPENGL_INCLUDE_DIRS} ${LOCAL_INCLUDE_DIR})
 target_link_libraries(merged INTERFACE sfml-window sfml-system sfml-graphics ${OPENGL_LIBRARIES})
 # target_include_directories(${PROJECT_NAME} PUBLIC ${LOCAL_INCLUDE_DIR})
@@ -37,6 +45,7 @@ target_link_libraries(${apiLib} sfml-window sfml-system sfml-graphics ${OPENGL_L
     helpersLib
     entitiesLib
     propertiesLib
+    srcLib
 )
 target_link_libraries(merged INTERFACE ${apiLib})
 if(${EXAMPLE})

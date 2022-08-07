@@ -4,11 +4,8 @@
 #include "NodeFrontEnd.hpp"
 #include "MainScene.hpp"
 #include "EventType.hpp"
-#include "FontFlags.hpp"
 
 using namespace nf;
-
-static FontFlags ff;
 
 template <typename Tw>
 static void event_pool(Tw &main_m_window, Utils::SafeQueue<sf::Event> &m_eventQueue, SceneSwitcher &m_ss, LoopFlags &flags)

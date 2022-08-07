@@ -24,6 +24,9 @@ void Draggable::trackMousePointer(const sf::RenderWindow &window)
 
     if (m_movable && m_successDrag)
     {
-        setPosition(sf::Vector2f(mousepos.x-m_offsetMousepos.x, mousepos.y-m_offsetMousepos.y));
+        float posX = mousepos.x-m_offsetMousepos.x,
+              posY = mousepos.y-m_offsetMousepos.y;
+        setPosition(sf::Vector2f(posX > window.getSize().x ? window.getSize().x : posX < 0 ? 0 : posX,
+                                 posY > window.getSize().y ? window.getSize().y : posY < 0 ? 0 : posY));
     }
 }
