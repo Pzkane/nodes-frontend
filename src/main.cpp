@@ -6,7 +6,7 @@
 
 int main()
 {
-    nf::NodeFrontEndWrapper apiWrap;
+    nf::NodeFrontEndWrapper apiWrap{};
     nf::NodeFrontEnd *api = &apiWrap.m_api;
 
     api->setWindowColor(sf::Color(219, 189, 189));

@@ -1,8 +1,6 @@
 #ifndef SRC_HELPERS_FLAGS_HPP_INCLUDED
 #define SRC_HELPERS_FLAGS_HPP_INCLUDED
 
-#include <SFML/Graphics.hpp>
-
 namespace nf {
 
 class Flags

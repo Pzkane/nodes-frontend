@@ -20,11 +20,11 @@ class NodeFrontEnd
     sf::VideoMode m_videoMode;
     sf::Color m_backgroundColor = sf::Color::Black;
     SceneSwitcher m_ss;
-    void cleanup();
+    void _cleanup();
 
 public:
-    NodeFrontEnd(const sf::VideoMode &video_mode, const char *n_title) {};
-    NodeFrontEnd() {};
+    NodeFrontEnd(const sf::VideoMode &video_mode, const char *n_title);
+    NodeFrontEnd() {}
     ~NodeFrontEnd();
     void init();
     int launch();

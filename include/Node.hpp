@@ -20,10 +20,11 @@ class Node : public Entity, public CircleShape
     std::list<Node*> m_connected_nodes;
 
 public:
+    bool m_hovering;
     explicit Node(float radius = 0, std::size_t pointCount = 30);
     explicit Node(const Node *node) {}
     ~Node() = default;
-    void update(const sf::RenderWindow &window, EventFlags &ev);
+    void update(sf::RenderWindow &window, EventFlags &ev);
     void draw(sf::RenderWindow &window);
     void setText(const std::string &text);
     void pushConnNode(Node *const node);

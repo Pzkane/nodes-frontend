@@ -2,6 +2,7 @@
 
 #include "MainScene.hpp"
 #include "Connector.hpp"
+#include "Cache.hpp"
 #include "utils.hpp"
 
 using namespace nf;
@@ -88,6 +89,8 @@ void MainScene::centerView()
 
 void MainScene::update()
 {
+    Cache::CursorType cursorType = Cache::CursorType::Arrow;
+
     for (auto it = m_connectors.begin(); it != m_connectors.end();)
         if ((*it)->enf.f_delete_self)
         {
@@ -119,8 +122,21 @@ void MainScene::update()
             // else
             //     (*it)->setMovable(false);
             (*it)->update(*p_window, ef);
+            if ((*it)->m_hovering)
+                cursorType = Cache::CursorType::Hand;
             ++it;
         }
+    }
+
+    switch (cursorType)
+    {
+    case Cache::CursorType::Hand:
+        p_window->setMouseCursor(*cache.m_cursors[Cache::CursorType::Hand]);
+        break;
+
+    case Cache::CursorType::Arrow:
+        p_window->setMouseCursor(*cache.m_cursors[Cache::CursorType::Arrow]);
+        break;
     }
 
     if (ef.p_start_node != nullptr && ef.p_end_node != nullptr)

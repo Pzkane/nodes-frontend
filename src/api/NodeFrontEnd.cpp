@@ -4,8 +4,11 @@
 #include "NodeFrontEnd.hpp"
 #include "MainScene.hpp"
 #include "EventType.hpp"
+#include "Cache.hpp"
 
 using namespace nf;
+
+static Cache cache;
 
 template <typename Tw>
 static void event_pool(Tw &main_m_window, Utils::SafeQueue<sf::Event> &m_eventQueue, SceneSwitcher &m_ss, LoopFlags &flags)
@@ -35,6 +38,10 @@ static void event_pool(Tw &main_m_window, Utils::SafeQueue<sf::Event> &m_eventQu
             m_eventQueue.pop();
         }
 }
+
+// TODO: Add video_mode and title specs
+NodeFrontEnd::NodeFrontEnd(const sf::VideoMode &video_mode, const char *n_title)
+{}
 
 void NodeFrontEnd::init()
 {
@@ -86,17 +93,17 @@ int NodeFrontEnd::launch()
     }
 
     m_thEventPool->join();
-    cleanup();
+    _cleanup();
 
     return 0;
 }
 
 NodeFrontEnd::~NodeFrontEnd()
 {
-    cleanup();
+    _cleanup();
 }
 
-void NodeFrontEnd::cleanup()
+void NodeFrontEnd::_cleanup()
 {
     if (m_thEventPool)
     {
@@ -104,7 +111,7 @@ void NodeFrontEnd::cleanup()
         m_thEventPool = nullptr;
     }
     if (m_window)
-    {   
+    {
         delete m_window;
         m_window = nullptr;
     }

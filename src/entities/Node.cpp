@@ -23,7 +23,7 @@ Node::Node(float radius, std::size_t pointCount) : CircleShape(radius, pointCoun
     text.setScale(0, 0);
 }
 
-void Node::update(const sf::RenderWindow &window, EventFlags &ef)
+void Node::update(sf::RenderWindow &window, EventFlags &ef)
 {
     updateText();
     setEventFlags(ef);
@@ -31,6 +31,7 @@ void Node::update(const sf::RenderWindow &window, EventFlags &ef)
 
     if (mouseInside(Utils::getMousePosf(window)))
     {
+        m_hovering = true;
         if (ef.f_rmb)
             if (!ef.p_start_node && ef.p_end_node != this)
             {
@@ -50,7 +51,8 @@ void Node::update(const sf::RenderWindow &window, EventFlags &ef)
         {
             invokeCallback();
         }
-    }
+    } else
+        m_hovering = false;
 }
 
 void Node::updateText()

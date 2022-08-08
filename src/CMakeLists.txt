@@ -37,8 +37,9 @@ add_library(scenesLib)
 add_subdirectory(scenes)
 
 target_link_libraries(helpersLib sfml-graphics)
+target_link_libraries(srcLib sfml-window helpersLib)
 target_link_libraries(shapesLib sfml-graphics propertiesLib)
-target_link_libraries(entitiesLib shapesLib)
+target_link_libraries(entitiesLib srcLib shapesLib)
 target_link_libraries(${apiLib} sfml-window sfml-system sfml-graphics ${OPENGL_LIBRARIES}
     scenesLib
     shapesLib
