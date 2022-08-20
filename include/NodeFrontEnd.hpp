@@ -5,7 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include "LoopFlags.hpp"
 #include "SceneSwitcher.hpp"
-#include "Node.hpp"
+#include "_Node.hpp"
 #include "utils.hpp"
 
 namespace nf {
@@ -29,7 +29,9 @@ public:
     void init();
     int launch();
     void setWindowColor(const sf::Color &color);
-    Node *addNode(const char *text = "");
+    void setNodePosition(_Node *node, float x, float y);
+    void setNodePosition(_Node *node, sf::Vector2f vf);
+    _Node *addNode(const char *text = "");
     bool isInit() { return m_initizlized; };
 };
 

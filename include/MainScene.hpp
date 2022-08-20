@@ -3,7 +3,7 @@
 
 #include <queue>
 #include "Scene.hpp"
-#include "Node.hpp"
+#include "_Node.hpp"
 #include "EventType.hpp"
 
 namespace nf {
@@ -11,15 +11,15 @@ namespace nf {
 class MainScene : public Scene
 {
     bool m_b_mousePressed = false;
-    std::list<Node *> m_nodes;
+    std::list<_Node *> m_nodes;
     std::list<Connector *> m_connectors;
     EventFlags ef;
 
 public:
     MainScene(sf::RenderWindow &window);
     ~MainScene();
-    Node *createNode(float radius);
-    void pushNode(Node *node);
+    _Node *createNode(float radius);
+    void pushNode(_Node *node);
     void pushConnector(Connector *conn);
     void centerView();
 

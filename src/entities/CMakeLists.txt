@@ -2,6 +2,7 @@ target_sources(entitiesLib
     PRIVATE
         Entity.cpp
         Connector.cpp
+        _Node.cpp
         Node.cpp
 )
 

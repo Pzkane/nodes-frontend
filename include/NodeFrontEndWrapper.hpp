@@ -4,6 +4,7 @@
 #include <atomic>
 
 #include "NodeFrontEnd.hpp"
+#include "Node.hpp"
 
 namespace nf {
 
@@ -16,6 +17,8 @@ public:
     NodeFrontEndWrapper();
     ~NodeFrontEndWrapper();
 };
+
+extern NodeFrontEndWrapper gApiWrap;
 
 };
 

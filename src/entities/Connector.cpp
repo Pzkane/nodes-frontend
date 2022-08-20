@@ -3,7 +3,7 @@
 
 using namespace nf;
 
-Connector::Connector(Node *const &start_node, Node *const &end_node, sf::Color color) : nodeRef({start_node, end_node})
+Connector::Connector(_Node *const &start_node, _Node *const &end_node, sf::Color color) : nodeRef({start_node, end_node})
 {
     line[0].color = line[1].color = color;
 }
