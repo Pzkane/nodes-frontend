@@ -31,7 +31,9 @@ public:
     void setWindowColor(const sf::Color &color);
     void setNodePosition(_Node *node, float x, float y);
     void setNodePosition(_Node *node, sf::Vector2f vf);
-    _Node *addNode(const char *text = "");
+    _Node* addNode(const char *text = "");
+    void connectNodes(_Node *n1, _Node *n2);
+    void disconnectNodes(_Node *n1, _Node *n2);
     bool isInit() { return m_initizlized; };
 };
 

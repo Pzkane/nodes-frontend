@@ -24,4 +24,4 @@ NodeFrontEndWrapper::~NodeFrontEndWrapper()
     delete m_nfLoop;
 }
 
-NodeFrontEndWrapper gApiWrap{};
+NodeFrontEndWrapper NFWrap;

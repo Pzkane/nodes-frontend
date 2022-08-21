@@ -6,7 +6,7 @@
 
 int test_nf_driver()
 {
-    nf::NodeFrontEnd *api = &nf::gApiWrap.m_api;
+    nf::NodeFrontEnd *api = &NFWrap.m_api;
 
     api->setWindowColor(sf::Color(219, 189, 189));
     for (int i = 0; i < 1; ++i)
@@ -37,18 +37,29 @@ int test_nf_driver()
     return 0;
 }
 
-struct MyNode : public nf::Node
+struct MyNode : public nf::LinkedListNode
 {
     int data;
-    MyNode *next;
-    MyNode() : Node(nf::gApiWrap.m_api) {}
+    
+    // GENERATE WITH MACRO
+    MyNode() : LinkedListNode(NFWrap.m_api) {}
 };
 
 int test_mynode()
 {
+
     MyNode *n1 = new MyNode();
     n1->setPosition(200, 200);
     n1->data = 4;
+
+    MyNode *n2 = new MyNode();
+    n2->setPosition(400, 400);
+    n2->data = 8;
+
+    n1->setNext(n2);
+
+    // delete n1;
+    // delete n2;
 
     return 0;
 }

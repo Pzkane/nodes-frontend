@@ -39,7 +39,7 @@ MainScene::~MainScene()
 
 _Node* MainScene::createNode(float radius = DEF_NODE_RAD)
 {
-    _Node *node = new _Node(40);
+    _Node *node = new _Node(DEF_NODE_RAD);
     node->setFillColor(sf::Color::Red);
     sf::Vector2f mPos = Utils::getMousePosf(*p_window);
     sf::Vector2f createPos = mPos;
@@ -59,6 +59,27 @@ _Node* MainScene::createNode(float radius = DEF_NODE_RAD)
     node->setText("Testing!");
     pushNode(node);
     return node;
+}
+
+Connector* MainScene::createConnector()
+{
+    Connector *conn = new Connector;
+    pushConnector(conn);
+    return conn;
+}
+
+void MainScene::removeConnector(Nodes2ptr *ptr_payload)
+{
+    for (auto &&it : m_connectors)
+    {
+        auto nodeRef = it->getNodeEndings();
+        if (
+            (nodeRef.start == ptr_payload->n1 || nodeRef.start == ptr_payload->n2)
+            &&
+            (nodeRef.end == ptr_payload->n1 || nodeRef.end == ptr_payload->n2)
+        )
+            it->enf.f_delete_self = true;
+    }
 }
 
 void MainScene::pushNode(_Node *node)
@@ -183,7 +204,7 @@ void MainScene::draw()
     }
 }
 
-void *MainScene::updateInput(const sf::Event &event)
+void *MainScene::updateInput(const sf::Event &event, void* payload)
 {
     ef.f_lalt = false;
     ef.f_ralt = false;
@@ -257,12 +278,17 @@ void *MainScene::updateInput(const sf::Event &event)
     return nullptr;
 }
 
-void *MainScene::updateInput(const EventType &eventType)
+void* MainScene::updateInput(const EventType &eventType, void* payload)
 {
     switch (eventType)
     {
     case addNode:
         return createNode();
+    case addConnector:
+        return createConnector();
+    case disconnectNodes:
+        removeConnector(reinterpret_cast<Nodes2ptr*>(payload));
+        return nullptr;
     default:
         break;
     }

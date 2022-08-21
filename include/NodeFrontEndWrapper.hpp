@@ -4,7 +4,7 @@
 #include <atomic>
 
 #include "NodeFrontEnd.hpp"
-#include "Node.hpp"
+#include "LinkedListNode.hpp"
 
 namespace nf {
 
@@ -18,8 +18,8 @@ public:
     ~NodeFrontEndWrapper();
 };
 
-extern NodeFrontEndWrapper gApiWrap;
-
 };
+
+extern nf::NodeFrontEndWrapper NFWrap;
 
 #endif // SRC_API_APIWRAPPER_HPP_INCLUDED

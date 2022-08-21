@@ -35,6 +35,11 @@ public:
     std::list<_Node*> getConnectedNodes() const;
 };
 
+struct Nodes2ptr {
+    _Node* n1;
+    _Node* n2;
+};
+
 };
 
 #endif // SRC_ENTITIES__NODE_HPP_INCLUDED
