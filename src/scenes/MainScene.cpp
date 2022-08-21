@@ -7,14 +7,12 @@
 
 using namespace nf;
 
-const size_t DEF_NODE_RAD = 40;
-
 MainScene::MainScene(sf::RenderWindow &window) : Scene(window)
 {
 #ifdef BENCHMARK
     for (int i = 0; i < 30000; ++i)
     {
-        Node *node = new Node(DEF_NODE_RAD);
+        _Node *node = new _Node(DEF_NODE_RAD);
         node->setFillColor(sf::Color::Red);
         node->sf::CircleShape::setPosition(sf::Vector2f(Utils::get_random_number<float>(0.f, 500.f), Utils::get_random_number<float>(0.f, 500.f)));
         pushNode(node);
@@ -39,9 +37,9 @@ MainScene::~MainScene()
     }
 }
 
-Node* MainScene::createNode(float radius = DEF_NODE_RAD)
+_Node* MainScene::createNode(float radius = DEF_NODE_RAD)
 {
-    Node *node = new Node(40);
+    _Node *node = new _Node(DEF_NODE_RAD);
     node->setFillColor(sf::Color::Red);
     sf::Vector2f mPos = Utils::getMousePosf(*p_window);
     sf::Vector2f createPos = mPos;
@@ -63,7 +61,28 @@ Node* MainScene::createNode(float radius = DEF_NODE_RAD)
     return node;
 }
 
-void MainScene::pushNode(Node *node)
+Connector* MainScene::createConnector()
+{
+    Connector *conn = new Connector;
+    pushConnector(conn);
+    return conn;
+}
+
+void MainScene::removeConnector(Nodes2ptr *ptr_payload)
+{
+    for (auto &&it : m_connectors)
+    {
+        auto nodeRef = it->getNodeEndings();
+        if (
+            (nodeRef.start == ptr_payload->n1 || nodeRef.start == ptr_payload->n2)
+            &&
+            (nodeRef.end == ptr_payload->n1 || nodeRef.end == ptr_payload->n2)
+        )
+            it->enf.f_delete_self = true;
+    }
+}
+
+void MainScene::pushNode(_Node *node)
 {
     m_nodes.push_back(node);
 }
@@ -185,7 +204,7 @@ void MainScene::draw()
     }
 }
 
-void *MainScene::updateInput(const sf::Event &event)
+void *MainScene::updateInput(const sf::Event &event, void* payload)
 {
     ef.f_lalt = false;
     ef.f_ralt = false;
@@ -259,12 +278,17 @@ void *MainScene::updateInput(const sf::Event &event)
     return nullptr;
 }
 
-void *MainScene::updateInput(const EventType &eventType)
+void* MainScene::updateInput(const EventType &eventType, void* payload)
 {
     switch (eventType)
     {
     case addNode:
         return createNode();
+    case addConnector:
+        return createConnector();
+    case disconnectNodes:
+        removeConnector(reinterpret_cast<Nodes2ptr*>(payload));
+        return nullptr;
     default:
         break;
     }

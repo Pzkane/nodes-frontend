@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include "Node.hpp"
+#include "_Node.hpp"
 #include "Connector.hpp"
 #include "LoopFlags.hpp"
 #include "FontFlags.hpp"
@@ -8,7 +8,7 @@
 
 using namespace nf;
 
-Node::Node(float radius, std::size_t pointCount) : CircleShape(radius, pointCount, 50)
+_Node::_Node(float radius, std::size_t pointCount) : CircleShape(radius, pointCount, 50)
 {
     const sf::Vector2f center = CircleShape::getPosition();
     const float R = CircleShape::getRadius();
@@ -23,7 +23,7 @@ Node::Node(float radius, std::size_t pointCount) : CircleShape(radius, pointCoun
     text.setScale(0, 0);
 }
 
-void Node::update(sf::RenderWindow &window, EventFlags &ef)
+void _Node::update(sf::RenderWindow &window, EventFlags &ef)
 {
     updateText();
     setEventFlags(ef);
@@ -55,7 +55,7 @@ void Node::update(sf::RenderWindow &window, EventFlags &ef)
         m_hovering = false;
 }
 
-void Node::updateText()
+void _Node::updateText()
 {
     const float PADDING = 0.3f;
     text.setOrigin(sf::Vector2f(text.getLocalBounds().width / 2, text.getLocalBounds().height / 1.4));
@@ -73,25 +73,25 @@ void Node::updateText()
     }
 }
 
-void Node::draw(sf::RenderWindow &window)
+void _Node::draw(sf::RenderWindow &window)
 {
     window.draw(*this);
     window.draw(text);
 }
 
-void Node::setText(const std::string &text)
+void _Node::setText(const std::string &text)
 {
     if (lf.f_t_ep_done) return;
     this->text.setString(text);
     this->text.setFillColor(sf::Color::White);
 }
 
-void Node::pushConnNode(Node *const node)
+void _Node::pushConnNode(_Node *const node)
 {
     m_connected_nodes.push_back(node);
 }
 
-std::list<Node*> Node::getConnectedNodes() const
+std::list<_Node*> _Node::getConnectedNodes() const
 {
     return m_connected_nodes;
 }

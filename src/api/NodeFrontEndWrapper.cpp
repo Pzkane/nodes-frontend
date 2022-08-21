@@ -23,3 +23,5 @@ NodeFrontEndWrapper::~NodeFrontEndWrapper()
     m_nfLoop->join();
     delete m_nfLoop;
 }
+
+NodeFrontEndWrapper NFWrap;

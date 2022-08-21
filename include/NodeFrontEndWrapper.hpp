@@ -4,6 +4,7 @@
 #include <atomic>
 
 #include "NodeFrontEnd.hpp"
+#include "LinkedListNode.hpp"
 
 namespace nf {
 
@@ -18,5 +19,7 @@ public:
 };
 
 };
+
+extern nf::NodeFrontEndWrapper NFWrap;
 
 #endif // SRC_API_APIWRAPPER_HPP_INCLUDED

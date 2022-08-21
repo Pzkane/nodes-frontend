@@ -7,7 +7,9 @@ namespace nf {
 
 enum EventType
 {
-    addNode
+    addNode,
+    addConnector,
+    disconnectNodes
 };
 
 };

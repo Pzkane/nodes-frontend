@@ -20,8 +20,8 @@ public:
     void updateScene();
     void drawScene();
     void deleteCurrScene();
-    void *updateInput(const sf::Event &event);
-    void *updateInput(const EventType &eventType);
+    void* updateInput(const sf::Event &event, void* payload = nullptr);
+    void* updateInput(const EventType &eventType, void* payload = nullptr);
 };
 
 };

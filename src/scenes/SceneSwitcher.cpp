@@ -22,17 +22,17 @@ void SceneSwitcher::drawScene()
         m_curr_scene->draw();
 }
 
-void *SceneSwitcher::updateInput(const sf::Event &event)
+void *SceneSwitcher::updateInput(const sf::Event &event, void* payload)
 {
     if (m_curr_scene)
-        return m_curr_scene->updateInput(event);
+        return m_curr_scene->updateInput(event, payload);
     return nullptr;
 }
 
-void *SceneSwitcher::updateInput(const EventType &eventType)
+void *SceneSwitcher::updateInput(const EventType &eventType, void* payload)
 {
     if (m_curr_scene)
-        return m_curr_scene->updateInput(eventType);
+        return m_curr_scene->updateInput(eventType, payload);
     return nullptr;
 }
 

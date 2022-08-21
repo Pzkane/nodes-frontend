@@ -122,9 +122,31 @@ void NodeFrontEnd::setWindowColor(const sf::Color &color)
     m_backgroundColor = color;
 }
 
-Node *NodeFrontEnd::addNode(const char *text)
+_Node* NodeFrontEnd::addNode(const char *text)
 {
-    auto p = reinterpret_cast<Node *>(m_ss.updateInput(EventType::addNode));
+    auto p = reinterpret_cast<_Node *>(m_ss.updateInput(EventType::addNode));
     p->setText(text);
     return p;
+}
+
+void NodeFrontEnd::connectNodes(_Node *n1, _Node *n2)
+{
+    auto p = reinterpret_cast<Connector *>(m_ss.updateInput(EventType::addConnector));
+    p->setNodeEndings(n1, n2);
+}
+
+void NodeFrontEnd::disconnectNodes(_Node *n1, _Node *n2)
+{
+    Nodes2ptr *pn = new Nodes2ptr{n1, n2};
+    m_ss.updateInput(EventType::disconnectNodes, pn);
+}
+
+void NodeFrontEnd::setNodePosition(_Node *node, float x, float y)
+{
+    setNodePosition(node, sf::Vector2f(x, y));
+}
+
+void NodeFrontEnd::setNodePosition(_Node *node, sf::Vector2f vf)
+{
+    node->setPosition(vf);
 }

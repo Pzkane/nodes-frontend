@@ -4,22 +4,21 @@
 
 #include "NodeFrontEndWrapper.hpp"
 
-int main()
+int test_nf_driver()
 {
-    nf::NodeFrontEndWrapper apiWrap{};
-    nf::NodeFrontEnd *api = &apiWrap.m_api;
+    nf::NodeFrontEnd *api = &NFWrap.m_api;
 
     api->setWindowColor(sf::Color(219, 189, 189));
     for (int i = 0; i < 1; ++i)
     {
-        nf::Node *node = api->addNode("w");
+        nf::_Node *node = api->addNode("w");
         node->setPosition(100, 100);
     }
 
     std::string txt;
     std::chrono::system_clock::time_point begin;
     std::chrono::system_clock::time_point end;
-    nf::Node *node = api->addNode("ss");
+    nf::_Node *node = api->addNode("ss");
     node->setFillColor(sf::Color::Green); // overlap test
     for (int i = 0; i < 3; ++i)
     {
@@ -35,5 +34,39 @@ int main()
         if (node)
             node->setText(txt);
     }
+    return 0;
+}
+
+struct MyNode : public nf::LinkedListNode
+{
+    int data;
+    
+    // GENERATE WITH MACRO
+    MyNode() : LinkedListNode(NFWrap.m_api) {}
+};
+
+int test_mynode()
+{
+
+    MyNode *n1 = new MyNode();
+    n1->setPosition(200, 200);
+    n1->data = 4;
+
+    MyNode *n2 = new MyNode();
+    n2->setPosition(400, 400);
+    n2->data = 8;
+
+    n1->setNext(n2);
+
+    // delete n1;
+    // delete n2;
+
+    return 0;
+}
+
+int main()
+{
+    test_mynode();
+    test_nf_driver();
     return 0;
 }
