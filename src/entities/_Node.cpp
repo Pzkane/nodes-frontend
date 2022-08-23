@@ -1,7 +1,7 @@
 #include <algorithm>
 
 #include "_Node.hpp"
-#include "Connector.hpp"
+#include "Edge.hpp"
 #include "LoopFlags.hpp"
 #include "FontFlags.hpp"
 #include "utils.hpp"
@@ -19,11 +19,11 @@ _Node::_Node(float radius, std::size_t pointCount) : CircleShape(radius, pointCo
     };
 
     CircleShape::setCallback(setHelloText);
-    text.setFont(ff.font);
-    text.setScale(0, 0);
+    m_text.setFont(ff.font);
+    m_text.setScale(0, 0);
 }
 
-void _Node::update(sf::RenderWindow &window, EventFlags &ef)
+void _Node::update(const sf::RenderWindow &window, EventFlags &ef)
 {
     updateText();
     setEventFlags(ef);
@@ -58,32 +58,32 @@ void _Node::update(sf::RenderWindow &window, EventFlags &ef)
 void _Node::updateText()
 {
     const float PADDING = 0.3f;
-    text.setOrigin(sf::Vector2f(text.getLocalBounds().width / 2, text.getLocalBounds().height / 1.4));
-    text.setPosition(getPosition());
+    m_text.setOrigin(sf::Vector2f(m_text.getLocalBounds().width / 2, m_text.getLocalBounds().height / 1.4));
+    m_text.setPosition(getPosition());
     const float D = 2 * sf::CircleShape::getRadius();
-    const sf::FloatRect l_bounds = text.getLocalBounds();
+    const sf::FloatRect l_bounds = m_text.getLocalBounds();
     const sf::Vector2f sizeScale(l_bounds.width / D + PADDING, l_bounds.height / D + PADDING);
     const float maxScale = std::max(sizeScale.x, sizeScale.y);
     if (maxScale > 1)
-        text.setScale(1 / maxScale, 1 / maxScale);
+        m_text.setScale(1 / maxScale, 1 / maxScale);
     else
     {
-        text.setOrigin(sf::Vector2f(text.getLocalBounds().width / 2, text.getLocalBounds().height * 1.4));
-        text.setScale(1, 1);
+        m_text.setOrigin(sf::Vector2f(m_text.getLocalBounds().width / 2, m_text.getLocalBounds().height * 1.4));
+        m_text.setScale(1, 1);
     }
 }
 
 void _Node::draw(sf::RenderWindow &window)
 {
     window.draw(*this);
-    window.draw(text);
+    window.draw(m_text);
 }
 
 void _Node::setText(const std::string &text)
 {
     if (lf.f_t_ep_done) return;
-    this->text.setString(text);
-    this->text.setFillColor(sf::Color::White);
+    m_text.setString(text);
+    m_text.setFillColor(sf::Color::White);
 }
 
 void _Node::pushConnNode(_Node *const node)

@@ -55,9 +55,9 @@ void NodeFrontEnd::init()
     m_videoMode.width = 800;
     m_videoMode.height = 640;
     m_window = new sf::RenderWindow(m_videoMode, m_title, sf::Style::Default, settings);
+    m_thEventPool = new std::thread(event_pool<sf::RenderWindow>, std::ref(*m_window), std::ref(m_eventQueue), std::ref(m_ss), std::ref(lf));
     MainScene *m_mainScene = new MainScene(*m_window);
     m_ss.switchTo(m_mainScene);
-    m_thEventPool = new std::thread(event_pool<sf::RenderWindow>, std::ref(*m_window), std::ref(m_eventQueue), std::ref(m_ss), std::ref(lf));
     m_initizlized = true;
     say("frontend initialized");
 }
@@ -131,7 +131,7 @@ _Node* NodeFrontEnd::addNode(const char *text)
 
 void NodeFrontEnd::connectNodes(_Node *n1, _Node *n2)
 {
-    auto p = reinterpret_cast<Connector *>(m_ss.updateInput(EventType::addConnector));
+    auto p = reinterpret_cast<Edge *>(m_ss.updateInput(EventType::addEdge));
     p->setNodeEndings(n1, n2);
 }
 

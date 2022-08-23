@@ -16,6 +16,7 @@ public:
     bool f_rmb = false;
     bool f_lalt = false;
     bool f_ralt = false;
+    bool f_space = false;
     _Node *p_start_node = nullptr;
     _Node *p_end_node = nullptr;
     EventFlags() : Flags() {}

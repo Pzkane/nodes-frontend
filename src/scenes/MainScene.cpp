@@ -1,13 +1,14 @@
 #include <algorithm>
 
 #include "MainScene.hpp"
-#include "Connector.hpp"
+#include "Edge.hpp"
+#include "WeightedEdge.hpp"
 #include "Cache.hpp"
 #include "utils.hpp"
 
 using namespace nf;
 
-MainScene::MainScene(sf::RenderWindow &window) : Scene(window)
+MainScene::MainScene(sf::RenderWindow &window) : ef(), Scene(window)
 {
 #ifdef BENCHMARK
     for (int i = 0; i < 30000; ++i)
@@ -22,7 +23,7 @@ MainScene::MainScene(sf::RenderWindow &window) : Scene(window)
 
 MainScene::~MainScene()
 {
-    for (auto &&it = m_connectors.begin(); it != m_connectors.end();)
+    for (auto &&it = m_edges.begin(); it != m_edges.end();)
     {
         auto tmp_ = it;
         ++it;
@@ -61,16 +62,16 @@ _Node* MainScene::createNode(float radius = DEF_NODE_RAD)
     return node;
 }
 
-Connector* MainScene::createConnector()
+Edge* MainScene::createEdge()
 {
-    Connector *conn = new Connector;
-    pushConnector(conn);
+    Edge *conn = new Edge;
+    pushEdge(conn);
     return conn;
 }
 
-void MainScene::removeConnector(Nodes2ptr *ptr_payload)
+void MainScene::removeEdge(Nodes2ptr *ptr_payload)
 {
-    for (auto &&it : m_connectors)
+    for (auto &&it : m_edges)
     {
         auto nodeRef = it->getNodeEndings();
         if (
@@ -87,9 +88,9 @@ void MainScene::pushNode(_Node *node)
     m_nodes.push_back(node);
 }
 
-void MainScene::pushConnector(Connector *conn)
+void MainScene::pushEdge(Edge *conn)
 {
-    m_connectors.push_back(conn);
+    m_edges.push_back(conn);
 }
 
 void MainScene::centerView()
@@ -110,11 +111,11 @@ void MainScene::update()
 {
     Cache::CursorType cursorType = Cache::CursorType::Arrow;
 
-    for (auto it = m_connectors.begin(); it != m_connectors.end();)
+    for (auto it = m_edges.begin(); it != m_edges.end();)
         if ((*it)->enf.f_delete_self)
         {
             delete (*it);
-            it = m_connectors.erase(it);
+            it = m_edges.erase(it);
         }
         else
             (*it++)->update(*p_window, ef);
@@ -181,8 +182,12 @@ void MainScene::update()
                 return;
             }
         }
-        Connector *conn = new Connector(ef.p_start_node, ef.p_end_node);
-        pushConnector(conn);
+        Edge *conn;
+        if (ef.f_space)
+            conn = new WeightedEdge(ef.p_start_node, ef.p_end_node);
+        else
+            conn = new Edge(ef.p_start_node, ef.p_end_node);
+        pushEdge(conn);
         ef.p_start_node->pushConnNode(ef.p_end_node);
         ef.p_end_node->pushConnNode(ef.p_start_node);
         clearEFNodes();
@@ -193,9 +198,9 @@ void MainScene::update()
 
 void MainScene::draw()
 {
-    for (auto &&it : m_connectors)
+    for (auto &&it : m_edges)
     {
-        p_window->draw(it->getDrawable());
+        it->draw(*p_window);
     }
 
     for (auto &&it : m_nodes)
@@ -265,9 +270,16 @@ void *MainScene::updateInput(const sf::Event &event, void* payload)
             ef.f_ralt = true;
             break;
 
+        case sf::Keyboard::Space:
+            say("Space toggle");
+            ef.f_space = !ef.f_space;
+            break;
+
         default:
             break;
         }
+        break;
+
     default:
         break;
     }
@@ -284,10 +296,10 @@ void* MainScene::updateInput(const EventType &eventType, void* payload)
     {
     case addNode:
         return createNode();
-    case addConnector:
-        return createConnector();
+    case addEdge:
+        return createEdge();
     case disconnectNodes:
-        removeConnector(reinterpret_cast<Nodes2ptr*>(payload));
+        removeEdge(reinterpret_cast<Nodes2ptr*>(payload));
         return nullptr;
     default:
         break;

@@ -1,7 +1,7 @@
 target_sources(entitiesLib
     PRIVATE
-        Entity.cpp
-        Connector.cpp
+        Edge.cpp
+        WeightedEdge.cpp
         _Node.cpp
 )
 

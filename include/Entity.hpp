@@ -11,6 +11,8 @@ public:
     EntityFlags enf;
     explicit Entity() {};
     ~Entity() = default;
+    virtual void update(const sf::RenderWindow &window, EventFlags &ev) = 0;
+    virtual void draw(sf::RenderWindow &window) = 0;
 };
 
 };

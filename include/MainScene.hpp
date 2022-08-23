@@ -11,18 +11,18 @@ namespace nf {
 class MainScene : public Scene
 {
     bool m_b_mousePressed = false;
-    std::list<_Node *> m_nodes;
-    std::list<Connector *> m_connectors;
+    std::list<_Node*> m_nodes;
+    std::list<Edge*> m_edges;
     EventFlags ef;
 
 public:
     MainScene(sf::RenderWindow &window);
     ~MainScene();
-    _Node *createNode(float radius);
-    Connector* createConnector();
-    void removeConnector(Nodes2ptr *ptr_payload);
-    void pushNode(_Node *node);
-    void pushConnector(Connector *conn);
+    _Node* createNode(float radius);
+    Edge* createEdge();
+    void removeEdge(Nodes2ptr* ptr_payload);
+    void pushNode(_Node* node);
+    void pushEdge(Edge* conn);
     void centerView();
 
     void update() override;
