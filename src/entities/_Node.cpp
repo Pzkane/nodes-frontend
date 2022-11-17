@@ -81,7 +81,7 @@ void _Node::draw(sf::RenderWindow &window)
 
 void _Node::setText(const std::string &text)
 {
-    if (lf.f_t_ep_done) return;
+    if (lf.f_t_ep_done || lf.f_t_delete_active_scene) return;
     m_text.setString(text);
     m_text.setFillColor(sf::Color::White);
 }

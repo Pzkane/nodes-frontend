@@ -9,7 +9,7 @@ class LinkedListNode : public Node
 {
     LinkedListNode *m_next = nullptr;
 public:
-    LinkedListNode(NodeFrontEnd &api) : Node(api) {}
+    LinkedListNode(NodeFrontEnd *api) : Node(api) {}
     ~LinkedListNode() = default;
     void setNext(LinkedListNode *lnode);
 };

@@ -14,7 +14,7 @@ protected:
     NodeFrontEnd *m_api;
     void createNode();
 public:
-    Node(NodeFrontEnd &api);
+    Node(NodeFrontEnd *api);
     ~Node() = default;
     void setPosition(float x, float y);
     const _Node* const getInnerNode() const;

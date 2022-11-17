@@ -7,7 +7,7 @@ void Node::createNode()
     m_node = m_api->addNode("API");
 }
 
-Node::Node(NodeFrontEnd &api) : m_api(&api)
+Node::Node(NodeFrontEnd *api) : m_api(api)
 {
     createNode();
 }

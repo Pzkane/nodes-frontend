@@ -4,9 +4,11 @@
 
 #include "NodeFrontEndWrapper.hpp"
 
+static nf::NodeFrontEndWrapper NFWrap;
+
 int test_nf_driver()
 {
-    nf::NodeFrontEnd *api = &NFWrap.m_api;
+    nf::NodeFrontEnd* api = NFWrap.api();
 
     api->setWindowColor(sf::Color(219, 189, 189));
     for (int i = 0; i < 1; ++i)
@@ -20,7 +22,7 @@ int test_nf_driver()
     std::chrono::system_clock::time_point end;
     nf::_Node *node = api->addNode("ss");
     node->setFillColor(sf::Color::Green); // overlap test
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < 1; ++i)
     {
         begin = std::chrono::system_clock::now();
 
@@ -40,14 +42,13 @@ int test_nf_driver()
 struct MyNode : public nf::LinkedListNode
 {
     int data;
-    
+
     // GENERATE WITH MACRO
-    MyNode() : LinkedListNode(NFWrap.m_api) {}
+    MyNode() : LinkedListNode(NFWrap.api()) {}
 };
 
 int test_mynode()
 {
-
     MyNode *n1 = new MyNode();
     n1->setPosition(200, 200);
     n1->data = 4;
@@ -68,5 +69,6 @@ int main()
 {
     test_mynode();
     test_nf_driver();
+    say("DRIVER OUT");
     return 0;
 }

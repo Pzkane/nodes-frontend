@@ -2,6 +2,16 @@
 
 using namespace nf;
 
+Scene::~Scene()
+{
+    for (auto &&it = m_drawables.begin(); it != m_drawables.end();)
+    {
+        auto tmp_ = it;
+        ++it;
+        delete *tmp_;
+    }
+}
+
 void Scene::draw()
 {
     if (m_state)

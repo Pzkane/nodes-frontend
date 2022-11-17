@@ -2,6 +2,15 @@
 
 using namespace nf;
 
+void SceneSwitcher::cleanup()
+{
+    if (m_curr_scene)
+    {
+        m_curr_scene->setActive(false);
+        deleteCurrScene();
+    }
+}
+
 void SceneSwitcher::switchTo(Scene *scene)
 {
     if (m_curr_scene)

@@ -24,10 +24,10 @@ class NodeFrontEnd
 
 public:
     NodeFrontEnd(const sf::VideoMode &video_mode, const char *n_title);
-    NodeFrontEnd() {}
+    NodeFrontEnd() = default;
     ~NodeFrontEnd();
     void init();
-    int launch();
+    int launch_and_loop();
     void setWindowColor(const sf::Color &color);
     void setNodePosition(_Node *node, float x, float y);
     void setNodePosition(_Node *node, sf::Vector2f vf);

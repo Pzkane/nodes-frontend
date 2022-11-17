@@ -19,7 +19,7 @@ protected:
 
 public:
     explicit Scene(sf::RenderWindow &window) : p_window(&window) {}
-    virtual ~Scene() = default;
+    virtual ~Scene();
     virtual void update() = 0;
     virtual void draw();
     virtual void *updateInput(const sf::Event &event, void* payload = nullptr) = 0;

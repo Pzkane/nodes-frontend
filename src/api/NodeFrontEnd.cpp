@@ -62,8 +62,9 @@ void NodeFrontEnd::init()
     say("frontend initialized");
 }
 
-int NodeFrontEnd::launch()
+int NodeFrontEnd::launch_and_loop()
 {
+    sf::Context context;
     bool running = true;
 
     m_window->setFramerateLimit(75);
@@ -93,27 +94,35 @@ int NodeFrontEnd::launch()
     }
 
     m_thEventPool->join();
-    _cleanup();
 
     return 0;
 }
 
 NodeFrontEnd::~NodeFrontEnd()
 {
+    say("Destroying API...");
     _cleanup();
+    say("API destroyed");
 }
 
 void NodeFrontEnd::_cleanup()
 {
-    if (m_thEventPool)
-    {
-        delete m_thEventPool;
-        m_thEventPool = nullptr;
-    }
+    m_ss.cleanup();
     if (m_window)
     {
+        say("Destroying main window...");
+        m_window->setActive(false);
+        m_window->close();
         delete m_window;
         m_window = nullptr;
+        say("Main window destroyed");
+    }
+    if (m_thEventPool)
+    {
+        say("Destroying event pool...");
+        delete m_thEventPool;
+        m_thEventPool = nullptr;
+        say("Event pool destroyed");
     }
 }
 

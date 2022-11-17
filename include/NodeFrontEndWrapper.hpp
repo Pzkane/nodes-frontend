@@ -10,16 +10,20 @@ namespace nf {
 
 class NodeFrontEndWrapper
 {
+    bool m_terminated;
     std::atomic<bool> m_done;
     std::thread *m_nfLoop;
+    nf::NodeFrontEnd* m_api;
 public:
-    nf::NodeFrontEnd m_api;
     NodeFrontEndWrapper();
     ~NodeFrontEndWrapper();
+    nf::NodeFrontEnd* api();
+    bool isDone() { return m_done; }
+    bool isTerminated() { return m_terminated; }
 };
 
 };
 
-extern nf::NodeFrontEndWrapper NFWrap;
+// extern nf::NodeFrontEndWrapper NFWrap;
 
 #endif // SRC_API_APIWRAPPER_HPP_INCLUDED
