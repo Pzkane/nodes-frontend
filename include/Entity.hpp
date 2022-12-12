@@ -2,6 +2,7 @@
 #define SRC_ENTITIES_ENTITY_HPP_INCLUDED
 
 #include "EntityFlags.hpp"
+#include "EventFlags.hpp"
 
 namespace nf {
 
@@ -9,7 +10,7 @@ class Entity
 {
 public:
     EntityFlags enf;
-    explicit Entity() {};
+    Entity() = default;
     ~Entity() = default;
     virtual void update(const sf::RenderWindow &window, EventFlags &ev) = 0;
     virtual void draw(sf::RenderWindow &window) = 0;

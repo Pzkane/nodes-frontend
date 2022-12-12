@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include "EventFlags.hpp"
 #include "EventType.hpp"
+#include "MouseCache.hpp"
 
 namespace nf {
 
@@ -16,9 +17,10 @@ class Scene
 protected:
     sf::RenderWindow *const p_window = nullptr;
     std::list<sf::Drawable *> m_drawables;
+    MouseCache* m_mouseCache;
 
 public:
-    explicit Scene(sf::RenderWindow &window) : p_window(&window) {}
+    explicit Scene(sf::RenderWindow &window) : p_window(&window), m_mouseCache(MouseCache::getInstance(window)) {}
     virtual ~Scene();
     virtual void update() = 0;
     virtual void draw();

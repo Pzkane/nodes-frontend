@@ -5,6 +5,7 @@
 #include "WeightedEdge.hpp"
 #include "Cache.hpp"
 #include "utils.hpp"
+#include "MouseCache.hpp"
 
 using namespace nf;
 
@@ -129,19 +130,20 @@ void MainScene::update()
         }
         else
         {
-            // TODO: Fix single item drag
-            // if (ef.f_lmb)
-            //     if ((*m_nodes.rbegin())->isMoving() && it != std::prev(m_nodes.end()))
-            //         (*it)->setMovable(false);
-            //     else
-            //     {
-                    (*it)->setMovable(true);
-                    if ((*it)->getDragState() && it != std::prev(m_nodes.end()))
-                        std::iter_swap(it, m_nodes.rbegin());
-            //     }
-            // else
-            //     (*it)->setMovable(false);
+            // Unintentional, but useful feature - wil always
+            // swap 2 of overlaying elements
+            if ((*it)->isMoving() && it != std::prev(m_nodes.end()))
+                std::iter_swap(it, m_nodes.rbegin());
+
             (*it)->update(*p_window, ef);
+
+            Mouse& m = MouseCache::getInstance(*p_window)->gMouse;
+
+            if (m.getEntity() == (*it))
+                (*it)->setMovable(true);
+            else
+                (*it)->setMovable(false);
+
             if ((*it)->m_hovering)
                 cursorType = Cache::CursorType::Hand;
             ++it;

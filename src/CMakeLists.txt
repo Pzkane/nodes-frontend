@@ -33,14 +33,20 @@ add_subdirectory(shapes)
 add_library(entitiesLib)
 add_subdirectory(entities)
 
+add_library(mouseLib)
+add_subdirectory(mouse)
+
 add_library(scenesLib)
 add_subdirectory(scenes)
 
 target_link_libraries(helpersLib sfml-graphics)
 target_link_libraries(srcLib sfml-window helpersLib)
 target_link_libraries(shapesLib sfml-graphics propertiesLib)
-target_link_libraries(entitiesLib srcLib shapesLib)
+target_link_libraries(mouseLib sfml-graphics helpersLib)
+target_link_libraries(scenesLib mouseLib)
+target_link_libraries(entitiesLib mouseLib srcLib shapesLib)
 target_link_libraries(${apiLib} sfml-window sfml-system sfml-graphics ${OPENGL_LIBRARIES}
+    mouseLib
     scenesLib
     shapesLib
     helpersLib

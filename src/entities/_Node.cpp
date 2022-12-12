@@ -5,6 +5,7 @@
 #include "LoopFlags.hpp"
 #include "FontFlags.hpp"
 #include "utils.hpp"
+#include "MouseCache.hpp"
 
 using namespace nf;
 
@@ -31,6 +32,17 @@ void _Node::update(const sf::RenderWindow &window, EventFlags &ef)
 
     if (mouseInside(Utils::getMousePosf(window)))
     {
+        Mouse& m = MouseCache::getInstance(window)->gMouse;
+        if (ef.f_lmb)
+        {
+            if (m.isCaptureEmpty())
+                m.captureEntity(this);
+        } else {
+            // say((m.getEntity() == this));
+            if (m.getEntity() == this)
+                m.releaseEntity();
+        }
+
         m_hovering = true;
         if (ef.f_rmb)
             if (!ef.p_start_node && ef.p_end_node != this)
