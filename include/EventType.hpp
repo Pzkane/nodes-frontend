@@ -9,6 +9,7 @@ enum EventType
 {
     addNode,
     addEdge,
+    addWEdge,
     disconnectNodes
 };
 

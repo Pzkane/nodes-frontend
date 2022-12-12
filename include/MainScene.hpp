@@ -5,6 +5,7 @@
 #include "Scene.hpp"
 #include "_Node.hpp"
 #include "EventType.hpp"
+#include "WeightedEdge.hpp"
 
 namespace nf {
 
@@ -20,6 +21,7 @@ public:
     ~MainScene();
     _Node* createNode(float radius);
     Edge* createEdge();
+    WeightedEdge* createWEdge();
     void removeEdge(Nodes2ptr* ptr_payload);
     void pushNode(_Node* node);
     void pushEdge(Edge* conn);

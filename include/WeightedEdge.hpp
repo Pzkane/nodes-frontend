@@ -15,6 +15,7 @@ public:
     WeightedEdge(_Node *const &start_node, _Node *const &end_node, sf::Color color = sf::Color::Black, float _weight = 0.f);
     ~WeightedEdge() = default;
 
+    void setWeight(float weight);
     void update(const sf::RenderWindow &window, EventFlags &ef) override;
     void draw(sf::RenderWindow &window) override;
 };

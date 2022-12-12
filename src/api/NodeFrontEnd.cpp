@@ -131,10 +131,11 @@ void NodeFrontEnd::setWindowColor(const sf::Color &color)
     m_backgroundColor = color;
 }
 
-_Node* NodeFrontEnd::addNode(const char *text)
+_Node* NodeFrontEnd::addNode(const char *text, float x, float y)
 {
     auto p = reinterpret_cast<_Node *>(m_ss.updateInput(EventType::addNode));
     p->setText(text);
+    p->setPosition(x, y);
     return p;
 }
 
@@ -142,6 +143,12 @@ void NodeFrontEnd::connectNodes(_Node *n1, _Node *n2)
 {
     auto p = reinterpret_cast<Edge *>(m_ss.updateInput(EventType::addEdge));
     p->setNodeEndings(n1, n2);
+}
+void NodeFrontEnd::connectWeightNodes(_Node *n1, _Node *n2, float weight)
+{
+    auto p = reinterpret_cast<WeightedEdge *>(m_ss.updateInput(EventType::addWEdge));
+    p->setNodeEndings(n1, n2);
+    p->setWeight(weight);
 }
 
 void NodeFrontEnd::disconnectNodes(_Node *n1, _Node *n2)

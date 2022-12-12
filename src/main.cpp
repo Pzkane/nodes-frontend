@@ -20,6 +20,13 @@ int test_nf_driver()
     std::string txt;
     std::chrono::system_clock::time_point begin;
     std::chrono::system_clock::time_point end;
+
+    nf::_Node *node1 = api->addNode("W1", 300, 300);
+    nf::_Node *node2 = api->addNode("W2", 400, 300);
+    
+    api->connectNodes(node1, node2);
+    api->connectWeightNodes(node1, node2, 40);
+
     nf::_Node *node = api->addNode("ss");
     node->setFillColor(sf::Color::Green); // overlap test
     for (int i = 0; i < 1; ++i)

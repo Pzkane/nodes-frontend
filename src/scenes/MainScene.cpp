@@ -2,7 +2,6 @@
 
 #include "MainScene.hpp"
 #include "Edge.hpp"
-#include "WeightedEdge.hpp"
 #include "Cache.hpp"
 #include "utils.hpp"
 #include "MouseCache.hpp"
@@ -66,6 +65,13 @@ _Node* MainScene::createNode(float radius = DEF_NODE_RAD)
 Edge* MainScene::createEdge()
 {
     Edge *conn = new Edge;
+    pushEdge(conn);
+    return conn;
+}
+
+WeightedEdge* MainScene::createWEdge()
+{
+    WeightedEdge *conn = new WeightedEdge;
     pushEdge(conn);
     return conn;
 }
@@ -304,6 +310,8 @@ void* MainScene::updateInput(const EventType &eventType, void* payload)
         return createNode();
     case addEdge:
         return createEdge();
+    case addWEdge:
+        return createWEdge();
     case disconnectNodes:
         removeEdge(reinterpret_cast<Nodes2ptr*>(payload));
         return nullptr;

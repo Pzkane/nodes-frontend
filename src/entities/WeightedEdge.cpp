@@ -5,12 +5,18 @@
 
 using namespace nf;
 
-void WeightedEdge::init()
+void WeightedEdge::setWeight(float weight)
 {
-    m_weight_label.setFont(ff.font);
+    m_weight = weight;
     std::stringstream ss;
     ss << m_weight;
     m_weight_label.setString(ss.str());
+}
+
+void WeightedEdge::init()
+{
+    m_weight_label.setFont(ff.font);
+    setWeight(m_weight);
     m_weight_label.setFillColor(sf::Color::Black);
 }
 
