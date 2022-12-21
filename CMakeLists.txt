@@ -10,8 +10,11 @@ if(${BENCHMARK})
     add_definitions(-DBENCHMARK)
 endif(${BENCHMARK})
 
+file(READ ".env" env)
+string(REGEX MATCH "SFML_PREFIX (.+)" _ ${env})
+
 set(LOCAL_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/include)
-set(SFML_PREFIX "D:/disk_backup/C++/libraries/SFML-2.5.1")
+set(SFML_PREFIX ${CMAKE_MATCH_1}) #"C:/Users/zuravpav/OneDrive - TietoEVRY/Documents/cxx/cxx_libs/sfml"
 set(CMAKE_PREFIX_PATH ${SFML_PREFIX})
 set(LOCAL_BUILD_DIR ${CMAKE_CURRENT_LIST_DIR}/build)
 set(SFML_INCLUDE_DIR ${SFML_PREFIX}/include)

@@ -17,6 +17,11 @@ void Node::setPosition(float x, float y)
     m_api->setNodePosition(m_node, x, y);
 }
 
+void Node::setText(const std::string& label)
+{
+    m_node->setText(label);
+}
+
 const _Node* const Node::getInnerNode() const
 {
     return m_node;

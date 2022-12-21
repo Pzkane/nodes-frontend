@@ -17,6 +17,7 @@ public:
     Node(NodeFrontEnd *api);
     ~Node() = default;
     void setPosition(float x, float y);
+    void setText(const std::string& label);
     const _Node* const getInnerNode() const;
     Node& operator=(const Node& node);
 };
