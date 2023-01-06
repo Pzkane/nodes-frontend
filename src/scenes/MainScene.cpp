@@ -41,7 +41,6 @@ MainScene::~MainScene()
 _Node* MainScene::createNode(float radius = DEF_NODE_RAD)
 {
     _Node *node = new _Node(DEF_NODE_RAD);
-    node->setFillColor(sf::Color::Red);
     sf::Vector2f mPos = Utils::getMousePosf(*p_window);
     sf::Vector2f createPos = mPos;
     sf::Vector2u winSize = p_window->getSize();
@@ -64,14 +63,21 @@ _Node* MainScene::createNode(float radius = DEF_NODE_RAD)
 
 Edge* MainScene::createEdge()
 {
-    Edge *conn = new Edge;
+    Edge* conn = new Edge;
+    pushEdge(conn);
+    return conn;
+}
+
+OrientedEdge* MainScene::createOEdge()
+{
+    OrientedEdge* conn = new OrientedEdge;
     pushEdge(conn);
     return conn;
 }
 
 WeightedEdge* MainScene::createWEdge()
 {
-    WeightedEdge *conn = new WeightedEdge;
+    WeightedEdge* conn = new WeightedEdge;
     pushEdge(conn);
     return conn;
 }
@@ -310,6 +316,8 @@ void* MainScene::updateInput(const EventType &eventType, void* payload)
         return createNode();
     case addEdge:
         return createEdge();
+    case addOEdge:
+        return createOEdge();
     case addWEdge:
         return createWEdge();
     case disconnectNodes:

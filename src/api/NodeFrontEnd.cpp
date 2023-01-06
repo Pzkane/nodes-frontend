@@ -49,7 +49,7 @@ void NodeFrontEnd::init()
     sf::ContextSettings settings;
     settings.depthBits = 24;
     settings.stencilBits = 8;
-    settings.antialiasingLevel = 4;
+    settings.antialiasingLevel = 8;
     settings.majorVersion = 3;
     settings.minorVersion = 0;
     m_videoMode.width = 800;
@@ -149,6 +149,12 @@ void NodeFrontEnd::connectWeightNodes(_Node *n1, _Node *n2, float weight)
     auto p = reinterpret_cast<WeightedEdge *>(m_ss.updateInput(EventType::addWEdge));
     p->setNodeEndings(n1, n2);
     p->setWeight(weight);
+}
+
+void NodeFrontEnd::connectOrientedNodes(_Node *n1, _Node *n2)
+{
+    auto p = reinterpret_cast<Edge *>(m_ss.updateInput(EventType::addOEdge));
+    p->setNodeEndings(n1, n2);
 }
 
 void NodeFrontEnd::disconnectNodes(_Node *n1, _Node *n2)

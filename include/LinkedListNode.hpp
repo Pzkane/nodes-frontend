@@ -1,7 +1,7 @@
 #ifndef SRC_API_LISNKEDLISTNODE_HPP_INCLUDED
 #define SRC_API_LISNKEDLISTNODE_HPP_INCLUDED
 
-#include "type_traits.hpp"
+#include "custom_type_traits.hpp"
 #include "Node.hpp"
 
 namespace nf {
@@ -17,7 +17,7 @@ public:
 
     virtual std::string representation() { return std::string(); };
 
-    void setNext(LinkedListNode lnode)
+    void setNext(LinkedListNode &lnode)
     {
         if (m_next)
         {

@@ -9,19 +9,25 @@
 
 using namespace nf;
 
+unsigned _Node::id = 0;
+
 _Node::_Node(float radius, std::size_t pointCount) : CircleShape(radius, pointCount, 50)
 {
     const sf::Vector2f center = CircleShape::getPosition();
     const float R = CircleShape::getRadius();
     sf::CircleShape::setOrigin(center.x + R, center.y + R);
+    sf::CircleShape::setOutlineThickness(1);
+    sf::CircleShape::setOutlineColor(sf::Color(75, 75, 75));
+    sf::CircleShape::setFillColor({220, 220, 220});
 
     auto setHelloText = [&](){
-        setText("Hello!");
+        setText(std::to_string(id));
     };
 
     CircleShape::setCallback(setHelloText);
     m_text.setFont(ff.font);
     m_text.setScale(0, 0);
+    m_text.setFillColor(sf::Color::Black);
 }
 
 void _Node::update(const sf::RenderWindow &window, EventFlags &ef)
@@ -95,7 +101,11 @@ void _Node::setText(const std::string &text)
 {
     if (lf.f_t_ep_done || lf.f_t_delete_active_scene) return;
     m_text.setString(text);
-    m_text.setFillColor(sf::Color::White);
+}
+
+void _Node::setTextColor(const sf::Color& clr)
+{
+    m_text.setFillColor(clr);
 }
 
 void _Node::pushConnNode(_Node *const node)

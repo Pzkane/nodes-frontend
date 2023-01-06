@@ -32,18 +32,21 @@ WeightedEdge::WeightedEdge(_Node *const &start_node, _Node *const &end_node, sf:
 
 void WeightedEdge::update(const sf::RenderWindow &window, EventFlags &ef)
 {
-    if (!nodeRef.start || !nodeRef.end) return;
+    if (!m_nodeRef.start || !m_nodeRef.end) return;
     Edge::update(window, ef);
-    float min_x = line[0].position.x < line[1].position.x ? line[0].position.x : line[1].position.x,
-          min_y = line[0].position.y < line[1].position.y ? line[0].position.y : line[1].position.y;
-    float x = min_x + (abs(line[0].position.x - line[1].position.x) / 2),
-          y = min_y + (abs(line[0].position.y - line[1].position.y) / 2);
-    m_weight_label.setPosition(x, y);
+    auto idx0 = getIdxPosition(0);
+    auto idx1 = getIdxPosition(1);
+    float min_x = idx0.position.x < idx1.position.x ? idx0.position.x : idx1.position.x,
+          min_y = idx0.position.y < idx1.position.y ? idx0.position.y : idx1.position.y;
+    float x = min_x + (abs(idx0.position.x - idx1.position.x) / 2),
+          y = min_y + (abs(idx0.position.y - idx1.position.y) / 2);
+    m_weight_label.setPosition(x-15, y-20);
 }
 
 void WeightedEdge::draw(sf::RenderWindow &window)
 {
-    if (!nodeRef.start || !nodeRef.end) return;
+    if (!m_nodeRef.start || !m_nodeRef.end) return;
     Edge::draw(window);
+    window.draw(m_weight_label.getBox());
     window.draw(m_weight_label);
 }

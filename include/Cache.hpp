@@ -3,8 +3,11 @@
 
 #include <vector>
 #include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
 
 namespace nf {
+
+static const sf::Color gBGColor(210, 210, 210);
 
 class Cache
 {

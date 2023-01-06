@@ -33,6 +33,7 @@ public:
     void setNodePosition(_Node *node, sf::Vector2f vf);
     _Node* addNode(const char *text = "", float x = 0, float y = 0);
     void connectNodes(_Node *n1, _Node *n2);
+    void connectOrientedNodes(_Node *n1, _Node *n2);
     void connectWeightNodes(_Node *n1, _Node *n2, float weight = 0);
     void disconnectNodes(_Node *n1, _Node *n2);
     bool isInit() { return m_initizlized; };

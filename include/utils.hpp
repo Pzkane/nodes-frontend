@@ -15,6 +15,9 @@
 
 namespace nf {
 
+constexpr float pi = 3.1415926;
+constexpr float radian = 180 / pi;
+
 namespace Utils
 {
     template <typename T>

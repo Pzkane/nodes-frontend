@@ -14,27 +14,32 @@ int test_nf_driver()
     nf::NodeFrontEnd* api = NFWrap.api();
 
     // 4 - N: Use api
-
-    api->setWindowColor(sf::Color(219, 189, 189));
+    api->setWindowColor(sf::Color(210, 210, 210));
     for (int i = 0; i < 1; ++i)
     {
         nf::_Node *node = api->addNode("w");
-        node->setPosition(100, 100);
+        node->setPosition(150, 50);
     }
 
     std::string txt;
     std::chrono::system_clock::time_point begin;
     std::chrono::system_clock::time_point end;
 
-    nf::_Node *node1 = api->addNode("W1", 300, 300);
-    nf::_Node *node2 = api->addNode("W2", 400, 300);
-    nf::_Node *node3 = api->addNode("W2", 400, 300);
+    nf::_Node *node1 = api->addNode("W1", 150, 350);
+    nf::_Node *node2 = api->addNode("W2", 450, 350);
+    nf::_Node *node3 = api->addNode("W3", 560, 350);
     
     api->connectNodes(node1, node2);
     api->connectWeightNodes(node1, node2, 40);
 
     nf::_Node *node = api->addNode("ss");
+    node->setPosition(50, 50);
     node->setFillColor(sf::Color::Green); // overlap test
+
+    nf::_Node *node4 = api->addNode("W4", 150, 450);
+    nf::_Node *node5 = api->addNode("W5", 450, 600);
+    api->connectOrientedNodes(node4, node5);
+
     for (int i = 0; i < 1; ++i)
     {
         begin = std::chrono::system_clock::now();
@@ -49,6 +54,7 @@ int test_nf_driver()
         if (node)
             node->setText(txt);
     }
+
     return 0;
 }
 
@@ -61,12 +67,12 @@ struct MyNode : public nf::LinkedListNode<std::string>
 int test_mynode()
 {
     MyNode *n1 = new MyNode();
-    n1->setPosition(200, 200);
+    n1->setPosition(150, 150);
     n1->setData(std::string("as"));
     n1->setData("as_c");
 
     MyNode *n2 = new MyNode();
-    n2->setPosition(400, 400);
+    n2->setPosition(450, 150);
     n2->setData(8);
 
     n1->setNext(*n2);
@@ -96,11 +102,11 @@ struct MyNodeTyped : public nf::LinkedListNode<TestS>
 int test_typedmynode()
 {
     MyNodeTyped n1;
-    n1.setPosition(250, 250);
+    n1.setPosition(150, 250);
     n1.setData({"Joy", 55});
 
     MyNodeTyped n2;
-    n2.setPosition(450, 450);
+    n2.setPosition(450, 250);
     n2.setData({});
 
     n1.setNext(n2);

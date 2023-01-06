@@ -2,13 +2,14 @@
 #define SRC_ENTITIES_WEIGHTEDEDGE_HPP_INCLUDED
 
 #include "Edge.hpp"
+#include "Label.hpp"
 
 namespace nf {
 
 class WeightedEdge : public Edge
 {
     float m_weight;
-    sf::Text m_weight_label;
+    Label m_weight_label;
     void init();
 public:
     WeightedEdge(sf::Color color = sf::Color::Black, float _weight = 0.f);

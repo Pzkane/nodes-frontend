@@ -18,6 +18,7 @@ const size_t DEF_NODE_RAD = 40;
 
 class _Node : public Entity, public CircleShape
 {
+    static unsigned id;
     bool m_is_dragged = false;
     sf::Text m_text;
     void updateText();
@@ -26,12 +27,12 @@ class _Node : public Entity, public CircleShape
 public:
     bool m_hovering;
     explicit _Node(float radius = 0, std::size_t pointCount = 30);
-    explicit _Node(const _Node *node) {}
     ~_Node() = default;
     void update(const sf::RenderWindow &window, EventFlags &ev) override;
     void draw(sf::RenderWindow &window) override;
 
     void setText(const std::string &text);
+    void setTextColor(const sf::Color& clr);
     void pushConnNode(_Node *const node);
     std::list<_Node*> getConnectedNodes() const;
 };

@@ -1,5 +1,5 @@
-#ifndef TYPE_TRAITS_HPP_INCLUDED
-#define TYPE_TRAITS_HPP_INCLUDED
+#ifndef CUSTOM_TYPE_TRAITS_HPP_INCLUDED
+#define CUSTOM_TYPE_TRAITS_HPP_INCLUDED
 
 #include <string>
 
@@ -22,4 +22,4 @@ struct is_string<const char*> {
 
 }; // namespace nf
 
-#endif // TYPE_TRAITS_HPP_INCLUDED
+#endif // CUSTOM_TYPE_TRAITS_HPP_INCLUDED

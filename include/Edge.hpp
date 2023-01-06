@@ -5,6 +5,8 @@
 #include "_Node.hpp"
 #include "Line.hpp"
 
+#define this_vertex(idx) sf::VertexArray::operator[](idx)
+
 namespace nf {
 
 struct NodeRef
@@ -17,19 +19,18 @@ class Edge : public Entity, public Line
 {
     void init(sf::Color color);
 protected:
-    Line line;
-    NodeRef nodeRef;
+    NodeRef m_nodeRef;
 
     friend class _Node;
 
 public:
-    Edge(sf::Color color = sf::Color::White);
-    Edge(_Node *const &start_node, _Node *const &end_node, sf::Color color = sf::Color::White);
+    explicit Edge(sf::Color color = sf::Color::Black);
+    Edge(_Node *const &start_node, _Node *const &end_node, sf::Color color = sf::Color::Black);
     ~Edge() = default;
     void setNodeEndings(_Node *const &start_node, _Node *const &end_node);
     NodeRef& getNodeEndings() const;
 
-    sf::VertexArray &getDrawable();
+    const sf::VertexArray& getDrawable() const;
     void update(const sf::RenderWindow &window, EventFlags &ef) override;
     void draw(sf::RenderWindow &window) override;
 };
