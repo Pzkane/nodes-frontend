@@ -11,11 +11,10 @@ using namespace nf;
 
 unsigned _Node::id = 0;
 
-_Node::_Node(float radius, std::size_t pointCount) : CircleShape(radius, pointCount, 50)
+_Node::_Node(float radius, std::size_t pointCount) : RADIUS(radius), CircleShape(radius, pointCount, 50)
 {
     const sf::Vector2f center = CircleShape::getPosition();
-    const float R = CircleShape::getRadius();
-    sf::CircleShape::setOrigin(center.x + R, center.y + R);
+    sf::CircleShape::setOrigin(center.x + RADIUS, center.y + RADIUS);
     sf::CircleShape::setOutlineThickness(1);
     sf::CircleShape::setOutlineColor(sf::Color(75, 75, 75));
     sf::CircleShape::setFillColor({220, 220, 220});

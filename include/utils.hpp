@@ -27,4 +27,6 @@ namespace Utils
 
 };
 
+std::ostream& operator<<(std::ostream& out, const sf::Vector2f& vec);
+
 #endif // SRC_HELPERS_UTILS_HPP_INCLUDED

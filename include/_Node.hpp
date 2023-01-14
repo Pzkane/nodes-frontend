@@ -25,6 +25,7 @@ class _Node : public Entity, public CircleShape
     std::list<_Node*> m_connected_nodes;
 
 public:
+    const float RADIUS;
     bool m_hovering;
     explicit _Node(float radius = 0, std::size_t pointCount = 30);
     ~_Node() = default;

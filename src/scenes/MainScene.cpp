@@ -312,15 +312,15 @@ void* MainScene::updateInput(const EventType &eventType, void* payload)
 {
     switch (eventType)
     {
-    case addNode:
+    case EventType::addNode:
         return createNode();
-    case addEdge:
+    case EventType::addEdge:
         return createEdge();
-    case addOEdge:
+    case EventType::addOEdge:
         return createOEdge();
-    case addWEdge:
+    case EventType::addWEdge:
         return createWEdge();
-    case disconnectNodes:
+    case EventType::disconnectNodes:
         removeEdge(reinterpret_cast<Nodes2ptr*>(payload));
         return nullptr;
     default:

@@ -5,7 +5,7 @@
 
 namespace nf {
 
-enum EventType
+enum class EventType
 {
     addNode,
     addEdge,
