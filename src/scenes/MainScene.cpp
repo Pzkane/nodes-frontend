@@ -143,7 +143,7 @@ void MainScene::update()
         else
         {
             // Unintentional, but useful feature - wil always
-            // swap 2 of Containering elements
+            // swap 2 of overlaying elements
             if ((*it)->isMoving() && it != std::prev(m_nodes.end()))
                 std::iter_swap(it, m_nodes.rbegin());
 
