@@ -50,3 +50,8 @@ void SceneSwitcher::deleteCurrScene()
     delete m_curr_scene;
     m_curr_scene = nullptr;
 }
+
+const void* SceneSwitcher::getSceneFlags(Flags::Type type) {
+    return m_curr_scene->getFlags(type);
+}
+

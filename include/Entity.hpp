@@ -12,7 +12,7 @@ public:
     EntityFlags enf;
     Entity() = default;
     ~Entity() = default;
-    virtual void update(const sf::RenderWindow &window, EventFlags &ev) = 0;
+    virtual void update(const sf::RenderWindow &window, EventFlags &ef) = 0;
     virtual void draw(sf::RenderWindow &window) = 0;
 };
 

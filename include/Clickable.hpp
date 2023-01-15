@@ -14,7 +14,7 @@ template<typename Tc>
 class Clickable
 {
     bool m_successDrag = false;
-    sf::Vector2f m_offsetMousepos;
+    sf::Vector2f m_offsetMousePos;
     size_t click_delay_ms_;
     Tc callback_;
 

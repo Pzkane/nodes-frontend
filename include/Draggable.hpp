@@ -10,7 +10,7 @@ class Draggable
 {
     bool m_successDrag = false,
          m_movable     = false;
-    sf::Vector2f m_offsetMousepos;
+    sf::Vector2f m_offsetMousePos;
 
 public:
     Draggable() {}
@@ -20,9 +20,9 @@ public:
     void setMovable(bool state) { m_movable = state; };
     bool isMoving() { return m_movable; };
 
-    virtual void setPosition(const float x, const float y) = 0;
     virtual void setPosition(const sf::Vector2f &position) = 0;
-    virtual sf::Vector2f getPosition() = 0;
+    virtual void setPosition(const float x, const float y) = 0;
+    virtual sf::Vector2f getPosition() const = 0;
     virtual bool mouseInside(const sf::Vector2f &position) = 0;
     virtual bool isLMBPressed() = 0;
     virtual void setOrigin(sf::Vector2f &origin) = 0;

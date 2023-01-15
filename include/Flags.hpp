@@ -6,6 +6,7 @@ namespace nf {
 class Flags
 {
 public:
+    enum class Type { Event };
     Flags() {}
     virtual ~Flags() = default;
     virtual bool switchedOff() { return false; }

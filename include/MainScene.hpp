@@ -33,6 +33,7 @@ public:
     void draw() override;
     void* updateInput(const sf::Event &event, void* payload = nullptr) override;
     void* updateInput(const EventType &eventType, void* payload = nullptr) override;
+    const void* getFlags(Flags::Type type) override;
 };
 
 };

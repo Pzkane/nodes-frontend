@@ -39,20 +39,25 @@ add_subdirectory(mouse)
 add_library(scenesLib)
 add_subdirectory(scenes)
 
+add_library(uiLib)
+add_subdirectory(ui)
+
 target_link_libraries(helpersLib sfml-graphics)
 target_link_libraries(srcLib sfml-window helpersLib)
 target_link_libraries(shapesLib sfml-graphics propertiesLib)
 target_link_libraries(mouseLib sfml-graphics helpersLib)
 target_link_libraries(scenesLib mouseLib)
 target_link_libraries(entitiesLib mouseLib srcLib shapesLib)
+target_link_libraries(uiLib entitiesLib)
 target_link_libraries(${apiLib} sfml-window sfml-system sfml-graphics ${OPENGL_LIBRARIES}
     mouseLib
     scenesLib
+    srcLib
     shapesLib
     helpersLib
     entitiesLib
+    uiLib
     propertiesLib
-    srcLib
 )
 target_link_libraries(merged INTERFACE ${apiLib})
 if(${EXAMPLE})

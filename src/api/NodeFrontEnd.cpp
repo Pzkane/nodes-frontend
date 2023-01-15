@@ -5,6 +5,7 @@
 #include "MainScene.hpp"
 #include "EventType.hpp"
 #include "Cache.hpp"
+#include "Overlay.hpp"
 
 using namespace nf;
 
@@ -64,6 +65,9 @@ void NodeFrontEnd::init()
 
 int NodeFrontEnd::launch_and_loop()
 {
+    Overlay ui;
+    ui.createWrapper({{100,100}, {10,10}, {10,10}});
+    ui.addContainer(Container {{80, 50}, {20,20}});
     sf::Context context;
     bool running = true;
 
@@ -72,9 +76,13 @@ int NodeFrontEnd::launch_and_loop()
 
     while (running)
     {
+        bool resized = false;
         sf::Event event;
-        if (m_window->pollEvent(event))
+        if (m_window->pollEvent(event)) {
+            if (event.type == sf::Event::Resized)
+                resized = true;
             m_eventQueue.push(event);
+        }
 
         if (lf.f_t_delete_active_scene)
         {
@@ -86,6 +94,11 @@ int NodeFrontEnd::launch_and_loop()
 
         m_ss.updateScene();
         m_ss.drawScene();
+        if (!ui.isHidden()) {
+            const auto ef = static_cast<const EventFlags*>(m_ss.getSceneFlags(Flags::Type::Event));
+            ui.update(*m_window, *ef, resized);
+            ui.draw(*m_window);
+        }
         m_window->display();
         m_window->clear(m_backgroundColor);
 

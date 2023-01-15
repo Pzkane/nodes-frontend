@@ -143,7 +143,7 @@ void MainScene::update()
         else
         {
             // Unintentional, but useful feature - wil always
-            // swap 2 of overlaying elements
+            // swap 2 of Containering elements
             if ((*it)->isMoving() && it != std::prev(m_nodes.end()))
                 std::iter_swap(it, m_nodes.rbegin());
 
@@ -327,4 +327,14 @@ void* MainScene::updateInput(const EventType &eventType, void* payload)
         break;
     }
     return nullptr;
+}
+
+const void* MainScene::getFlags(Flags::Type type) {
+    struct Bad_Flag_Type {};
+    switch (type)
+    {
+    case Flags::Type::Event:
+        return &ef;
+    }
+    throw Bad_Flag_Type {};
 }

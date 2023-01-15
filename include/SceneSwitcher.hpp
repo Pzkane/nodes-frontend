@@ -23,6 +23,7 @@ public:
     void* updateInput(const sf::Event &event, void* payload = nullptr);
     void* updateInput(const EventType &eventType, void* payload = nullptr);
     void cleanup();
+    const void* getSceneFlags(Flags::Type type);
 };
 
 };

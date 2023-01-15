@@ -23,7 +23,7 @@ public:
     bool mouseInside(const sf::Vector2f &position);
     void setOrigin(sf::Vector2f &origin) override;
     void setCallback(VoidCallback callbackFnc) override;
-    sf::Vector2f getPosition() override;
+    sf::Vector2f getPosition() const override;
     sf::Vector2f getOrigin() override;
     sf::FloatRect getGlobalBounds() override;
 

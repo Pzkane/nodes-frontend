@@ -29,7 +29,7 @@ public:
     bool m_hovering;
     explicit _Node(float radius = 0, std::size_t pointCount = 30);
     ~_Node() = default;
-    void update(const sf::RenderWindow &window, EventFlags &ev) override;
+    void update(const sf::RenderWindow &window, EventFlags &ef) override;
     void draw(sf::RenderWindow &window) override;
 
     void setText(const std::string &text);

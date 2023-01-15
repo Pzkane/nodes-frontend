@@ -46,7 +46,7 @@ sf::FloatRect CircleShape::getGlobalBounds()
     return sf::CircleShape::getGlobalBounds();
 }
 
-sf::Vector2f CircleShape::getPosition()
+sf::Vector2f CircleShape::getPosition() const
 {
     return sf::CircleShape::getPosition();
 }
