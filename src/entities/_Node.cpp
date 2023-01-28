@@ -112,7 +112,7 @@ void _Node::pushConnNode(_Node *const node)
     m_connected_nodes.push_back(node);
 }
 
-std::list<_Node*> _Node::getConnectedNodes() const
+const std::list<_Node*>& _Node::getConnectedNodes() const
 {
     return m_connected_nodes;
 }

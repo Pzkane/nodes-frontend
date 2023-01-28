@@ -21,7 +21,7 @@ NodeFrontEndWrapper::NodeFrontEndWrapper()
     while (!m_api->isInit()) {}
 }
 
-NodeFrontEndWrapper::~NodeFrontEndWrapper()
+void NodeFrontEndWrapper::destroy()
 {
     say("Waiting for graphics to end...");
     while (!m_done) {}

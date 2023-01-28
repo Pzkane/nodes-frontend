@@ -5,8 +5,6 @@
 #include "_Node.hpp"
 #include "Line.hpp"
 
-#define this_vertex(idx) sf::VertexArray::operator[](idx)
-
 namespace nf {
 
 struct NodeRef
@@ -31,6 +29,7 @@ public:
     NodeRef& getNodeEndings() const;
 
     const sf::VertexArray& getDrawable() const;
+    bool mouseInside(const sf::Vector2f &position) override;
     void update(const sf::RenderWindow &window, EventFlags &ef) override;
     void draw(sf::RenderWindow &window) override;
 };

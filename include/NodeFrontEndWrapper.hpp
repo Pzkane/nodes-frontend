@@ -16,7 +16,7 @@ class NodeFrontEndWrapper
     nf::NodeFrontEnd* m_api;
 public:
     NodeFrontEndWrapper();
-    ~NodeFrontEndWrapper();
+    void destroy();
     nf::NodeFrontEnd* api();
     bool isDone() { return m_done; }
     bool isTerminated() { return m_terminated; }

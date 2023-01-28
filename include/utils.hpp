@@ -6,9 +6,11 @@
 #include "SafeQueue.hpp"
 
 #ifdef DEBUG
-#define say(something) {std::cout << something <<std::endl;}
+#define say(something) {std::cout << something << std::endl;}
+#define spit(something) {std::cout << something << " ";}
 #else
-#define say(something) {}
+#define say(something)
+#define spit(something)
 #endif
 
 #define error(message) {std::cout << "ERR: " << message << std::endl;}

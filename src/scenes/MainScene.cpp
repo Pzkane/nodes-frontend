@@ -285,12 +285,7 @@ void *MainScene::updateInput(const sf::Event &event, void* payload)
             break;
 
         case sf::Keyboard::Space:
-            say("Space toggle");
-            ef.f_space = !ef.f_space;
-            break;
-
-        case sf::Keyboard::R:
-            say("R toggle");
+            ef.f_space = true;
             break;
 
         default:

@@ -40,6 +40,10 @@ int test_nf_driver()
     nf::_Node *node5 = api->addNode("W5", 450, 600);
     api->connectOrientedNodes(node4, node5);
 
+    nf::_Node *node6 = api->addNode("W6", 150, 350);
+    nf::_Node *node7 = api->addNode("W7", 450, 350);
+    api->connectWeightNodes(node6, node7, 1500);
+
     for (int i = 0; i < 1; ++i)
     {
         begin = std::chrono::system_clock::now();
@@ -117,11 +121,13 @@ int test_typedmynode()
     return 0;
 }
 
-int main()
+int main(int argc, char** argv)
 {
     test_mynode();
     test_typedmynode();
     test_nf_driver();
+    while (!NFWrap.isDone()) {}
+    NFWrap.destroy();
     say("DRIVER OUT");
     return 0;
 }

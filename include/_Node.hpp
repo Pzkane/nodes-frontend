@@ -35,7 +35,7 @@ public:
     void setText(const std::string &text);
     void setTextColor(const sf::Color& clr);
     void pushConnNode(_Node *const node);
-    std::list<_Node*> getConnectedNodes() const;
+    const std::list<_Node*>& getConnectedNodes() const;
 };
 
 struct Nodes2ptr {

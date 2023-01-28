@@ -1,5 +1,7 @@
 if cmake --build ./build/ ; then
-    cmake --install ./build/
+    if ! cmake --install ./build/ ; then
+        exit -1;
+    fi
 else
     exit -1;
 fi

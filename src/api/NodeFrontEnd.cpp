@@ -78,7 +78,7 @@ int NodeFrontEnd::launch_and_loop()
     {
         bool resized = false;
         sf::Event event;
-        if (m_window->pollEvent(event)) {
+        while (m_window->pollEvent(event)) {
             if (event.type == sf::Event::Resized)
                 resized = true;
             m_eventQueue.push(event);
