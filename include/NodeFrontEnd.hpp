@@ -10,6 +10,13 @@
 
 namespace nf {
 
+struct Context : public sf::ContextSettings {
+    sf::VideoMode m_videoMode;
+    explicit Context(sf::VideoMode video, sf::ContextSettings context = sf::ContextSettings())
+        : m_videoMode(video), sf::ContextSettings(context) {}
+    Context() : Context(sf::VideoMode{}, sf::ContextSettings{}) {}
+};
+
 class NodeFrontEnd
 {
     bool m_initizlized = false;
@@ -17,14 +24,14 @@ class NodeFrontEnd
     sf::RenderWindow *m_window;
     Utils::SafeQueue<sf::Event> m_eventQueue;
     std::thread *m_thEventPool;
-    sf::VideoMode m_videoMode;
     sf::Color m_backgroundColor = sf::Color::Black;
+    const Context m_settings;
     SceneSwitcher m_ss;
     void _cleanup();
 
 public:
-    NodeFrontEnd(const sf::VideoMode &video_mode, const char *n_title);
-    NodeFrontEnd() = default;
+    NodeFrontEnd(const Context& settings, const char *n_title);
+    NodeFrontEnd() = delete;
     ~NodeFrontEnd();
     void init();
     int launch_and_loop();
