@@ -1,6 +1,6 @@
 cd build
 echo -e "\
-create libnv.a
+create libnfend.a
 addlib libentitiesLib.a
 addlib libhelpersLib.a
 addlib libnodes_frontend.a
