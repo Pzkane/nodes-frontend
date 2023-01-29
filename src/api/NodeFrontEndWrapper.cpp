@@ -1,9 +1,11 @@
 #include <thread>
 #include "NodeFrontEndWrapper.hpp"
 
+#define TITLE "Nodes Frontend"
+
 using namespace nf;
 
-static void launchWindow(NodeFrontEnd *api, std::atomic<bool> &isDone)
+static void launchWindow(NodeFrontEnd *api, const Context& settings, std::atomic<bool> &isDone)
 {
     api->init();
     api->launch_and_loop();
@@ -11,14 +13,30 @@ static void launchWindow(NodeFrontEnd *api, std::atomic<bool> &isDone)
     isDone = true;
 }
 
-NodeFrontEndWrapper::NodeFrontEndWrapper()
-{
+void NodeFrontEndWrapper::init(const char* title) {
     m_terminated = false;
     m_done = false;
-    m_api = new NodeFrontEnd(); // ptr to manage lifecycle
-    m_nfLoop = new std::thread(launchWindow, std::ref(m_api), std::ref(m_done));
+    m_api = new NodeFrontEnd(m_settings, title ? title : TITLE); // ptr to manage lifecycle
+    m_nfLoop = new std::thread(launchWindow, std::ref(m_api), m_settings, std::ref(m_done));
     say("Waiting for init...");
     while (!m_api->isInit()) {}
+}
+
+NodeFrontEndWrapper::NodeFrontEndWrapper(const Context& settings) {
+    m_settings = settings;
+    init();
+}
+
+NodeFrontEndWrapper::NodeFrontEndWrapper()
+{
+    m_settings.m_videoMode.width = 800;
+    m_settings.m_videoMode.height = 640;
+    m_settings.depthBits = 24;
+    m_settings.stencilBits = 8;
+    m_settings.antialiasingLevel = 8;
+    m_settings.majorVersion = 3;
+    m_settings.minorVersion = 0;
+    init();
 }
 
 void NodeFrontEndWrapper::destroy()

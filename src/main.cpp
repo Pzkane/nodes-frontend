@@ -7,13 +7,20 @@
 
 // 2: Define static wrapper instance
 static nf::NodeFrontEndWrapper NFWrap;
+// 2.1: You can use custom settings
+/*
+static nf::NodeFrontEndWrapper NFWrap(nf::Context{
+    sf::VideoMode{1920, 1080},
+    sf::ContextSettings{24, 8, 8, 3, 0}
+});
+*/
 
 int test_nf_driver()
 {
     // 3: Get api from wrapper
     nf::NodeFrontEnd* api = NFWrap.api();
 
-    // 4 - N: Use api
+    // 4 to N: Use api
     api->setWindowColor(sf::Color(210, 210, 210));
     for (int i = 0; i < 1; ++i)
     {
@@ -95,7 +102,7 @@ struct TestS
 
 struct MyNodeTyped : public nf::LinkedListNode<TestS>
 {
-    std::string representation() {
+    std::string representation() override {
         return std::string("['" + getData().name + "', " + std::to_string(getData().age) + "]");
     }
 

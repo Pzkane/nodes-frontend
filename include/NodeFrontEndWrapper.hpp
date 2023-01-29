@@ -14,7 +14,10 @@ class NodeFrontEndWrapper
     std::atomic<bool> m_done;
     std::thread *m_nfLoop;
     nf::NodeFrontEnd* m_api;
+    Context m_settings;
+    void init(const char* title = nullptr);
 public:
+    explicit NodeFrontEndWrapper(const Context& settings);
     NodeFrontEndWrapper();
     void destroy();
     nf::NodeFrontEnd* api();
