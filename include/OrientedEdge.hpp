@@ -12,8 +12,9 @@ class OrientedEdge : public Edge
         sf::VertexArray left_line{sf::Lines, 2};
         sf::VertexArray right_line{sf::Lines, 2};
     };
-    ArrowHead m_ah;
+    ArrowHead m_ahPos0, m_ahPos1;
 public:
+    bool m_2way = false;
     void update(const sf::RenderWindow &window, EventFlags &ef) override;
     void draw(sf::RenderWindow &window) override;
 };
