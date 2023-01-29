@@ -26,24 +26,44 @@ void OrientedEdge::update(const sf::RenderWindow &window, EventFlags &ef) {
     pointOnLine = { m_nodeRef.end->getPosition().x + scaledPrimaryVec.x, m_nodeRef.end->getPosition().y + scaledPrimaryVec.y },
     primaryNormVecScaled = { primaryNormVec.x * tPrimaryNorm, primaryNormVec.y * tPrimaryNorm };
 
-    sf::Vector2f startPos = { m_nodeRef.start->getPosition().x, m_nodeRef.start->getPosition().y };
-    sf::Vector2f endPos = { m_nodeRef.end->getPosition().x, m_nodeRef.end->getPosition().y };
-    m_ah.left_line[0].color = this_vertex(0).color;
-    m_ah.left_line[1].color = this_vertex(1).color;
-    m_ah.left_line[0].position = {pointOnLine.x + primaryNormVecScaled.x, pointOnLine.y + primaryNormVecScaled.y};
+    sf::Vector2f startPos = { m_nodeRef.start->getPosition().x, m_nodeRef.start->getPosition().y },
+                 endPos = { m_nodeRef.end->getPosition().x, m_nodeRef.end->getPosition().y };
+    m_ahPos0.left_line[0].color = this_vertex(0).color;
+    m_ahPos0.left_line[1].color = this_vertex(1).color;
+    m_ahPos0.left_line[0].position = {pointOnLine.x + primaryNormVecScaled.x, pointOnLine.y + primaryNormVecScaled.y};
     // Point offset: https://math.stackexchange.com/questions/175896/finding-a-point-along-a-line-a-certain-distance-away-from-another-point
-    m_ah.left_line[1].position = { (1-distRatio) * endPos.x + distRatio * startPos.x, (1-distRatio) * endPos.y + distRatio * startPos.y };
+    m_ahPos0.left_line[1].position = { (1-distRatio) * endPos.x + distRatio * startPos.x, (1-distRatio) * endPos.y + distRatio * startPos.y };
 
-    m_ah.right_line[0].color = this_vertex(0).color;
-    m_ah.right_line[1].color = this_vertex(1).color;
-    m_ah.right_line[0].position = { pointOnLine.x - primaryNormVecScaled.x, pointOnLine.y - primaryNormVecScaled.y} ;
-    m_ah.right_line[1].position = { (1-distRatio) * endPos.x + distRatio * startPos.x, (1-distRatio) * endPos.y + distRatio * startPos.y };
+    m_ahPos0.right_line[0].color = this_vertex(0).color;
+    m_ahPos0.right_line[1].color = this_vertex(1).color;
+    m_ahPos0.right_line[0].position = { pointOnLine.x - primaryNormVecScaled.x, pointOnLine.y - primaryNormVecScaled.y} ;
+    m_ahPos0.right_line[1].position = { (1-distRatio) * endPos.x + distRatio * startPos.x, (1-distRatio) * endPos.y + distRatio * startPos.y };
+
+    if (m_2way) {
+        primaryVec = {-primaryVec.x, -primaryVec.y};
+        scaledPrimaryVec = { primaryVec.x * -tPointOnLine, primaryVec.y * -tPointOnLine },
+        pointOnLine = { m_nodeRef.start->getPosition().x + scaledPrimaryVec.x, m_nodeRef.start->getPosition().y + scaledPrimaryVec.y };
+        distRatio = m_nodeRef.start->RADIUS / primaryVecMag;
+        m_ahPos1.left_line[0].color = this_vertex(0).color;
+        m_ahPos1.left_line[1].color = this_vertex(1).color;
+        m_ahPos1.left_line[0].position = {pointOnLine.x + primaryNormVecScaled.x, pointOnLine.y + primaryNormVecScaled.y};
+        m_ahPos1.left_line[1].position = { (1-distRatio) * startPos.x + distRatio * endPos.x, (1-distRatio) * startPos.y + distRatio * endPos.y }; //ok
+
+        m_ahPos1.right_line[0].color = this_vertex(0).color;
+        m_ahPos1.right_line[1].color = this_vertex(1).color;
+        m_ahPos1.right_line[0].position = { pointOnLine.x - primaryNormVecScaled.x, pointOnLine.y - primaryNormVecScaled.y} ;
+        m_ahPos1.right_line[1].position = { (1-distRatio) * startPos.x + distRatio * endPos.x, (1-distRatio) * startPos.y + distRatio * endPos.y };
+    }
 }
 
 void OrientedEdge::draw(sf::RenderWindow &window) {
     if (!m_nodeRef.start || !m_nodeRef.end) return;
     Edge::draw(window);
-    window.draw(m_ah.left_line);
-    window.draw(m_ah.right_line);
+    window.draw(m_ahPos0.left_line);
+    window.draw(m_ahPos0.right_line);
+    if (m_2way) {
+        window.draw(m_ahPos1.left_line);
+        window.draw(m_ahPos1.right_line);
+    }
 }
 
