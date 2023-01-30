@@ -16,6 +16,7 @@ class MainScene : public Scene
     std::list<_Node*> m_nodes;
     std::list<Edge*> m_edges;
     EventFlags ef;
+    bool m_node_marked_for_delete = false;
 
 public:
     MainScene(sf::RenderWindow &window);

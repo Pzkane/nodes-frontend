@@ -124,30 +124,28 @@ void MainScene::update()
 {
     Cache::CursorType cursorType = Cache::CursorType::Arrow;
 
-    for (auto it = m_edges.begin(); it != m_edges.end();)
-        if ((*it)->enf.f_delete_self)
-        {
-            delete (*it);
-            it = m_edges.erase(it);
-        }
-        else
-            (*it++)->update(*p_window, ef);
-
-    for (auto it = m_nodes.begin(); it != m_nodes.end();)
+    // m_node_marked_for_delete = false;
+    for (auto it = m_nodes.rbegin(); it != m_nodes.rend();)
     {
         if ((*it)->enf.f_delete_self)
         {
             delete (*it);
-            it = m_nodes.erase(it);
+            // Temp iterator for reverse action
+            auto tmp = m_nodes.erase(--it.base());
+            it = std::list<_Node*>::reverse_iterator(tmp);
         }
         else
         {
-            // Unintentional, but useful feature - wil always
-            // swap 2 of overlaying elements
-            if ((*it)->isMoving() && it != std::prev(m_nodes.end()))
+            // Move last dragged node on top
+            if ((*it)->isMoving() && it != std::prev(m_nodes.rend()))
                 std::iter_swap(it, m_nodes.rbegin());
 
             (*it)->update(*p_window, ef);
+            
+            // Check if any node in current order is marked for removal and disable event flag
+            if ((*it)->enf.f_delete_self) {
+                ef.f_lalt = false;
+            }
 
             Mouse& m = MouseCache::getInstance(*p_window)->gMouse;
 
@@ -160,6 +158,22 @@ void MainScene::update()
                 cursorType = Cache::CursorType::Hand;
             ++it;
         }
+    }
+
+    for (auto it = m_edges.rbegin(); it != m_edges.rend();)
+    if ((*it)->enf.f_delete_self) {
+        delete (*it);
+        // Temp iterator for reverse action
+        auto tmp = m_edges.erase(--it.base());
+        it = std::list<Edge*>::reverse_iterator(tmp);
+    } else {
+        (*it)->update(*p_window, ef);
+
+        // Check if any node in current order is marked for removal and disable event flag
+        if ((*it)->enf.f_delete_self) {
+            ef.f_lalt = false;
+        }
+        ++it;
     }
 
     switch (cursorType)
