@@ -13,7 +13,7 @@ MainScene::MainScene(sf::RenderWindow &window) : ef(), Scene(window)
 #ifdef BENCHMARK
     for (int i = 0; i < 30000; ++i)
     {
-        _Node *node = new _Node(DEF_NODE_RAD);
+        NodeImpl *node = new NodeImpl(DEF_NODE_RAD);
         node->setFillColor(sf::Color::Red);
         node->sf::CircleShape::setPosition(sf::Vector2f(Utils::get_random_number<float>(0.f, 500.f), Utils::get_random_number<float>(0.f, 500.f)));
         pushNode(node);
@@ -38,9 +38,9 @@ MainScene::~MainScene()
     }
 }
 
-_Node* MainScene::createNode(float radius = DEF_NODE_RAD)
+NodeImpl* MainScene::createNode(float radius = DEF_NODE_RAD)
 {
-    _Node *node = new _Node(DEF_NODE_RAD);
+    NodeImpl *node = new NodeImpl(radius);
     sf::Vector2f mPos = Utils::getMousePosf(*p_window);
     sf::Vector2f createPos = mPos;
     sf::Vector2u winSize = p_window->getSize();
@@ -96,7 +96,7 @@ void MainScene::removeEdge(Nodes2ptr *ptr_payload)
     }
 }
 
-void MainScene::pushNode(_Node *node)
+void MainScene::pushNode(NodeImpl *node)
 {
     m_nodes.push_back(node);
 }
@@ -108,16 +108,21 @@ void MainScene::pushEdge(Edge *conn)
 
 void MainScene::centerView()
 {
-    sf::Vector2f oldMousePos = Utils::getMousePosf(*p_window);
-    // for (auto it = m_nodes.begin(); it != m_nodes.end(); ++it)
-    // {
-    //     sf::Vector2f currNodePos = (*it)->getPosition();
-    //     float offsetX = oldMousePos.x - currNodePos.x;
-    //     float offsetY = oldMousePos.y - currNodePos.y;
-    //     (*it)->setPosition(p_window->getView().getCenter().x + offsetX,
-    //                        p_window->getView().getCenter().y + offsetY);
-    // }
-    Scene::centerView(oldMousePos);
+    sf::Vector2f mousePos = Utils::getMousePosf(*p_window);
+    sf::Vector2f currCenter = p_window->getView().getCenter();
+    sf::Vector2f offset {currCenter.x - mousePos.x, currCenter.y - mousePos.y};
+    for (auto it = m_nodes.begin(); it != m_nodes.end(); ++it) {
+        sf::Vector2f currNodePos = (*it)->getPosition();
+        (*it)->setPosition(currNodePos.x + offset.x, currNodePos.y + offset.y);
+    }
+}
+
+void MainScene::moveView(int offset_x, int offset_y)
+{
+    for (auto it = m_nodes.begin(); it != m_nodes.end(); ++it) {
+        sf::Vector2f currNodePos = (*it)->getPosition();
+        (*it)->setPosition(currNodePos.x + offset_x, currNodePos.y + offset_y);
+    }
 }
 
 void MainScene::update()
@@ -132,7 +137,7 @@ void MainScene::update()
             delete (*it);
             // Temp iterator for reverse action
             auto tmp = m_nodes.erase(--it.base());
-            it = std::list<_Node*>::reverse_iterator(tmp);
+            it = std::list<NodeImpl*>::reverse_iterator(tmp);
         }
         else
         {
@@ -283,6 +288,17 @@ void *MainScene::updateInput(const sf::Event &event, void* payload)
         }
         break;
 
+    case sf::Event::KeyPressed:
+        switch (event.key.code)
+        {
+        case sf::Keyboard::LShift:
+            ef.f_lshift = true;
+            break;
+        default:
+            break;
+        }
+        break;
+
     case sf::Event::KeyReleased:
         switch (event.key.code)
         {
@@ -302,8 +318,23 @@ void *MainScene::updateInput(const sf::Event &event, void* payload)
             ef.f_space = true;
             break;
 
+        case sf::Keyboard::LShift:
+            ef.f_lshift = false;
+            break;
+
         default:
             break;
+        }
+        break;
+
+    case sf::Event::MouseWheelScrolled:
+        {
+            float scrolled = event.mouseWheelScroll.delta;
+            if (!ef.f_lshift) {
+                moveView(0, scrolled*50);
+            } else {
+                moveView(scrolled*50, 0);
+            }
         }
         break;
 
@@ -311,8 +342,11 @@ void *MainScene::updateInput(const sf::Event &event, void* payload)
         break;
     }
 
-    if (ef.f_mmb)
+    if (ef.f_mmb) {
         centerView();
+        // Reset dragging
+        ef.f_mmb = false;
+    }
 
     return nullptr;
 }

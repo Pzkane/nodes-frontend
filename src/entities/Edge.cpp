@@ -13,12 +13,12 @@ Edge::Edge(sf::Color color) : m_nodeRef({nullptr, nullptr})
     init(color);
 }
 
-Edge::Edge(_Node *const &start_node, _Node *const &end_node, sf::Color color) : m_nodeRef({start_node, end_node})
+Edge::Edge(NodeImpl *const &start_node, NodeImpl *const &end_node, sf::Color color) : m_nodeRef({start_node, end_node})
 {
     init(color);
 }
 
-void Edge::setNodeEndings(_Node *const &start_node, _Node *const &end_node)
+void Edge::setNodeEndings(NodeImpl *const &start_node, NodeImpl *const &end_node)
 {
     m_nodeRef.start = start_node;
     m_nodeRef.end = end_node;

@@ -1,11 +1,13 @@
-#ifndef SRC_API_LISNKEDLISTNODE_HPP_INCLUDED
-#define SRC_API_LISNKEDLISTNODE_HPP_INCLUDED
+#ifndef SRC_API_LISNKEDLISTNODEIMPL_HPP_INCLUDED
+#define SRC_API_LISNKEDLISTNODEIMPL_HPP_INCLUDED
 
 #include "custom_type_traits.hpp"
 #include "Node.hpp"
 
 namespace nf {
-
+/**
+ * @brief Represents single node of a singly linked list
+*/
 template <typename T>
 class LinkedListNode : public Node
 {
@@ -15,24 +17,36 @@ public:
     LinkedListNode(NodeFrontEnd *api) : Node(api) {}
     ~LinkedListNode() = default;
 
+    /**
+     * On-screen character representation for node's contents
+     * @returns std::string
+    */
     virtual std::string representation() { return std::string(); };
 
     void setNext(LinkedListNode &lnode)
     {
         if (m_next)
         {
-            m_api->disconnectNodes(m_node, const_cast<_Node*>(m_next->getInnerNode()));
+            m_api->disconnectNodes(m_node, const_cast<NodeImpl*>(m_next->getInnerNode()));
         }
-        m_api->connectNodes(m_node, const_cast<_Node*>(lnode.getInnerNode()));
+        m_api->connectOrientedNodes(m_node, const_cast<NodeImpl*>(lnode.getInnerNode()));
         m_next = &lnode;
     }
 
+    /**
+     * Set/replace internal `data` element and its representation (custom type)
+     * @param data of custom type T
+    */
     void setData(T data)
     {
         m_data = data;
         m_node->setText(representation());
     }
 
+    /**
+     * Set/replace internal `data` element and its representation (std::string)
+     * @param data of string type T
+    */
     template <typename sT>
     typename std::enable_if<is_string<sT>::value>::type
     setData(sT data)
@@ -41,6 +55,10 @@ public:
         m_node->setText(std::string(data));
     }
 
+    /**
+     * Set/replace internal `data` element and its representation (any numeric type)
+     * @param data of numeric type T
+    */
     template <typename aT>
     typename std::enable_if<std::is_arithmetic<aT>::value>::type
     setData(aT data)
@@ -49,9 +67,13 @@ public:
         m_node->setText(std::to_string(data));
     }
 
+    /**
+     * `data` member accessor
+     * @returns const T&
+    */
     const T& getData() { return m_data; }
 };
 
 };
 
-#endif // SRC_API_LISNKEDLISTNODE_HPP_INCLUDED
+#endif // SRC_API_LISNKEDLISTNODEIMPL_HPP_INCLUDED

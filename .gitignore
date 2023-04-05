@@ -37,3 +37,8 @@
 
 .env
 .cache
+
+Doxyfile
+
+# Documentation (generated)
+/doxygen/

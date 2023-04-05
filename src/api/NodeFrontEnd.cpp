@@ -136,44 +136,55 @@ void NodeFrontEnd::setWindowColor(const sf::Color &color)
     m_backgroundColor = color;
 }
 
-_Node* NodeFrontEnd::addNode(const char *text, float x, float y)
+NodeImpl* NodeFrontEnd::addNode(const char *text, float x, float y, NodeType n_type)
 {
-    auto p = reinterpret_cast<_Node *>(m_ss.updateInput(EventType::addNode));
+    auto p = reinterpret_cast<NodeImpl *>(m_ss.updateInput(EventType::addNode));
     p->setText(text);
-    p->setPosition(x, y);
+    switch (n_type)
+    {
+    case NodeType::LinkedList:
+        say(m_ll_shift.x)
+        p->setPosition(x+LL_NODE_SPACING, y);
+        m_ll_shift = {m_ll_shift.x + LL_NODE_SPACING, m_ll_shift.y};
+        break;
+    
+    default:
+        p->setPosition(x, y);
+        break;
+    }
     return p;
 }
 
-void NodeFrontEnd::connectNodes(_Node *n1, _Node *n2)
+void NodeFrontEnd::connectNodes(NodeImpl *n1, NodeImpl *n2)
 {
     auto p = reinterpret_cast<Edge *>(m_ss.updateInput(EventType::addEdge));
     p->setNodeEndings(n1, n2);
 }
-void NodeFrontEnd::connectWeightNodes(_Node *n1, _Node *n2, float weight)
+void NodeFrontEnd::connectWeightNodes(NodeImpl *n1, NodeImpl *n2, float weight)
 {
     auto p = reinterpret_cast<WeightedEdge *>(m_ss.updateInput(EventType::addWEdge));
     p->setNodeEndings(n1, n2);
     p->setWeight(weight);
 }
 
-void NodeFrontEnd::connectOrientedNodes(_Node *n1, _Node *n2)
+void NodeFrontEnd::connectOrientedNodes(NodeImpl *n1, NodeImpl *n2)
 {
     auto p = reinterpret_cast<Edge *>(m_ss.updateInput(EventType::addOEdge));
     p->setNodeEndings(n1, n2);
 }
 
-void NodeFrontEnd::disconnectNodes(_Node *n1, _Node *n2)
+void NodeFrontEnd::disconnectNodes(NodeImpl *n1, NodeImpl *n2)
 {
     Nodes2ptr *pn = new Nodes2ptr{n1, n2};
     m_ss.updateInput(EventType::disconnectNodes, pn);
 }
 
-void NodeFrontEnd::setNodePosition(_Node *node, float x, float y)
+void NodeFrontEnd::setNodePosition(NodeImpl *node, float x, float y)
 {
     setNodePosition(node, sf::Vector2f(x, y));
 }
 
-void NodeFrontEnd::setNodePosition(_Node *node, sf::Vector2f vf)
+void NodeFrontEnd::setNodePosition(NodeImpl *node, sf::Vector2f vf)
 {
     node->setPosition(vf);
 }

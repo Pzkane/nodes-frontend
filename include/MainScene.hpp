@@ -3,17 +3,20 @@
 
 #include <queue>
 #include "Scene.hpp"
-#include "_Node.hpp"
+#include "NodeImpl.hpp"
 #include "EventType.hpp"
 #include "OrientedEdge.hpp"
 #include "WeightedEdge.hpp"
 
 namespace nf {
 
+/**
+ * @brief Scene for algorithms
+*/
 class MainScene : public Scene
 {
     bool m_b_mousePressed = false;
-    std::list<_Node*> m_nodes;
+    std::list<NodeImpl*> m_nodes;
     std::list<Edge*> m_edges;
     EventFlags ef;
     bool m_node_marked_for_delete = false;
@@ -21,14 +24,25 @@ class MainScene : public Scene
 public:
     MainScene(sf::RenderWindow &window);
     ~MainScene();
-    _Node* createNode(float radius);
+    NodeImpl* createNode(float radius);
     Edge* createEdge();
     OrientedEdge* createOEdge();
     WeightedEdge* createWEdge();
     void removeEdge(Nodes2ptr* ptr_payload);
-    void pushNode(_Node* node);
+    void pushNode(NodeImpl* node);
     void pushEdge(Edge* conn);
+    /**
+     * @brief Center all elements relative to mouse press
+     * 
+     * Illusion, view is untouched, everything else is moved by offset
+    */
     void centerView();
+    /**
+     * @brief Move view by given offset using scroll
+     * 
+     * Illusion, view is untouched, everything else is moved by offset
+    */
+    void moveView(int offset_x, int offset_y);
 
     void update() override;
     void draw() override;

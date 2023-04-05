@@ -13,7 +13,7 @@ class WeightedEdge : public Edge
     void init();
 public:
     WeightedEdge(sf::Color color = sf::Color::Black, float _weight = 0.f);
-    WeightedEdge(_Node *const &start_node, _Node *const &end_node, sf::Color color = sf::Color::Black, float _weight = 0.f);
+    WeightedEdge(NodeImpl *const &start_node, NodeImpl *const &end_node, sf::Color color = sf::Color::Black, float _weight = 0.f);
     ~WeightedEdge() = default;
 
     void setWeight(float weight);

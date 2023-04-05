@@ -10,7 +10,7 @@ namespace nf {
 class Node
 {
 protected:
-    _Node *m_node;
+    NodeImpl *m_node;
     NodeFrontEnd *m_api;
     void createNode();
 public:
@@ -18,7 +18,7 @@ public:
     ~Node() = default;
     void setPosition(float x, float y);
     void setText(const std::string& label);
-    const _Node* const getInnerNode() const;
+    const NodeImpl* const getInnerNode() const;
     Node& operator=(const Node& node);
 };
 

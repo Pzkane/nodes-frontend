@@ -8,15 +8,42 @@
 
 namespace nf {
 
+/**
+ * @brief Generalized class for all visual shapes with overridable helper utilities
+ * 
+ * Consists of current EventFlags
+*/
 class AbstractShape
 {
 public:
     EventFlags m_event_flags;
     AbstractShape() {}
     ~AbstractShape() = default;
+
+    /**
+     * Set/replace latest internal `m_event_flags` member for shape
+     * @param ef EventFlags reference
+    */
     void setEventFlags(const EventFlags &ef);
+    /**
+     * Determine whenever given position is inside of this shape
+     * @param position sf::Vector2f reference
+     * @returns bool Always returns `true` if not overriden
+    */
     virtual bool checkPosAgainstShape(const sf::Vector2f &position) { return true; };
+    /**
+     * Explicit member to determine whenever given mouse position is inside of this shape
+     * Usually internally calls `checkPosAgainstShape`
+     * @param position sf::Vector2f reference
+     * @returns bool Always returns `true` if not overriden
+    */
     virtual bool mouseInside(const sf::Vector2f &position) { return true; };
+    /**
+     * !Not finished
+     * Callback for specific event type (double click, button press while `mouseInside`, etc)
+     * Usually internally calls `checkPosAgainstShape`
+     * @param callbackFunction VoidCallback type
+    */
     virtual void setCallback(VoidCallback callbackFnc) {};
 };
 

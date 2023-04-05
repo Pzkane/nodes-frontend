@@ -6,8 +6,14 @@
 #include "NodeFrontEnd.hpp"
 #include "LinkedListNode.hpp"
 
+// Main API loop; WRAPPER should be defined in driver
+#define LOOP while (!WRAPPER.isDone()) {} WRAPPER.destroy(); say("DRIVER OUT");
+
 namespace nf {
 
+/**
+ * Friendly wrapper around API dispatcher
+*/
 class NodeFrontEndWrapper
 {
     bool m_terminated;

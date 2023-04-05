@@ -2,15 +2,15 @@
 #define SRC_ENTITIES_EDGE_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
-#include "_Node.hpp"
+#include "NodeImpl.hpp"
 #include "Line.hpp"
 
 namespace nf {
 
 struct NodeRef
 {
-    _Node *start = nullptr;
-    _Node *end = nullptr;
+    NodeImpl *start = nullptr;
+    NodeImpl *end = nullptr;
 };
 
 class Edge : public Entity, public Line
@@ -19,13 +19,13 @@ class Edge : public Entity, public Line
 protected:
     NodeRef m_nodeRef;
 
-    friend class _Node;
+    friend class NodeImpl;
 
 public:
     explicit Edge(sf::Color color = sf::Color::Black);
-    Edge(_Node *const &start_node, _Node *const &end_node, sf::Color color = sf::Color::Black);
+    Edge(NodeImpl *const &start_node, NodeImpl *const &end_node, sf::Color color = sf::Color::Black);
     ~Edge() = default;
-    void setNodeEndings(_Node *const &start_node, _Node *const &end_node);
+    void setNodeEndings(NodeImpl *const &start_node, NodeImpl *const &end_node);
     NodeRef& getNodeEndings() const;
 
     const sf::VertexArray& getDrawable() const;

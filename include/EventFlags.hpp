@@ -6,7 +6,7 @@
 namespace nf {
 
 /* Forward declaration */
-class _Node;
+class NodeImpl;
 
 class EventFlags : public Flags
 {
@@ -17,8 +17,9 @@ public:
     bool f_lalt = false;
     bool f_ralt = false;
     bool f_space = false;
-    _Node *p_start_node = nullptr;
-    _Node *p_end_node = nullptr;
+    bool f_lshift = false;
+    NodeImpl *p_start_node = nullptr;
+    NodeImpl *p_end_node = nullptr;
     EventFlags() : Flags() {}
     ~EventFlags() = default;
 };

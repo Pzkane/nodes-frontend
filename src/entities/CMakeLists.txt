@@ -3,7 +3,7 @@ target_sources(entitiesLib
         Edge.cpp
         OrientedEdge.cpp
         WeightedEdge.cpp
-        _Node.cpp
+        NodeImpl.cpp
         Label.cpp
         Container.cpp
 )

@@ -25,7 +25,7 @@ WeightedEdge::WeightedEdge(sf::Color color, float _weight) : m_weight(_weight), 
     init();
 }
 
-WeightedEdge::WeightedEdge(_Node *const &start_node, _Node *const &end_node, sf::Color color, float _weight) : m_weight(_weight), Edge(start_node, end_node, color)
+WeightedEdge::WeightedEdge(NodeImpl *const &start_node, NodeImpl *const &end_node, sf::Color color, float _weight) : m_weight(_weight), Edge(start_node, end_node, color)
 {
     init();
 }

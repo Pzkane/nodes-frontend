@@ -3,6 +3,10 @@
 
 #include <functional>
 
+/**
+ * !Not finished
+ * @brief Callback types used in casting on pointer return
+*/
 namespace nf {
 
 using VoidCallback = std::function<void()>;
