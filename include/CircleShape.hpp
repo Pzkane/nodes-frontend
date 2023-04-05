@@ -17,7 +17,7 @@ class CircleShape : public sf::CircleShape, public AbstractShape, public Draggab
 
 public:
     /**
-     * Create SMFL graphic circle
+     * Create SFML graphic circle
      * @param radius
      * @param pointCount Circle aliasing
      * @param ms Click milliseconds for callback
@@ -27,13 +27,13 @@ public:
     ~CircleShape() = default;
 
     /**
-     * Set SMFL shape position
+     * Set SFML shape position
      * @param x
-     * @param y Circle aliasing
+     * @param y
     */
     void setPosition(const float x, const float y) override;
     /**
-     * Set SMFL shape position
+     * Set SFML shape position
      * @param position sf::Vector2f
     */
     void setPosition(const sf::Vector2f &position) override;
@@ -59,17 +59,17 @@ public:
     */
     void setCallback(VoidCallback callbackFnc) override;
     /**
-     * Get SMFL shape position
+     * Get SFML shape position
      * @returns sf::Vector2f
     */
     sf::Vector2f getPosition() const override;
     /**
-     * Get SMFL shape origin of transformations
+     * Get SFML shape origin of transformations
      * @returns sf::Vector2f
     */
     sf::Vector2f getOrigin() override;
     /**
-     * Get SMFL shape global bounds (grid relative)
+     * Get SFML shape global bounds (grid relative)
      * @returns sf::Vector2f
     */
     sf::FloatRect getGlobalBounds() override;

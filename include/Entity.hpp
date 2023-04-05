@@ -6,13 +6,29 @@
 
 namespace nf {
 
+/**
+ * @brief Abstract class for entities to inherit from if used in render
+ * 
+ * Primarily consists of 2 methods:
+ *  1. first handle events and update entity's state
+ *  2. draw changes
+*/
 class Entity
 {
 public:
     EntityFlags enf;
     Entity() = default;
     ~Entity() = default;
+    /**
+     * Update entity's state. Should be overriden
+     * @param window RenderWindow in which given entity is being drawn
+     * @param ef EntityFlags containing recent state based on input changes
+    */
     virtual void update(const sf::RenderWindow &window, EventFlags &ef) = 0;
+    /**
+     * Draw entity on screen. Should be overriden
+     * @param window RenderWindow in which given entity is being drawn
+    */
     virtual void draw(sf::RenderWindow &window) = 0;
 };
 

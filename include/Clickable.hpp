@@ -10,6 +10,11 @@
 
 namespace nf {
 
+/**
+ * !Not finished
+ * @brief Describes clickable property of an object with mouse interaction
+ * Used mainly for custom callbacks
+*/
 template<typename Tc>
 class Clickable
 {
@@ -29,14 +34,25 @@ public:
         callback_ = nullptr;
     }
     virtual ~Clickable() = default;
+    /**
+     * Set delay interval for process to consider it as double click
+     * @param ms Delay in milliseconds
+    */
     void setDelayForDBLClick(size_t ms)
     {
         click_delay_ms_ = ms;
     }
+    /**
+     * Set callback invoked on double click
+     * @param callback Callback function pointer
+    */
     void setCallback(VoidCallback callback)
     {
         callback_ = callback;
     }
+    /**
+     * Invoke previously set callback
+    */
     void invokeCallback()
     {
         if (!callback_) return;
