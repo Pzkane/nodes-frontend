@@ -35,7 +35,12 @@ void NodeImpl::update(const sf::RenderWindow &window, EventFlags &ef)
     setEventFlags(ef);
     trackMousePointer(window);
 
-    if (mouseInside(Utils::getMousePosf(window)))
+    if (m_destroy) {
+        enf.f_delete_self = true;
+        return;
+    }
+
+    if (mouseInside(Utils::getMousePosf(window)) && m_isVisible)
     {
         Mouse& m = MouseCache::getInstance(window)->gMouse;
         if (ef.f_lmb)
@@ -107,6 +112,10 @@ void NodeImpl::setTextColor(const sf::Color& clr)
     m_text.setFillColor(clr);
 }
 
+void NodeImpl::setVisibility(const bool state) {
+    m_isVisible = state;
+}
+
 void NodeImpl::pushConnNode(NodeImpl *const node)
 {
     m_connected_nodes.push_back(node);
@@ -117,3 +126,10 @@ const std::list<NodeImpl*>& NodeImpl::getConnectedNodes() const
     return m_connected_nodes;
 }
 
+bool NodeImpl::isVisible() const {
+    return m_isVisible;
+}
+
+void NodeImpl::destroy() {
+    m_destroy = true;
+}

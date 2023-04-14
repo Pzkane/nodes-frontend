@@ -82,6 +82,17 @@ WeightedEdge* MainScene::createWEdge()
     return conn;
 }
 
+void MainScene::removeNode(NodeImpl *node_ptr_payload)
+{
+    for (auto* it : m_nodes)
+    {
+        if (&(*it) == &(*node_ptr_payload)) {
+            it->destroy();
+            break;
+        }
+    }
+}
+
 void MainScene::removeEdge(Nodes2ptr *ptr_payload)
 {
     for (auto &&it : m_edges)
@@ -233,12 +244,14 @@ void MainScene::draw()
 {
     for (auto &&it : m_edges)
     {
-        it->draw(*p_window);
+        if (it->isVisible())
+            it->draw(*p_window);
     }
 
     for (auto &&it : m_nodes)
     {
-        it->draw(*p_window);
+        if (it->isVisible())
+            it->draw(*p_window);
     }
 }
 
@@ -365,6 +378,9 @@ void* MainScene::updateInput(const EventType &eventType, void* payload)
         return createWEdge();
     case EventType::disconnectNodes:
         removeEdge(reinterpret_cast<Nodes2ptr*>(payload));
+        return nullptr;
+    case EventType::destroyNode:
+        removeNode(reinterpret_cast<NodeImpl*>(payload));
         return nullptr;
     default:
         break;

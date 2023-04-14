@@ -25,6 +25,7 @@ namespace Utils
     template <typename T>
     T get_random_number(T from, T to);
     sf::Vector2f getMousePosf(const sf::RenderWindow &window);
+    void delay(unsigned int ms);
 }
 
 };

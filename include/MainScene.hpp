@@ -28,6 +28,7 @@ public:
     Edge* createEdge();
     OrientedEdge* createOEdge();
     WeightedEdge* createWEdge();
+    void removeNode(NodeImpl *node_ptr_payload);
     void removeEdge(Nodes2ptr* ptr_payload);
     void pushNode(NodeImpl* node);
     void pushEdge(Edge* conn);

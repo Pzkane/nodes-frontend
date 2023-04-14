@@ -34,6 +34,13 @@ const sf::VertexArray& Edge::getDrawable() const
     return *this;
 }
 
+bool Edge::isVisible() const {
+    if (!m_nodeRef.start || !m_nodeRef.end
+      || !m_nodeRef.start->isVisible() || !m_nodeRef.end->isVisible())
+        return false;
+    return true;
+}
+
 bool Edge::mouseInside(const sf::Vector2f &position) {
     return inLine(position);
 }

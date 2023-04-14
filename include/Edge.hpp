@@ -28,7 +28,16 @@ public:
     void setNodeEndings(NodeImpl *const &start_node, NodeImpl *const &end_node);
     NodeRef& getNodeEndings() const;
 
+    /**
+     * Get SFML line
+     * @returns const sf::VertexArray&
+    */
     const sf::VertexArray& getDrawable() const;
+    /**
+     * Get visiblity state
+     * @returns bool
+    */
+    bool isVisible() const;
     bool mouseInside(const sf::Vector2f &position) override;
     void update(const sf::RenderWindow &window, EventFlags &ef) override;
     void draw(sf::RenderWindow &window) override;

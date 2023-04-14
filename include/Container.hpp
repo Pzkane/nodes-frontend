@@ -46,7 +46,7 @@ public:
      * Set whenever this object will be rendered on screen
      * @param state Boolean
     */
-    void setVisible(bool state);
+    void setVisibility(bool state);
     /**
      * Determine whenever this object is being rendered
      * @returns bool

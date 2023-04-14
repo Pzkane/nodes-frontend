@@ -48,11 +48,21 @@ public:
     void setWindowColor(const sf::Color &color);
     void setNodePosition(NodeImpl *node, float x, float y);
     void setNodePosition(NodeImpl *node, sf::Vector2f vf);
-    NodeImpl* addNode(const char *text = "", float x = 0, float y = 0, NodeType n_type = NodeType::Generic);
+    /**
+     * Reset padding for linked list
+     * @param pad sf::Vector2f
+    */
+    void setLinkedListShiftPos(sf::Vector2f pad) { m_ll_shift = pad; }
+    NodeImpl* addNode(const char *text = "", float x = 0, float y = 0, bool visible = true, NodeType n_type = NodeType::Generic);
     void connectNodes(NodeImpl *n1, NodeImpl *n2);
     void connectOrientedNodes(NodeImpl *n1, NodeImpl *n2);
     void connectWeightNodes(NodeImpl *n1, NodeImpl *n2, float weight = 0);
     void disconnectNodes(NodeImpl *n1, NodeImpl *n2);
+    /**
+     * Notify scene to destroy given node
+     * @param n NodeImpl*
+    */
+    void destroyNode(NodeImpl *n);
     bool isInit() { return m_initizlized; };
 };
 

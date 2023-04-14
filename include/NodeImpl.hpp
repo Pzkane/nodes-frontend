@@ -23,11 +23,13 @@ const size_t DEF_NODE_RAD = 40;
 class NodeImpl : public Entity, public CircleShape
 {
     static unsigned id;
-    bool m_is_dragged = false;
+    bool m_is_dragged = false,
+         m_isVisible = true,
+         m_destroy = false;
     sf::Text m_text;
-    void updateText();
     std::list<NodeImpl*> m_connected_nodes;
 
+    void updateText();
 public:
     const float RADIUS;
     bool m_hovering;
@@ -36,10 +38,24 @@ public:
     void update(const sf::RenderWindow &window, EventFlags &ef) override;
     void draw(sf::RenderWindow &window) override;
 
+    /**
+     * Set visibility state for node
+     * @param state bool
+    */
+    void setVisibility(const bool state);
     void setText(const std::string &text);
     void setTextColor(const sf::Color& clr);
     void pushConnNode(NodeImpl *const node);
     const std::list<NodeImpl*>& getConnectedNodes() const;
+    /**
+     * Get visiblity state
+     * @returns bool
+    */
+    bool isVisible() const;
+    /**
+     * Mark node for destruction for following render cycle
+    */
+    void destroy();
 };
 
 struct Nodes2ptr {

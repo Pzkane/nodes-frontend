@@ -1,6 +1,9 @@
 // DEMO
 #include <string>
 #include <chrono>
+#include <vector>
+#include <stdexcept>
+#include <cassert>
 
 // 1: Include wrapper header
 #include "NodeFrontEndWrapper.hpp"
@@ -20,7 +23,7 @@ static nf::NodeFrontEndWrapper NFWrap(nf::Context{
 ///
 /// Test and setup NF environment
 ///
-int test_nf_driver()
+int test04_nf_driver()
 {
     // 3: Get api from wrapper
     nf::NodeFrontEnd* api = NFWrap.api();
@@ -58,13 +61,7 @@ int test_nf_driver()
 
     for (int i = 0; i < 1; ++i)
     {
-        begin = std::chrono::system_clock::now();
-
-        do {
-            end = std::chrono::system_clock::now();
-            /* do nothing during interval */
-        } while (std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() < 1);
-        std::cout << std::chrono::duration_cast<std::chrono::seconds>(end - begin).count() << std::endl;
+        nf::Utils::delay(500);
 
         txt += std::to_string(i);
         if (node)
@@ -97,7 +94,7 @@ struct MyNode : public nf::LinkedListNode<std::string>
 ///
 /// Test MyNodeTyped with default representations
 ///
-int test_mynode()
+int test01_mynode()
 {
     MyNode *n1 = new MyNode();
     n1->setPosition(150, 150);
@@ -145,7 +142,7 @@ struct MyNodeTyped : public nf::LinkedListNode<TestS>
 ///
 /// Test MyNodeTyped with object representation
 ///
-int test_typedmynode()
+int test02_typedmynode()
 {
     MyNodeTyped n1;
     n1.setPosition(150, 250);
@@ -160,7 +157,7 @@ int test_typedmynode()
     return 0;
 }
 
-int test_typed_linked_list_autoshift() {
+int test03_typed_linked_list_autoshift() {
     MyNodeTyped n1;
     n1.setPosition(300, 450);
     n1.setData({"This", 88});
@@ -172,6 +169,96 @@ int test_typed_linked_list_autoshift() {
     return 0;
 }
 
+struct MyNodeTypedDelayed : public nf::LinkedListNode<std::string>
+{
+    explicit MyNodeTypedDelayed(bool visible = true) : LinkedListNode<std::string>(NFWrap.api(), visible) {}
+};
+
+int test06_create_ll_with_delay() {
+    /// 1. Setup with proper visiblities
+    MyNodeTypedDelayed n1;
+    MyNodeTypedDelayed n2(false);
+    n1.setPosition(650, 500);
+    n1.setData("Delayed1");
+    n2.setData("Delayed2");
+    n1.setNext(n2);
+
+    /// 2. Perform 'animation'
+    nf::Utils::delay(700);
+    n2.setVisibility(true);
+    return 0;
+}
+
+int test07_create_and_hide_ll_with_delay() {
+    /// 1. Setup with proper visiblities
+    MyNodeTypedDelayed n1;
+    MyNodeTypedDelayed n2(false);
+    n1.setPosition(650, 600);
+    n2.setPosition(750, 600);
+    n1.setData("Delayed\nAndHid3");
+    n2.setData("Delayed\nAndHid4");
+    n1.setNext(n2);
+
+    /// 2. Perform 'animation'
+    nf::Utils::delay(500);
+    n2.setVisibility(true);
+    // Hide first node
+    nf::Utils::delay(250);
+    n1.destroy();
+    // Hide second node
+    nf::Utils::delay(250);
+    n2.destroy();
+    
+    // Following calls to these nodes must throw 
+    // because internal nodes were destroyed
+    
+    try {
+        n2.destroy();
+        assert(("Access to deleted node", false));
+    } catch (std::runtime_error &err) {
+        std::cout << "Assert success: " << err.what() << std::endl;
+    }
+
+    return 0;
+}
+
+struct TestAddr {
+    int addr;
+    short number;
+};
+
+struct MyNodeTyped1 : public nf::LinkedListNode<TestAddr>
+{
+    MyNodeTyped1() : LinkedListNode<TestAddr>(NFWrap.api()) {}
+    std::string representation() override {
+        return std::string("{" + std::to_string(getData().addr) + " and " + std::to_string(getData().number) + "}");
+    }
+};
+
+int test08_ll_with_transition() {
+    // Reset padding
+    NFWrap.api()->setLinkedListShiftPos({0, 700});
+    // Dynamically create nodes
+    std::vector<MyNodeTyped1> v;
+    for(int i = 0; i < 5; ++i) {
+        v.push_back(MyNodeTyped1{});
+    }
+    // Set next for each node
+    MyNodeTyped1* n_preced = &v[0];
+    short i = 0;
+    for(auto& node : v) {
+        n_preced->setData(TestAddr{i++, 42+i});
+        if (!(&node == n_preced)) {
+            n_preced->setNext(node);
+            n_preced = &node;
+        }
+    }
+    n_preced->setData(TestAddr{i++, 42+i});
+    
+    // TODO: Traverse with state changes
+    return 0;
+}
+
 ///
 /// Driver
 ///
@@ -180,13 +267,16 @@ int main(int argc, char** argv)
     ///
     /// 1. Setup environment
     ///
-    test_mynode();
-    test_typedmynode();
-    test_typed_linked_list_autoshift();
-    test_nf_driver();
+    test01_mynode();
+    test02_typedmynode();
+    test03_typed_linked_list_autoshift();
+    test04_nf_driver();
+    test06_create_ll_with_delay();
+    test07_create_and_hide_ll_with_delay();
+    test08_ll_with_transition();
     ///
     /// 2. Launch loop and handle events
     ///
-    LOOP;
+    START_LOOP;
     return 0;
 }

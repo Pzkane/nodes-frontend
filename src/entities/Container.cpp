@@ -27,7 +27,7 @@ void Container::addChildElement(Container&& child) {
     m_children.push_back(std::move(child));
 }
 
-void Container::setVisible(bool state) { m_visible = state; }
+void Container::setVisibility(bool state) { m_visible = state; }
 
 bool Container::isHidden() { return !m_visible; }
 

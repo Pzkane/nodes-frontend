@@ -14,17 +14,21 @@ class LinkedListNode : public Node
     LinkedListNode *m_next = nullptr;
     T m_data;
 public:
-    LinkedListNode(NodeFrontEnd *api) : Node(api) {}
+    LinkedListNode(NodeFrontEnd *api, bool visible = true) : Node(api, visible) {}
     ~LinkedListNode() = default;
 
     /**
      * On-screen character representation for node's contents
      * @returns std::string
     */
-    virtual std::string representation() { return std::string(); };
+    virtual std::string representation() {
+        nodeSanityCheck();
+        return std::string();
+    };
 
     void setNext(LinkedListNode &lnode)
     {
+        nodeSanityCheck();
         if (m_next)
         {
             m_api->disconnectNodes(m_node, const_cast<NodeImpl*>(m_next->getInnerNode()));
@@ -39,6 +43,7 @@ public:
     */
     void setData(T data)
     {
+        nodeSanityCheck();
         m_data = data;
         m_node->setText(representation());
     }
@@ -51,6 +56,7 @@ public:
     typename std::enable_if<is_string<sT>::value>::type
     setData(sT data)
     {
+        nodeSanityCheck();
         m_data = data;
         m_node->setText(std::string(data));
     }
@@ -63,6 +69,7 @@ public:
     typename std::enable_if<std::is_arithmetic<aT>::value>::type
     setData(aT data)
     {
+        nodeSanityCheck();
         m_data = data;
         m_node->setText(std::to_string(data));
     }
@@ -71,7 +78,10 @@ public:
      * `data` member accessor
      * @returns const T&
     */
-    const T& getData() { return m_data; }
+    const T& getData() {
+        nodeSanityCheck();
+        return m_data;
+    }
 };
 
 };

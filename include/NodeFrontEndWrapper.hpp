@@ -7,7 +7,7 @@
 #include "LinkedListNode.hpp"
 
 // Main API loop; WRAPPER should be defined in driver
-#define LOOP while (!WRAPPER.isDone()) {} WRAPPER.destroy(); say("DRIVER OUT");
+#define START_LOOP while (!WRAPPER.isDone()) {} WRAPPER.destroy(); say("DRIVER OUT");
 
 namespace nf {
 

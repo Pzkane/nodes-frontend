@@ -29,8 +29,8 @@ NodeFrontEndWrapper::NodeFrontEndWrapper(const Context& settings) {
 
 NodeFrontEndWrapper::NodeFrontEndWrapper()
 {
-    m_settings.m_videoMode.width = 800;
-    m_settings.m_videoMode.height = 640;
+    m_settings.m_videoMode.width = 1024;
+    m_settings.m_videoMode.height = 768;
     m_settings.depthBits = 24;
     m_settings.stencilBits = 8;
     m_settings.antialiasingLevel = 8;

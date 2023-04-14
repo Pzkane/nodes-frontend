@@ -136,10 +136,11 @@ void NodeFrontEnd::setWindowColor(const sf::Color &color)
     m_backgroundColor = color;
 }
 
-NodeImpl* NodeFrontEnd::addNode(const char *text, float x, float y, NodeType n_type)
+NodeImpl* NodeFrontEnd::addNode(const char *text, float x, float y, bool visible, NodeType n_type)
 {
     auto p = reinterpret_cast<NodeImpl *>(m_ss.updateInput(EventType::addNode));
     p->setText(text);
+    p->setVisibility(visible);
     switch (n_type)
     {
     case NodeType::LinkedList:
@@ -177,6 +178,10 @@ void NodeFrontEnd::disconnectNodes(NodeImpl *n1, NodeImpl *n2)
 {
     Nodes2ptr *pn = new Nodes2ptr{n1, n2};
     m_ss.updateInput(EventType::disconnectNodes, pn);
+}
+
+void NodeFrontEnd::destroyNode(NodeImpl *n) {
+    m_ss.updateInput(EventType::destroyNode, n);
 }
 
 void NodeFrontEnd::setNodePosition(NodeImpl *node, float x, float y)
