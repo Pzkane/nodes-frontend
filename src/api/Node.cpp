@@ -10,6 +10,14 @@ void Node::createNode(bool visible)
     m_node = m_api->addNode("API", m_api->m_ll_shift.x, m_api->m_ll_shift.y, visible, NodeType::LinkedList);
 }
 
+void Node::checkHighlight() const {
+    if (highlighted) {
+        m_node->setOutlineThickness(LL_HIGHLIGHT_THICKNESS);
+    }else{
+        m_node->setOutlineThickness(LL_DEFAULT_THICKNESS);
+    }
+}
+
 void Node::nodeSanityCheck() const {
     if (m_node == nullptr) {
         std::ostringstream err;
@@ -68,4 +76,9 @@ void Node::destroy() {
     nodeSanityCheck();
     m_api->destroyNode(m_node);
     m_node = nullptr;
+    m_destroyed = true;
+}
+
+void Node::highlight() {
+    m_api->highlightNode(m_node);
 }

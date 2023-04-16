@@ -10,6 +10,9 @@
 using namespace nf;
 
 static Cache cache;
+sf::Color nf::LL_HIGHLIGHT_COLOR = sf::Color::Black;
+float nf::LL_HIGHLIGHT_THICKNESS = 2.f;
+const float nf::LL_DEFAULT_THICKNESS = 1.f;
 
 template <typename Tw>
 static void event_pool(Tw &main_m_window, Utils::SafeQueue<sf::Event> &m_eventQueue, SceneSwitcher &m_ss, LoopFlags &flags)
@@ -192,4 +195,12 @@ void NodeFrontEnd::setNodePosition(NodeImpl *node, float x, float y)
 void NodeFrontEnd::setNodePosition(NodeImpl *node, sf::Vector2f vf)
 {
     node->setPosition(vf);
+}
+
+void NodeFrontEnd::highlightNode(NodeImpl *n) {
+    n->setOutlineThickness(LL_HIGHLIGHT_THICKNESS);
+    if (m_highlighted_node && &*n != &*m_highlighted_node) {
+        m_highlighted_node->setOutlineThickness(LL_DEFAULT_THICKNESS);
+    }
+    m_highlighted_node = n;
 }

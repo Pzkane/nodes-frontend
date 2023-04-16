@@ -12,13 +12,19 @@ class Node
 protected:
     NodeImpl *m_node;
     NodeFrontEnd *m_api;
+
     void createNode(bool visible);
     /**
      * Check if owned node pointer is valid
      * @throws std::runtime_error
     */
     void nodeSanityCheck() const;
+    void checkHighlight() const;
+protected:
+    bool m_destroyed = false;
 public:
+    bool highlighted = false;
+
     Node(NodeFrontEnd *api, bool visible = true);
     ~Node() = default;
 
@@ -37,6 +43,10 @@ public:
      * Destroy node
     */
     void destroy();
+    /**
+     * Request API to highlight current node
+    */
+    void highlight();
 };
 
 };

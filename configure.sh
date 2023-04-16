@@ -1,6 +1,6 @@
 if [ $# -ne 0 ] ; then
     if [ $1 == "dbg" ] ; then
-        if cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_BUILD_TYPE=Debug -DDEBUG=1 -DEXAMPLE=1 -DCXXFLAGS=-g -S ./ -B ./build/ -G "MSYS Makefiles" ; then
+        if cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_BUILD_TYPE=Debug -DDEBUG=1 -DEXAMPLE=1 -DCXXFLAGS="-O0 -g" -S ./ -B ./build/ -G "MSYS Makefiles" ; then
             echo -n  $(tput setaf 255;tput setab 0)DEFAULT $(tput setaf 0;tput setab 3) DEBUG $(tput setaf 255;tput setab 0) CONFIGURATION
         fi
     else

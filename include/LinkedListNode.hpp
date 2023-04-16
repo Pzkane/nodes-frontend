@@ -8,14 +8,19 @@ namespace nf {
 /**
  * @brief Represents single node of a singly linked list
 */
-template <typename T>
+template <class C, typename T>
 class LinkedListNode : public Node
 {
     LinkedListNode *m_next = nullptr;
+    C *m_next_derived = nullptr;
     T m_data;
 public:
-    LinkedListNode(NodeFrontEnd *api, bool visible = true) : Node(api, visible) {}
-    ~LinkedListNode() = default;
+    explicit LinkedListNode(NodeFrontEnd *api, bool visible = true) : Node(api, visible) {}
+    ~LinkedListNode() {
+        if (!m_destroyed) {
+            destroy();
+        }
+    }
 
     /**
      * On-screen character representation for node's contents
@@ -26,15 +31,21 @@ public:
         return std::string();
     };
 
-    void setNext(LinkedListNode &lnode)
+    void setNext(C* lnode)
     {
         nodeSanityCheck();
         if (m_next)
         {
             m_api->disconnectNodes(m_node, const_cast<NodeImpl*>(m_next->getInnerNode()));
         }
-        m_api->connectOrientedNodes(m_node, const_cast<NodeImpl*>(lnode.getInnerNode()));
-        m_next = &lnode;
+        m_api->connectOrientedNodes(m_node, const_cast<NodeImpl*>(lnode->getInnerNode()));
+        m_next = lnode;
+        m_next_derived = lnode;
+    }
+
+    void setNext(C& lnode) {
+        C* ptr_lnode = &lnode;
+        setNext(ptr_lnode);
     }
 
     /**
@@ -82,6 +93,15 @@ public:
         nodeSanityCheck();
         return m_data;
     }
+
+    /**
+     * Get next node of derived type
+     * @returns C*
+    */
+    C* getNext() {
+        nodeSanityCheck();
+        return m_next_derived;
+    };
 };
 
 };

@@ -4,6 +4,7 @@
 #include <vector>
 #include <stdexcept>
 #include <cassert>
+#include <thread>
 
 // 1: Include wrapper header
 #include "NodeFrontEndWrapper.hpp"
@@ -23,7 +24,7 @@ static nf::NodeFrontEndWrapper NFWrap(nf::Context{
 ///
 /// Test and setup NF environment
 ///
-int test04_nf_driver()
+int test04_connect_generic_nodes()
 {
     // 3: Get api from wrapper
     nf::NodeFrontEnd* api = NFWrap.api();
@@ -52,7 +53,7 @@ int test04_nf_driver()
     node->setFillColor(sf::Color::Green); // overlap test
 
     nf::NodeImpl *node4 = api->addNode("W4", 150, 450);
-    nf::NodeImpl *node5 = api->addNode("W5", 450, 600);
+    nf::NodeImpl *node5 = api->addNode("W5", 450, 450);
     api->connectOrientedNodes(node4, node5);
 
     nf::NodeImpl *node6 = api->addNode("W6", 150, 350);
@@ -86,9 +87,9 @@ int test04_nf_driver()
  * 2. Explore the results!
  * 
  **/
-struct MyNode : public nf::LinkedListNode<std::string>
+struct MyNode : public nf::LinkedListNode<MyNode, std::string>
 {
-    MyNode() : LinkedListNode<std::string>(NFWrap.api()) {}
+    MyNode() : LinkedListNode<MyNode, std::string>(NFWrap.api()) {}
 };
 
 ///
@@ -105,7 +106,7 @@ int test01_mynode()
     n2->setPosition(450, 150);
     n2->setData(8);
 
-    n1->setNext(*n2);
+    n1->setNext(n2);
 
     return 0;
 }
@@ -131,9 +132,9 @@ struct TestS
  * 2. Explore the results!
  * 
  **/
-struct MyNodeTyped : public nf::LinkedListNode<TestS>
+struct MyNodeTyped : public nf::LinkedListNode<MyNodeTyped, TestS>
 {
-    MyNodeTyped() : LinkedListNode<TestS>(NFWrap.api()) {}
+    MyNodeTyped() : LinkedListNode<MyNodeTyped, TestS>(NFWrap.api()) {}
     std::string representation() override {
         return std::string("['" + getData().name + "', " + std::to_string(getData().age) + "]");
     }
@@ -169,13 +170,13 @@ int test03_typed_linked_list_autoshift() {
     return 0;
 }
 
-struct MyNodeTypedDelayed : public nf::LinkedListNode<std::string>
+struct MyNodeTypedDelayed : public nf::LinkedListNode<MyNodeTypedDelayed, std::string>
 {
-    explicit MyNodeTypedDelayed(bool visible = true) : LinkedListNode<std::string>(NFWrap.api(), visible) {}
+    explicit MyNodeTypedDelayed(bool visible = true) : LinkedListNode<MyNodeTypedDelayed, std::string>(NFWrap.api(), visible) {}
 };
 
 int test06_create_ll_with_delay() {
-    /// 1. Setup with proper visiblities
+    /// 1. Setup with proper visibilities
     MyNodeTypedDelayed n1;
     MyNodeTypedDelayed n2(false);
     n1.setPosition(650, 500);
@@ -190,7 +191,7 @@ int test06_create_ll_with_delay() {
 }
 
 int test07_create_and_hide_ll_with_delay() {
-    /// 1. Setup with proper visiblities
+    /// 1. Setup with proper visibilities
     MyNodeTypedDelayed n1;
     MyNodeTypedDelayed n2(false);
     n1.setPosition(650, 600);
@@ -227,9 +228,9 @@ struct TestAddr {
     short number;
 };
 
-struct MyNodeTyped1 : public nf::LinkedListNode<TestAddr>
+struct MyNodeTyped1 : public nf::LinkedListNode<MyNodeTyped1, TestAddr>
 {
-    MyNodeTyped1() : LinkedListNode<TestAddr>(NFWrap.api()) {}
+    MyNodeTyped1() : LinkedListNode<MyNodeTyped1, TestAddr>(NFWrap.api()) {}
     std::string representation() override {
         return std::string("{" + std::to_string(getData().addr) + " and " + std::to_string(getData().number) + "}");
     }
@@ -237,25 +238,94 @@ struct MyNodeTyped1 : public nf::LinkedListNode<TestAddr>
 
 int test08_ll_with_transition() {
     // Reset padding
-    NFWrap.api()->setLinkedListShiftPos({0, 700});
+    NFWrap.api()->setLinkedListShiftPos({0, 550});
     // Dynamically create nodes
-    std::vector<MyNodeTyped1> v;
-    for(int i = 0; i < 5; ++i) {
-        v.push_back(MyNodeTyped1{});
+    MyNodeTyped1* head = new MyNodeTyped1();
+    head->setData(TestAddr{0, 42});
+
+    MyNodeTyped1* curr = head;
+    for(size_t i = 1; i < 5; ++i) {
+        nf::Utils::delay(500);
+        MyNodeTyped1* node = new MyNodeTyped1();
+        node->setData(TestAddr{i, 42+i});
+        curr->setNext(*node);
+        // curr->highlight();
+        curr = node;
     }
-    // Set next for each node
-    MyNodeTyped1* n_preced = &v[0];
-    short i = 0;
-    for(auto& node : v) {
-        n_preced->setData(TestAddr{i++, 42+i});
-        if (!(&node == n_preced)) {
-            n_preced->setNext(node);
-            n_preced = &node;
-        }
-    }
-    n_preced->setData(TestAddr{i++, 42+i});
     
-    // TODO: Traverse with state changes
+    // Traverse with state changes and highlight
+    curr = head;
+    short i = 0;
+    while(curr != nullptr) {
+        ++i;
+        nf::Utils::delay(500);
+        curr->highlight();
+        // Insert into middle
+        if (i == 2) {
+            nf::Utils::delay(500);
+            MyNodeTyped1* middle = new MyNodeTyped1();
+            middle->setPosition(375, 650);
+            middle->setData(TestAddr{0,1});
+            auto* tmp = curr->getNext();
+            nf::Utils::delay(500);
+            curr->setNext(middle);
+            nf::Utils::delay(500);
+            middle->setNext(tmp);
+        }
+
+        // Replace 4th original node
+        if (i == 4) {
+            nf::Utils::delay(500);
+            MyNodeTyped1* new_4th = new MyNodeTyped1();
+            new_4th->setData(TestAddr{1,2});
+            new_4th->setPosition(600, 650);
+            auto* tmp = curr->getNext();
+            nf::Utils::delay(500);
+            curr->setNext(new_4th);
+            nf::Utils::delay(500);
+            new_4th->setNext(tmp->getNext());
+            nf::Utils::delay(500);
+            delete tmp;
+        }
+
+        curr = curr->getNext();
+    }
+
+    return 0;
+}
+
+struct LoopTypeNode : public nf::LinkedListNode<LoopTypeNode, std::string> {
+    LoopTypeNode() : LinkedListNode<LoopTypeNode, std::string>(NFWrap.api()) {}
+};
+
+void cycle_nodes(LoopTypeNode* curr) {
+    do {
+        curr->highlight();
+        nf::Utils::delay(750);
+        curr = curr->getNext();
+    } while(1);
+}
+
+static std::thread testloop;
+
+int test09_ll_loop_on_thread() {
+    NFWrap.api()->setLinkedListHighlightThickness(2);
+    LoopTypeNode* lhead = new LoopTypeNode();
+    lhead->setPosition(450, 750);
+    lhead->setData("loop!");
+    
+    LoopTypeNode* curr = lhead;
+    for(size_t i = 0; i < 5; ++i) {
+        LoopTypeNode* node = new LoopTypeNode();
+        node->setData("loop!");
+        if (i == 0) node->setPosition(100, 900);
+        curr->setNext(*node);
+        curr = node;
+    }
+    curr->setNext(lhead); // enclose
+    curr = lhead;
+    testloop = std::thread(cycle_nodes, curr);
+
     return 0;
 }
 
@@ -267,16 +337,23 @@ int main(int argc, char** argv)
     ///
     /// 1. Setup environment
     ///
-    test01_mynode();
-    test02_typedmynode();
-    test03_typed_linked_list_autoshift();
-    test04_nf_driver();
-    test06_create_ll_with_delay();
-    test07_create_and_hide_ll_with_delay();
-    test08_ll_with_transition();
+    unsigned test_suite = (
+       test01_mynode() 
+     + test02_typedmynode()
+     + test03_typed_linked_list_autoshift()
+     + test04_connect_generic_nodes()
+     + test06_create_ll_with_delay()
+     + test07_create_and_hide_ll_with_delay()
+     + test08_ll_with_transition()
+     + test09_ll_loop_on_thread()
+    );
+    if (test_suite != 0) return test_suite;
+    say("Tests have passed!");
     ///
     /// 2. Launch loop and handle events
     ///
     START_LOOP;
+    
+    testloop.join();
     return 0;
 }

@@ -12,6 +12,13 @@
 namespace nf {
 
 /**
+ * Color and thickness of an outline during highlight
+*/
+extern sf::Color LL_HIGHLIGHT_COLOR;
+extern float LL_HIGHLIGHT_THICKNESS;
+extern const float LL_DEFAULT_THICKNESS;
+
+/**
  * @brief API class for event dispatching
 */
 struct Context : public sf::ContextSettings {
@@ -31,8 +38,9 @@ class NodeFrontEnd
     sf::Color m_backgroundColor = sf::Color::Black;
     const Context m_settings;
     SceneSwitcher m_ss;
-    void _cleanup();
+    NodeImpl* m_highlighted_node = nullptr;
 
+    void _cleanup();
 public:
     /// Algorithm-specific values (public)
     // LinkedList shift properties
@@ -53,6 +61,7 @@ public:
      * @param pad sf::Vector2f
     */
     void setLinkedListShiftPos(sf::Vector2f pad) { m_ll_shift = pad; }
+    void setLinkedListHighlightThickness(float thickness) { LL_HIGHLIGHT_THICKNESS = thickness; }
     NodeImpl* addNode(const char *text = "", float x = 0, float y = 0, bool visible = true, NodeType n_type = NodeType::Generic);
     void connectNodes(NodeImpl *n1, NodeImpl *n2);
     void connectOrientedNodes(NodeImpl *n1, NodeImpl *n2);
@@ -63,6 +72,11 @@ public:
      * @param n NodeImpl*
     */
     void destroyNode(NodeImpl *n);
+    /**
+     * Set or swap a single node to be highlighted
+     * @param n NodeImpl*
+    */
+    void highlightNode(NodeImpl *n);
     bool isInit() { return m_initizlized; };
 };
 
