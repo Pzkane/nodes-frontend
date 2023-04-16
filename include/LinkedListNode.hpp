@@ -12,11 +12,12 @@ template <class C, typename T>
 class LinkedListNode : public Node
 {
     LinkedListNode *m_next = nullptr;
+protected:
     C *m_next_derived = nullptr;
     T m_data;
 public:
     explicit LinkedListNode(NodeFrontEnd *api, bool visible = true) : Node(api, visible) {}
-    ~LinkedListNode() {
+    virtual ~LinkedListNode() {
         if (!m_destroyed) {
             destroy();
         }

@@ -329,6 +329,26 @@ int test09_ll_loop_on_thread() {
     return 0;
 }
 
+struct DblLLNode : public nf::DoubleLinkedListNode<DblLLNode, std::string> {
+    DblLLNode() : DoubleLinkedListNode<DblLLNode, std::string>(NFWrap.api()) {}
+};
+
+int test10_dbl_ll() {
+    DblLLNode *left = new DblLLNode();
+    left->setPosition(250, 50);
+    DblLLNode *head = new DblLLNode(),
+              *right = new DblLLNode();
+
+    head->setData("HEAD");
+    left->setData("Left");
+    right->setData("Right");
+
+    head->setPrevious(left);
+    head->setNext(right);
+    
+    return 0;
+}
+
 ///
 /// Driver
 ///
@@ -346,6 +366,7 @@ int main(int argc, char** argv)
      + test07_create_and_hide_ll_with_delay()
      + test08_ll_with_transition()
      + test09_ll_loop_on_thread()
+     + test10_dbl_ll()
     );
     if (test_suite != 0) return test_suite;
     say("Tests have passed!");

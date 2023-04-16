@@ -20,13 +20,12 @@ protected:
     */
     void nodeSanityCheck() const;
     void checkHighlight() const;
-protected:
     bool m_destroyed = false;
 public:
     bool highlighted = false;
 
     Node(NodeFrontEnd *api, bool visible = true);
-    ~Node() = default;
+    virtual ~Node() = default;
 
     Node& operator=(const Node& node);
 
