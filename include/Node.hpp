@@ -36,6 +36,7 @@ public:
     void setVisibility(const bool state);
     void setPosition(float x, float y);
     void setText(const std::string& label);
+    sf::Vector2f getPosition() const;
     const NodeImpl* const getInnerNode() const;
     const bool isVisible() const;
     /**

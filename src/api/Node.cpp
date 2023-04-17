@@ -52,6 +52,10 @@ void Node::setText(const std::string& label)
     m_node->setText(label);
 }
 
+sf::Vector2f Node::getPosition() const {
+    return getInnerNode()->getPosition();
+}
+
 const NodeImpl* const Node::getInnerNode() const
 {
     nodeSanityCheck();

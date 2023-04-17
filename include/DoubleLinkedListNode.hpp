@@ -13,7 +13,6 @@ class DoubleLinkedListNode : public LinkedListNode<C,T> {
     C *m_prev_derived = nullptr;
 public:
     explicit DoubleLinkedListNode(NodeFrontEnd *api, bool visible = true) : LinkedListNode<C,T>(api, visible) {}
-    ~DoubleLinkedListNode() = default;
 
     /**
      * Set previous node

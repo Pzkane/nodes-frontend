@@ -14,6 +14,12 @@ sf::Color nf::LL_HIGHLIGHT_COLOR = sf::Color::Black;
 float nf::LL_HIGHLIGHT_THICKNESS = 2.f;
 const float nf::LL_DEFAULT_THICKNESS = 1.f;
 
+size_t NodeFrontEnd::PADDING = 50;
+size_t NodeFrontEnd::LL_NODE_SPACING = 150;
+
+size_t NodeFrontEnd::BT_PARENT_NODE_CENTER_OFFSET_X = 75;
+size_t NodeFrontEnd::BT_PARENT_NODE_CENTER_OFFSET_Y = 100;
+
 template <typename Tw>
 static void event_pool(Tw &main_m_window, Utils::SafeQueue<sf::Event> &m_eventQueue, SceneSwitcher &m_ss, LoopFlags &flags)
 {
@@ -147,7 +153,6 @@ NodeImpl* NodeFrontEnd::addNode(const char *text, float x, float y, bool visible
     switch (n_type)
     {
     case NodeType::List:
-        say(m_ll_shift.x)
         p->setPosition(x+LL_NODE_SPACING, y);
         m_ll_shift = {m_ll_shift.x + LL_NODE_SPACING, m_ll_shift.y};
         break;

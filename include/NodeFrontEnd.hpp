@@ -44,9 +44,13 @@ class NodeFrontEnd
 public:
     /// Algorithm-specific values (public)
     // LinkedList shift properties
-    static const size_t PADDING = 50;
-    static const size_t LL_NODE_SPACING = 150;
+    static size_t PADDING;
+    static size_t LL_NODE_SPACING;
     sf::Vector2f m_ll_shift = {PADDING, PADDING};
+
+    // BinaryTree shift properties
+    static size_t BT_PARENT_NODE_CENTER_OFFSET_X;
+    static size_t BT_PARENT_NODE_CENTER_OFFSET_Y;
 
     NodeFrontEnd(const Context& settings, const char *n_title);
     NodeFrontEnd() = delete;

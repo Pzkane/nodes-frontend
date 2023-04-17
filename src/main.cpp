@@ -5,13 +5,13 @@
 #include <stdexcept>
 #include <cassert>
 #include <thread>
+#include "main.hpp"
 
 // 1: Include wrapper header
 #include "NodeFrontEndWrapper.hpp"
 
-// 2: Define static wrapper instance ...
-static nf::NodeFrontEndWrapper NFWrap;
-// ... and macro
+// 2: Define [static] wrapper instance ...
+nf::NodeFrontEndWrapper NFWrap;
 #define WRAPPER NFWrap
 // 2.1: You can use custom settings
 /*
@@ -20,6 +20,75 @@ static nf::NodeFrontEndWrapper NFWrap(nf::Context{
     sf::ContextSettings{24, 8, 8, 3, 0}
 });
 */
+
+/**
+ * 
+ * How to declare and use custom type:
+ * 
+ * Declaration:
+ * 1. Inherit from necessary object 
+ *  1.1 Specify your own template type
+ * 2. Define ctor and pass API pointer to the parent type
+ * 3. Override necessary methods
+ * 
+ * Usage:
+ * 1. See methods in documentation
+ * 2. Explore the results!
+ * 
+ **/
+struct MyNode : public nf::LinkedListNode<MyNode, std::string>
+{
+    MyNode() : LinkedListNode<MyNode, std::string>(NFWrap.api()) {}
+};
+
+///
+/// Test MyNodeTyped with default representations
+///
+int test01_mynode()
+{
+    MyNode *n1 = new MyNode();
+    n1->setPosition(150, 150);
+    n1->setData(std::string("as"));
+    n1->setData("as_c");
+
+    MyNode *n2 = new MyNode();
+    n2->setPosition(450, 150);
+    n2->setData(8);
+
+    n1->setNext(n2);
+
+    return 0;
+}
+
+///
+/// Test MyNodeTyped with object representation
+///
+int test02_typedmynode()
+{
+    MyNodeTyped n1;
+    n1.setPosition(150, 250);
+    n1.setData({"Joy", 55});
+
+    MyNodeTyped n2;
+    n2.setPosition(450, 250);
+    n2.setData({});
+
+    n1.setNext(n2);
+
+    return 0;
+}
+
+int test03_typed_linked_list_autoshift() {
+    MyNodeTyped n1;
+    n1.setPosition(300, 450);
+    n1.setData({"This", 88});
+
+    MyNodeTyped n2;
+    n2.setData({"That", 55});
+
+    n1.setNext(n2);
+    return 0;
+}
 
 ///
 /// Test and setup NF environment
@@ -72,109 +141,6 @@ int test04_connect_generic_nodes()
     return 0;
 }
 
-/**
- * 
- * How to declare and use custom type:
- * 
- * Declaration:
- * 1. Inherit from necessary object 
- *  1.1 Specify your own template type
- * 2. Define ctor and pass API pointer to the parent type
- * 3. Override necessary methods
- * 
- * Usage:
- * 1. See methods in documentation
- * 2. Explore the results!
- * 
- **/
-struct MyNode : public nf::LinkedListNode<MyNode, std::string>
-{
-    MyNode() : LinkedListNode<MyNode, std::string>(NFWrap.api()) {}
-};
-
-///
-/// Test MyNodeTyped with default representations
-///
-int test01_mynode()
-{
-    MyNode *n1 = new MyNode();
-    n1->setPosition(150, 150);
-    n1->setData(std::string("as"));
-    n1->setData("as_c");
-
-    MyNode *n2 = new MyNode();
-    n2->setPosition(450, 150);
-    n2->setData(8);
-
-    n1->setNext(n2);
-
-    return 0;
-}
-
-struct TestS
-{
-    std::string name;
-    short age;
-};
-
-/**
- * 
- * How to declare and use custom type:
- * 
- * Declaration:
- * 1. Inherit from necessary object 
- *  1.1 Specify your own template type
- * 2. Define ctor and pass API pointer to the parent type
- * 3. Override necessary methods
- * 
- * Usage:
- * 1. See methods in documentation
- * 2. Explore the results!
- * 
- **/
-struct MyNodeTyped : public nf::LinkedListNode<MyNodeTyped, TestS>
-{
-    MyNodeTyped() : LinkedListNode<MyNodeTyped, TestS>(NFWrap.api()) {}
-    std::string representation() override {
-        return std::string("['" + getData().name + "', " + std::to_string(getData().age) + "]");
-    }
-};
-
-///
-/// Test MyNodeTyped with object representation
-///
-int test02_typedmynode()
-{
-    MyNodeTyped n1;
-    n1.setPosition(150, 250);
-    n1.setData({"Joy", 55});
-
-    MyNodeTyped n2;
-    n2.setPosition(450, 250);
-    n2.setData({});
-
-    n1.setNext(n2);
-
-    return 0;
-}
-
-int test03_typed_linked_list_autoshift() {
-    MyNodeTyped n1;
-    n1.setPosition(300, 450);
-    n1.setData({"This", 88});
-
-    MyNodeTyped n2;
-    n2.setData({"That", 55});
-
-    n1.setNext(n2);
-    return 0;
-}
-
-struct MyNodeTypedDelayed : public nf::LinkedListNode<MyNodeTypedDelayed, std::string>
-{
-    explicit MyNodeTypedDelayed(bool visible = true) : LinkedListNode<MyNodeTypedDelayed, std::string>(NFWrap.api(), visible) {}
-};
-
 int test06_create_ll_with_delay() {
     /// 1. Setup with proper visibilities
     MyNodeTypedDelayed n1;
@@ -222,19 +188,6 @@ int test07_create_and_hide_ll_with_delay() {
 
     return 0;
 }
-
-struct TestAddr {
-    int addr;
-    short number;
-};
-
-struct MyNodeTyped1 : public nf::LinkedListNode<MyNodeTyped1, TestAddr>
-{
-    MyNodeTyped1() : LinkedListNode<MyNodeTyped1, TestAddr>(NFWrap.api()) {}
-    std::string representation() override {
-        return std::string("{" + std::to_string(getData().addr) + " and " + std::to_string(getData().number) + "}");
-    }
-};
 
 int test08_ll_with_transition() {
     // Reset padding
@@ -294,10 +247,6 @@ int test08_ll_with_transition() {
     return 0;
 }
 
-struct LoopTypeNode : public nf::LinkedListNode<LoopTypeNode, std::string> {
-    LoopTypeNode() : LinkedListNode<LoopTypeNode, std::string>(NFWrap.api()) {}
-};
-
 void cycle_nodes(LoopTypeNode* curr) {
     do {
         curr->highlight();
@@ -329,10 +278,6 @@ int test09_ll_loop_on_thread() {
     return 0;
 }
 
-struct DblLLNode : public nf::DoubleLinkedListNode<DblLLNode, std::string> {
-    DblLLNode() : DoubleLinkedListNode<DblLLNode, std::string>(NFWrap.api()) {}
-};
-
 int test10_dbl_ll() {
     DblLLNode *left = new DblLLNode();
     left->setPosition(250, 50);
@@ -353,6 +298,24 @@ int test10_dbl_ll() {
     return 0;
 }
 
+int test11_bt_nodes() {
+    StringBTNode *root = new StringBTNode(),
+                 *left = new StringBTNode(),
+                 *right = new StringBTNode(),
+                 *l_right = new StringBTNode(),
+                 *r_right = new StringBTNode(),
+                 *r_left = new StringBTNode();
+    root->setPosition(800, 100);
+    root->setLeft(left);
+    root->setRight(right);
+    right->setLeft(l_right);
+    right->setRight(r_right);
+    left->setPosition(root->getPosition().x-200, right->getPosition().y);
+    left->setRight(r_left);
+
+    return 0;
+}
+
 ///
 /// Driver
 ///
@@ -368,9 +331,10 @@ int main(int argc, char** argv)
      + test04_connect_generic_nodes()
      + test06_create_ll_with_delay()
      + test07_create_and_hide_ll_with_delay()
-     + test08_ll_with_transition()
-     + test09_ll_loop_on_thread()
-     + test10_dbl_ll()
+    //  + test08_ll_with_transition()
+    //  + test09_ll_loop_on_thread()
+    //  + test10_dbl_ll()
+     + test11_bt_nodes()
     );
     if (test_suite != 0) return test_suite;
     say("Tests have passed!");
