@@ -78,6 +78,9 @@ int test02_typedmynode()
     return 0;
 }
 
+///
+/// Test auto-shifting feature on new node
+///
 int test03_typed_linked_list_autoshift() {
     MyNodeTyped n1;
     n1.setPosition(300, 450);
@@ -95,10 +98,11 @@ int test03_typed_linked_list_autoshift() {
 ///
 int test04_connect_generic_nodes()
 {
-    // 3: Get api from wrapper
+    // To use internal nodes
+    // 1: Get api from wrapper
     nf::NodeFrontEnd* api = NFWrap.api();
 
-    // 4 to N: Use api
+    // 2 to N: Use api
     api->setWindowColor(sf::Color(210, 210, 210));
     for (int i = 0; i < 1; ++i)
     {
@@ -141,6 +145,9 @@ int test04_connect_generic_nodes()
     return 0;
 }
 
+///
+/// Test LinkedListNode creation with delays
+///
 int test06_create_ll_with_delay() {
     /// 1. Setup with proper visibilities
     MyNodeTypedDelayed n1;
@@ -156,6 +163,9 @@ int test06_create_ll_with_delay() {
     return 0;
 }
 
+///
+/// Hide LinkedListNodes after delay
+///
 int test07_create_and_hide_ll_with_delay() {
     /// 1. Setup with proper visibilities
     MyNodeTypedDelayed n1;
@@ -189,6 +199,9 @@ int test07_create_and_hide_ll_with_delay() {
     return 0;
 }
 
+///
+/// Test node transitions (highlights)
+///
 int test08_ll_with_transition() {
     // Reset padding
     NFWrap.api()->setLinkedListShiftPos({0, 550});
@@ -213,7 +226,7 @@ int test08_ll_with_transition() {
         ++i;
         nf::Utils::delay(500);
         curr->highlight();
-        // Insert into middle
+        // Insert new node into middle
         if (i == 2) {
             nf::Utils::delay(500);
             MyNodeTyped1* middle = new MyNodeTyped1();
@@ -247,6 +260,7 @@ int test08_ll_with_transition() {
     return 0;
 }
 
+// For looping test
 void cycle_nodes(LoopTypeNode* curr) {
     do {
         curr->highlight();
@@ -255,8 +269,13 @@ void cycle_nodes(LoopTypeNode* curr) {
     } while(1);
 }
 
+// For looping test
 static std::thread testloop;
 
+///
+/// Test LinkedListNodes inside of a infinite loop on
+///     different thread
+///
 int test09_ll_loop_on_thread() {
     NFWrap.api()->setLinkedListHighlightThickness(2);
     LoopTypeNode* lhead = new LoopTypeNode();
@@ -278,6 +297,9 @@ int test09_ll_loop_on_thread() {
     return 0;
 }
 
+///
+/// Test DoubleLinkedListNode creation
+///
 int test10_dbl_ll() {
     DblLLNode *left = new DblLLNode();
     left->setPosition(250, 50);
@@ -298,6 +320,9 @@ int test10_dbl_ll() {
     return 0;
 }
 
+///
+/// Test BinaryTreeNode creation and offsets
+///
 int test11_bt_nodes() {
     StringBTNode *root = new StringBTNode(),
                  *left = new StringBTNode(),
@@ -305,6 +330,7 @@ int test11_bt_nodes() {
                  *l_right = new StringBTNode(),
                  *r_right = new StringBTNode(),
                  *r_left = new StringBTNode();
+
     root->setPosition(800, 100);
     root->setLeft(left);
     root->setRight(right);
@@ -331,9 +357,9 @@ int main(int argc, char** argv)
      + test04_connect_generic_nodes()
      + test06_create_ll_with_delay()
      + test07_create_and_hide_ll_with_delay()
-    //  + test08_ll_with_transition()
-    //  + test09_ll_loop_on_thread()
-    //  + test10_dbl_ll()
+     + test08_ll_with_transition()
+     + test09_ll_loop_on_thread()
+     + test10_dbl_ll()
      + test11_bt_nodes()
     );
     if (test_suite != 0) return test_suite;
