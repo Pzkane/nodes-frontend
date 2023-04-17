@@ -38,13 +38,6 @@ public:
      * @returns bool Always returns `true` if not overriden
     */
     virtual bool mouseInside(const sf::Vector2f &position) { return true; };
-    /**
-     * !Not finished
-     * Callback for specific event type (double click, button press while `mouseInside`, etc)
-     * Usually internally calls `checkPosAgainstShape`
-     * @param callbackFunction VoidCallback type
-    */
-    virtual void setCallback(VoidCallback callbackFnc) {};
 };
 
 };

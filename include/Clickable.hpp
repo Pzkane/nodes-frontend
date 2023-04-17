@@ -20,18 +20,18 @@ class Clickable
 {
     bool m_successDrag = false;
     sf::Vector2f m_offsetMousePos;
-    size_t click_delay_ms_;
-    Tc callback_;
+    size_t m_click_delay_ms;
+    Tc m_callback_lmb, m_callback_rmb, m_callback_mmb;
 
-    const std::chrono::time_point<std::chrono::high_resolution_clock> null_timestamp_{}; // 1970-01-01
-    std::chrono::time_point<std::chrono::high_resolution_clock> start_time_;
+    const std::chrono::time_point<std::chrono::high_resolution_clock> m_null_timestamp{}; // 1970-01-01
+    std::chrono::time_point<std::chrono::high_resolution_clock> m_start_time;
 
 public:
     Clickable() { init(); }
-    Clickable(size_t ms) : click_delay_ms_(ms) { init(); }
+    Clickable(size_t ms) : m_click_delay_ms(ms) { init(); }
     void init()
     {
-        callback_ = nullptr;
+        m_callback_lmb = m_callback_rmb = m_callback_mmb = nullptr;
     }
     virtual ~Clickable() = default;
     /**
@@ -40,37 +40,67 @@ public:
     */
     void setDelayForDBLClick(size_t ms)
     {
-        click_delay_ms_ = ms;
+        m_click_delay_ms = ms;
     }
     /**
-     * Set callback invoked on double click
+     * Set callback invoked on LMB click
      * @param callback Callback function pointer
     */
-    void setCallback(VoidCallback callback)
+    void setLMBCallback(VoidCallback callback)
     {
-        callback_ = callback;
+        m_callback_lmb = callback;
     }
     /**
-     * Invoke previously set callback
+     * Set callback invoked on RMB click
+     * @param callback Callback function pointer
     */
-    void invokeCallback()
+    void setRMBCallback(VoidCallback callback)
     {
-        if (!callback_) return;
+        m_callback_rmb = callback;
+    }
+    /**
+     * Set callback invoked on MMB click
+     * @param callback Callback function pointer
+    */
+    void setMMBCallback(VoidCallback callback)
+    {
+        m_callback_mmb = callback;
+    }
+    /**
+     * Invoke previously set LMB callback
+    */
+    void invokeLMBCallback()
+    {
+        if (!m_callback_lmb) return;
         //TODO: implement DBL click
-        /*if (start_time_ == null_timestamp_)
+        /*if (m_start_time == m_null_timestamp)
         {
-            start_time_ = std::chrono::high_resolution_clock::now();
+            m_start_time = std::chrono::high_resolution_clock::now();
         } else 
         {
             std::chrono::time_point<std::chrono::high_resolution_clock> end = std::chrono::high_resolution_clock::now();
-            double elapsed = std::chrono::duration<double, std::milli>(end - start_time_).count();
-            if (elapsed <= click_delay_ms_)
+            double elapsed = std::chrono::duration<double, std::milli>(end - m_start_time).count();
+            if (elapsed <= m_click_delay_ms)
             {
-                start_time_ = null_timestamp_;
-                callback_();
+                m_start_time = m_null_timestamp;
+                m_callback();
             }
         }*/
-        callback_();
+        m_callback_lmb();
+    }
+    /**
+     * Invoke previously set RMB callback
+    */
+    void invokeRMBCallback() {
+        if (!m_callback_rmb) return;
+        m_callback_rmb();
+    }
+    /**
+     * Invoke previously set MMB callback
+    */
+    void invokeMMBCallback() {
+        if (!m_callback_mmb) return;
+        m_callback_mmb();
     }
 };
 

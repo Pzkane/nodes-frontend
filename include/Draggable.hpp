@@ -21,6 +21,7 @@ public:
     virtual ~Draggable() = default;
     /**
      * Determine available actions based on mouse pointer state for given window
+     *  and prepare for its processing
      * @param window RenderWindow in which given object is being dragged
     */
     void trackMousePointer(const sf::RenderWindow &window);

@@ -146,7 +146,7 @@ NodeImpl* NodeFrontEnd::addNode(const char *text, float x, float y, bool visible
     p->setVisibility(visible);
     switch (n_type)
     {
-    case NodeType::LinkedList:
+    case NodeType::List:
         say(m_ll_shift.x)
         p->setPosition(x+LL_NODE_SPACING, y);
         m_ll_shift = {m_ll_shift.x + LL_NODE_SPACING, m_ll_shift.y};

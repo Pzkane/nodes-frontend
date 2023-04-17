@@ -3,7 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 #include "Draggable.hpp"
-#include "Clickable.hpp"
 #include "AbstractShape.hpp"
 
 namespace nf {
@@ -11,9 +10,9 @@ namespace nf {
 /**
  * @brief Interactive CircleShape used for nodes
 */
-class CircleShape : public sf::CircleShape, public AbstractShape, public Draggable, public Clickable<VoidCallback>
+class CircleShape : public sf::CircleShape, public AbstractShape, public Draggable
 {
-    bool m_is_dragged = false;
+    bool m_isDragged = false;
 
 public:
     /**
@@ -22,8 +21,8 @@ public:
      * @param pointCount Circle aliasing
      * @param ms Click milliseconds for callback
     */
-    explicit CircleShape(const float radius = 0, const std::size_t pointCount = 30, const std::size_t ms = 50)
-        : sf::CircleShape(radius, pointCount), Clickable(ms) {}
+    explicit CircleShape(const float radius = 0, const std::size_t pointCount = 30)
+        : sf::CircleShape(radius, pointCount) {}
     ~CircleShape() = default;
 
     /**
@@ -52,12 +51,6 @@ public:
      * @param position sf::Vector2f
     */
     void setOrigin(sf::Vector2f &origin) override;
-    /**
-     * !Not finished
-     * Set callback for this shape which will be called during specific event
-     * @param position sf::Vector2f
-    */
-    void setCallback(VoidCallback callbackFnc) override;
     /**
      * Get SFML shape position
      * @returns sf::Vector2f

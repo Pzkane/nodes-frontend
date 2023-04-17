@@ -11,7 +11,7 @@ using namespace nf;
 
 unsigned NodeImpl::id = 0;
 
-NodeImpl::NodeImpl(float radius, std::size_t pointCount) : RADIUS(radius), CircleShape(radius, pointCount, 50)
+NodeImpl::NodeImpl(float radius, std::size_t pointCount, const std::size_t ms) : RADIUS(radius), CircleShape(radius, pointCount), Clickable(ms)
 {
     const sf::Vector2f center = CircleShape::getPosition();
     sf::CircleShape::setOrigin(center.x + RADIUS, center.y + RADIUS);
@@ -23,7 +23,7 @@ NodeImpl::NodeImpl(float radius, std::size_t pointCount) : RADIUS(radius), Circl
         setText(std::to_string(id));
     };
 
-    CircleShape::setCallback(setHelloText);
+    setRMBCallback(setHelloText);
     m_text.setFont(ff.font);
     m_text.setScale(0, 0);
     m_text.setFillColor(sf::Color::Black);
@@ -39,10 +39,10 @@ void NodeImpl::update(const sf::RenderWindow &window, EventFlags &ef)
         enf.f_delete_self = true;
         return;
     }
-
+   
+    Mouse& m = MouseCache::getInstance(window)->gMouse;
     if (mouseInside(Utils::getMousePosf(window)) && m_isVisible)
     {
-        Mouse& m = MouseCache::getInstance(window)->gMouse;
         if (ef.f_lmb)
         {
             if (m.isCaptureEmpty())
@@ -54,7 +54,12 @@ void NodeImpl::update(const sf::RenderWindow &window, EventFlags &ef)
         }
 
         m_hovering = true;
-        if (ef.f_rmb)
+        if (ef.f_rmb) {
+            if (m.isCaptureEmpty())
+                m.captureEntity(this);
+            if (m.getEntity() == this) {
+                invokeRMBCallback();
+            }
             if (!ef.p_start_node && ef.p_end_node != this)
             {
                 say("START_NODE");
@@ -65,14 +70,15 @@ void NodeImpl::update(const sf::RenderWindow &window, EventFlags &ef)
                 say("END_NODE");
                 ef.p_end_node = this;
             }
+        }
 
         if (ef.f_lalt)
             enf.f_delete_self = true;
 
-        if (ef.f_ralt)
-        {
-            invokeCallback();
-        }
+        // if (ef.f_ralt)
+        // {
+        //     invokeCallback();
+        // }
     } else
         m_hovering = false;
 }
@@ -82,8 +88,10 @@ void NodeImpl::updateText()
     const float PADDING = 0.3f;
     m_text.setOrigin(sf::Vector2f(m_text.getLocalBounds().width / 2, m_text.getLocalBounds().height / 1.4));
     m_text.setPosition(getPosition());
+    // Diameter
     const float D = 2 * sf::CircleShape::getRadius();
     const sf::FloatRect l_bounds = m_text.getLocalBounds();
+    // Scale text size and position to fit into node
     const sf::Vector2f sizeScale(l_bounds.width / D + PADDING, l_bounds.height / D + PADDING);
     const float maxScale = std::max(sizeScale.x, sizeScale.y);
     if (maxScale > 1)

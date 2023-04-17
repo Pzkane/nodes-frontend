@@ -50,8 +50,3 @@ sf::Vector2f CircleShape::getPosition() const
 {
     return sf::CircleShape::getPosition();
 }
-
-void CircleShape::setCallback(VoidCallback callbackFnc)
-{
-    Clickable::setCallback(callbackFnc);
-}

@@ -13,7 +13,7 @@ protected:
     NodeImpl *m_node;
     NodeFrontEnd *m_api;
 
-    void createNode(bool visible);
+    void createNode(bool visible, NodeType type);
     /**
      * Check if owned node pointer is valid
      * @throws std::runtime_error
@@ -24,7 +24,7 @@ protected:
 public:
     bool highlighted = false;
 
-    Node(NodeFrontEnd *api, bool visible = true);
+    explicit Node(NodeFrontEnd *api, NodeType type = NodeType::Generic, bool visible = true);
     virtual ~Node() = default;
 
     Node& operator=(const Node& node);

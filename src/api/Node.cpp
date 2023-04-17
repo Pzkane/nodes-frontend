@@ -5,9 +5,9 @@
 
 using namespace nf;
 
-void Node::createNode(bool visible)
+void Node::createNode(bool visible, NodeType type)
 {
-    m_node = m_api->addNode("API", m_api->m_ll_shift.x, m_api->m_ll_shift.y, visible, NodeType::LinkedList);
+    m_node = m_api->addNode("API", m_api->m_ll_shift.x, m_api->m_ll_shift.y, visible, type);
 }
 
 void Node::checkHighlight() const {
@@ -26,9 +26,9 @@ void Node::nodeSanityCheck() const {
     }
 }
 
-Node::Node(NodeFrontEnd *api, bool visible) : m_api(api)
+Node::Node(NodeFrontEnd *api, NodeType type, bool visible) : m_api(api)
 {
-    createNode(visible);
+    createNode(visible, type);
 }
 
 void Node::setVisibility(const bool state) {

@@ -16,7 +16,7 @@ protected:
     C *m_next_derived = nullptr;
     T m_data;
 public:
-    explicit LinkedListNode(NodeFrontEnd *api, bool visible = true) : Node(api, visible) {}
+    explicit LinkedListNode(NodeFrontEnd *api, bool visible = true) : Node(api, NodeType::List, visible) {}
     virtual ~LinkedListNode() {
         if (!m_destroyed) {
             destroy();
@@ -32,6 +32,10 @@ public:
         return std::string();
     };
 
+    /**
+     * Set next node
+     * @param lnode
+    */
     void setNext(C* lnode)
     {
         nodeSanityCheck();

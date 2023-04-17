@@ -15,6 +15,10 @@ public:
     explicit DoubleLinkedListNode(NodeFrontEnd *api, bool visible = true) : LinkedListNode<C,T>(api, visible) {}
     ~DoubleLinkedListNode() = default;
 
+    /**
+     * Set previous node
+     * @param lnode
+    */
     void setPrevious(C* lnode)
     {
         Node::nodeSanityCheck();

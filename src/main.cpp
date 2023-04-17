@@ -337,14 +337,18 @@ int test10_dbl_ll() {
     DblLLNode *left = new DblLLNode();
     left->setPosition(250, 50);
     DblLLNode *head = new DblLLNode(),
-              *right = new DblLLNode();
+              *right = new DblLLNode(),
+              *r_right = new DblLLNode();
 
     head->setData("HEAD");
     left->setData("Left");
     right->setData("Right");
+    r_right->setData("R Right");
 
     head->setPrevious(left);
     head->setNext(right);
+    right->setNext(r_right);
+    r_right->setPrev(right);
     
     return 0;
 }
