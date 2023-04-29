@@ -10,6 +10,8 @@
 #include "Entity.hpp"
 #include "Edge.hpp"
 #include "Clickable.hpp"
+#include "Observable.hpp"
+#include "Algorithms.hpp"
 
 namespace nf {
 
@@ -29,12 +31,17 @@ class NodeImpl : public Entity, public CircleShape, public Clickable<VoidCallbac
          m_destroy = false;
     sf::Text m_text;
     std::list<NodeImpl*> m_connected_nodes;
+    NodeType m_hl_type = NodeType::Generic;
+    ///
+    /// High-level node pointer
+    ///
+    Observable * m_hl_node;
 
     void updateText();
 public:
     const float RADIUS;
     bool m_hovering;
-    explicit NodeImpl(float radius = 0, std::size_t pointCount = 30, const std::size_t ms = 50);
+    explicit NodeImpl(Observable * hlNode = nullptr, float radius = 0, std::size_t pointCount = 30, const std::size_t ms = 50);
     ~NodeImpl() = default;
     void update(const sf::RenderWindow &window, EventFlags &ef) override;
     void draw(sf::RenderWindow &window) override;
@@ -46,6 +53,11 @@ public:
     void setVisibility(const bool state);
     void setText(const std::string &text);
     void setTextColor(const sf::Color& clr);
+    /**
+     * Set high-level observable node
+     * @param type NodeType
+    */
+    void setObservable(Observable *entity) { m_hl_node = entity; }
     /**
      * Register node into list of edge connected nodes
      * @param node NodeImpl *const

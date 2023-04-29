@@ -5,6 +5,11 @@
 
 namespace nf {
 
+/**
+ * @brief Custom interface builder
+ * 
+ * Overlay consists of containers with text
+*/
 class Overlay
 {
     bool m_visible = true;
@@ -23,8 +28,23 @@ public:
     Overlay(Overlay&& o);
     Overlay& operator=(Overlay&& o);
 
+    void show() { m_visible = true; }
+    void hide() { m_visible = false; }
+    /**
+     * Check if whole UI element is visible
+    */
     bool isHidden() { return !m_visible; }
+    /**
+     * Lazy-initialize main wrapper container
+    */
     void createWrapper(const Container& container);
+    /**
+     * Return main wrapper container
+    */
+    const Container* getWrapper() { return m_wrapper; }
+    /**
+     * Add child container to UI
+    */
     void addContainer(Container&& container);
     void addContainer(const Container& container);
     void update(sf::RenderWindow& window, const EventFlags& ef, bool resized);

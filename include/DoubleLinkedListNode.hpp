@@ -51,6 +51,8 @@ public:
         Node::nodeSanityCheck();
         return m_prev_derived;
     };
+
+    void invoke() override {}
 };
 
 };

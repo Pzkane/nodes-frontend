@@ -24,7 +24,7 @@ class MainScene : public Scene
 public:
     MainScene(sf::RenderWindow &window);
     ~MainScene();
-    NodeImpl* createNode(float radius);
+    NodeImpl* createNode(Observable *entity, float radius);
     Edge* createEdge();
     OrientedEdge* createOEdge();
     WeightedEdge* createWEdge();

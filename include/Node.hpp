@@ -4,6 +4,7 @@
 /* Node class abstraction as API */
 
 #include "NodeFrontEnd.hpp"
+#include "Observable.hpp"
 
 namespace nf {
 
@@ -13,7 +14,7 @@ protected:
     NodeImpl *m_node;
     NodeFrontEnd *m_api;
 
-    void createNode(bool visible, NodeType type);
+    void createNode(bool visible, NodeType type, Observable *observable);
     /**
      * Check if owned node pointer is valid
      * @throws std::runtime_error
@@ -24,7 +25,7 @@ protected:
 public:
     bool highlighted = false;
 
-    explicit Node(NodeFrontEnd *api, NodeType type = NodeType::Generic, bool visible = true);
+    Node(NodeFrontEnd *api, Observable *observable, NodeType type = NodeType::Generic, bool visible = true);
     virtual ~Node() = default;
 
     Node& operator=(const Node& node);

@@ -32,7 +32,7 @@ static nf::NodeFrontEndWrapper NFWrap(nf::Context{
  * 3. Override necessary methods
  * 
  * Usage:
- * 1. See methods in documentation
+ * 1. See methods in Doxygen documentation
  * 2. Explore the results!
  * 
  **/

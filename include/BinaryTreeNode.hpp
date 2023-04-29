@@ -85,6 +85,8 @@ public:
         Node::nodeSanityCheck();
         return m_right_derived;
     };
+
+    void invoke() override {}
 };
 
 };

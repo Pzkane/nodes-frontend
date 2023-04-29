@@ -13,7 +13,7 @@ MainScene::MainScene(sf::RenderWindow &window) : ef(), Scene(window)
 #ifdef BENCHMARK
     for (int i = 0; i < 30000; ++i)
     {
-        NodeImpl *node = new NodeImpl(DEF_NODE_RAD);
+        NodeImpl *node = new NodeImpl(nullptr, DEF_NODE_RAD);
         node->setFillColor(sf::Color::Red);
         node->sf::CircleShape::setPosition(sf::Vector2f(Utils::get_random_number<float>(0.f, 500.f), Utils::get_random_number<float>(0.f, 500.f)));
         pushNode(node);
@@ -38,9 +38,9 @@ MainScene::~MainScene()
     }
 }
 
-NodeImpl* MainScene::createNode(float radius = DEF_NODE_RAD)
+NodeImpl* MainScene::createNode(Observable *entity = nullptr, float radius = DEF_NODE_RAD)
 {
-    NodeImpl *node = new NodeImpl(radius);
+    NodeImpl *node = new NodeImpl(entity, radius);
     sf::Vector2f mPos = Utils::getMousePosf(*p_window);
     sf::Vector2f createPos = mPos;
     sf::Vector2u winSize = p_window->getSize();
@@ -369,7 +369,7 @@ void* MainScene::updateInput(const EventType &eventType, void* payload)
     switch (eventType)
     {
     case EventType::addNode:
-        return createNode();
+        return createNode(reinterpret_cast<Observable*>(payload));
     case EventType::addEdge:
         return createEdge();
     case EventType::addOEdge:

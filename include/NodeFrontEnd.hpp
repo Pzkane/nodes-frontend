@@ -8,6 +8,8 @@
 #include "NodeImpl.hpp"
 #include "Algorithms.hpp"
 #include "utils.hpp"
+#include "Observable.hpp"
+#include "Overlay.hpp"
 
 namespace nf {
 
@@ -39,12 +41,13 @@ class NodeFrontEnd
     const Context m_settings;
     SceneSwitcher m_ss;
     NodeImpl* m_highlighted_node = nullptr;
+    std::vector<Overlay*> m_uis;
 
     void _cleanup();
 public:
     /// Algorithm-specific values (public)
     // LinkedList shift properties
-    static size_t PADDING;
+    static float PADDING;
     static size_t LL_NODE_SPACING;
     sf::Vector2f m_ll_shift = {PADDING, PADDING};
 
@@ -58,6 +61,7 @@ public:
     void init();
     int launch_and_loop();
     void setWindowColor(const sf::Color &color);
+    const sf::RenderWindow * getWindow() { return m_window; }
     void setNodePosition(NodeImpl *node, float x, float y);
     void setNodePosition(NodeImpl *node, sf::Vector2f vf);
     /**
@@ -66,7 +70,7 @@ public:
     */
     void setLinkedListShiftPos(sf::Vector2f pad) { m_ll_shift = pad; }
     void setLinkedListHighlightThickness(float thickness) { LL_HIGHLIGHT_THICKNESS = thickness; }
-    NodeImpl* addNode(const char *text = "", float x = 0, float y = 0, bool visible = true, NodeType n_type = NodeType::Generic);
+    NodeImpl* addNode(const char *text = "", float x = 0, float y = 0, bool visible = true, NodeType n_type = NodeType::Generic, Observable *entity = nullptr);
     void connectNodes(NodeImpl *n1, NodeImpl *n2);
     void connectOrientedNodes(NodeImpl *n1, NodeImpl *n2);
     void connectWeightNodes(NodeImpl *n1, NodeImpl *n2, float weight = 0);
@@ -82,6 +86,14 @@ public:
     */
     void highlightNode(NodeImpl *n);
     bool isInit() { return m_initizlized; };
+    /**
+     * Add new overlay section
+    */
+    void mergeOverlay(Overlay *child);
+    /**
+     * Remove overlay section from vector
+    */
+    void divideOverlay(Overlay *child);
 };
 
 };

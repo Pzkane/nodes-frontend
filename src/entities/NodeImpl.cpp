@@ -6,12 +6,15 @@
 #include "FontFlags.hpp"
 #include "utils.hpp"
 #include "MouseCache.hpp"
+#include "ActionObserver.hpp"
+#include "ActionObservable.hpp"
 
 using namespace nf;
 
 unsigned NodeImpl::id = 0;
 
-NodeImpl::NodeImpl(float radius, std::size_t pointCount, const std::size_t ms) : RADIUS(radius), CircleShape(radius, pointCount), Clickable(ms)
+NodeImpl::NodeImpl(Observable * hlNode, float radius, std::size_t pointCount, const std::size_t ms)
+    : m_hl_node(hlNode), RADIUS(radius), CircleShape(radius, pointCount), Clickable(ms)
 {
     const sf::Vector2f center = CircleShape::getPosition();
     sf::CircleShape::setOrigin(center.x + RADIUS, center.y + RADIUS);
@@ -20,7 +23,7 @@ NodeImpl::NodeImpl(float radius, std::size_t pointCount, const std::size_t ms) :
     sf::CircleShape::setFillColor({220, 220, 220});
 
     auto setHelloText = [&](){
-        setText(std::to_string(id));
+        // setText(std::to_string(id));
     };
 
     setRMBCallback(setHelloText);
@@ -43,23 +46,30 @@ void NodeImpl::update(const sf::RenderWindow &window, EventFlags &ef)
     Mouse& m = MouseCache::getInstance(window)->gMouse;
     if (mouseInside(Utils::getMousePosf(window)) && m_isVisible)
     {
+        // For dragging
         if (ef.f_lmb)
         {
             if (m.isCaptureEmpty())
                 m.captureEntity(this);
         } else {
-            // say((m.getEntity() == this));
             if (m.getEntity() == this)
                 m.releaseEntity();
         }
 
+        // For contextual actions
         m_hovering = true;
         if (ef.f_rmb) {
             if (m.isCaptureEmpty())
                 m.captureEntity(this);
             if (m.getEntity() == this) {
                 invokeRMBCallback();
+                ActionObservable *p = new ActionObservable{m_hl_node};
+                ActionObserver::getInstance()->setOriginAction(p);
+                ActionObserver::getInstance()->performOriginAction();
+                // Reset RMB flag to get 1 click, not press
+                ef.f_rmb = false;
             }
+            /*
             if (!ef.p_start_node && ef.p_end_node != this)
             {
                 say("START_NODE");
@@ -70,15 +80,12 @@ void NodeImpl::update(const sf::RenderWindow &window, EventFlags &ef)
                 say("END_NODE");
                 ef.p_end_node = this;
             }
+            */
         }
 
+        // For destroying
         if (ef.f_lalt)
             enf.f_delete_self = true;
-
-        // if (ef.f_ralt)
-        // {
-        //     invokeCallback();
-        // }
     } else
         m_hovering = false;
 }

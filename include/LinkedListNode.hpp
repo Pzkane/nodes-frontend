@@ -3,6 +3,8 @@
 
 #include "custom_type_traits.hpp"
 #include "GenericAPINode.hpp"
+#include "Overlay.hpp"
+#include "MouseCache.hpp"
 
 namespace nf {
 /**
@@ -46,6 +48,14 @@ public:
         Node::nodeSanityCheck();
         return m_next_derived;
     };
+
+    void invoke() override {
+        // TODO: Resource management
+        Overlay *ll_ui = new Overlay();
+        ll_ui->createWrapper(Container{sf::Vector2f{50, 50}, sf::Vector2f{MouseCache::getInstance(*Node::m_api->getWindow())->gMouse.getPosition(*Node::m_api->getWindow())}, sf::Vector2i{}});
+        ll_ui->addContainer(Container{sf::Vector2f{50, 20}, ll_ui->getWrapper()->getPosition(), sf::Vector2i{10, 10}});
+        Node::m_api->mergeOverlay(ll_ui);
+    }
 };
 
 };

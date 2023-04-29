@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include <SFML/Window.hpp>
 #include <SFML/OpenGL.hpp>
 
@@ -5,7 +7,6 @@
 #include "MainScene.hpp"
 #include "EventType.hpp"
 #include "Cache.hpp"
-#include "Overlay.hpp"
 
 using namespace nf;
 
@@ -14,7 +15,7 @@ sf::Color nf::LL_HIGHLIGHT_COLOR = sf::Color::Black;
 float nf::LL_HIGHLIGHT_THICKNESS = 2.f;
 const float nf::LL_DEFAULT_THICKNESS = 1.f;
 
-size_t NodeFrontEnd::PADDING = 50;
+float NodeFrontEnd::PADDING = 50;
 size_t NodeFrontEnd::LL_NODE_SPACING = 150;
 
 size_t NodeFrontEnd::BT_PARENT_NODE_CENTER_OFFSET_X = 75;
@@ -49,7 +50,6 @@ static void event_pool(Tw &main_m_window, Utils::SafeQueue<sf::Event> &m_eventQu
         }
 }
 
-// TODO: Add video_mode and title specs
 NodeFrontEnd::NodeFrontEnd(const Context& settings, const char *n_title) : m_settings(settings)
 {}
 
@@ -64,11 +64,23 @@ void NodeFrontEnd::init()
     say("frontend initialized");
 }
 
+void NodeFrontEnd::mergeOverlay(Overlay *child) {
+    m_uis.push_back(child);
+}
+
+void NodeFrontEnd::divideOverlay(Overlay *child) {
+    m_uis.erase(std::remove_if(m_uis.begin(), m_uis.end(), [&child](Overlay *element) -> bool {
+        if (&element == &child) return true;
+        return false;
+    }), m_uis.end());
+}
+
 int NodeFrontEnd::launch_and_loop()
 {
     Overlay ui;
     ui.createWrapper({{100,100}, {10,10}, {10,10}});
     ui.addContainer(Container {{80, 50}, {20,20}});
+    mergeOverlay(&ui);
     sf::Context context;
     bool running = true;
 
@@ -95,10 +107,12 @@ int NodeFrontEnd::launch_and_loop()
 
         m_ss.updateScene();
         m_ss.drawScene();
-        if (!ui.isHidden()) {
-            const auto ef = static_cast<const EventFlags*>(m_ss.getSceneFlags(Flags::Type::Event));
-            ui.update(*m_window, *ef, resized);
-            ui.draw(*m_window);
+        for (auto *el : m_uis) {
+            if (!el->isHidden()) {
+                const auto ef = static_cast<const EventFlags*>(m_ss.getSceneFlags(Flags::Type::Event));
+                el->update(*m_window, *ef, resized);
+                el->draw(*m_window);
+            }
         }
         m_window->display();
         m_window->clear(m_backgroundColor);
@@ -145,7 +159,7 @@ void NodeFrontEnd::setWindowColor(const sf::Color &color)
     m_backgroundColor = color;
 }
 
-NodeImpl* NodeFrontEnd::addNode(const char *text, float x, float y, bool visible, NodeType n_type)
+NodeImpl* NodeFrontEnd::addNode(const char *text, float x, float y, bool visible, NodeType n_type, Observable *entity)
 {
     auto p = reinterpret_cast<NodeImpl *>(m_ss.updateInput(EventType::addNode));
     p->setText(text);
@@ -154,6 +168,7 @@ NodeImpl* NodeFrontEnd::addNode(const char *text, float x, float y, bool visible
     {
     case NodeType::List:
         p->setPosition(x+LL_NODE_SPACING, y);
+        p->setObservable(entity);
         m_ll_shift = {m_ll_shift.x + LL_NODE_SPACING, m_ll_shift.y};
         break;
     

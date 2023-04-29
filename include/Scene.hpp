@@ -19,10 +19,9 @@ protected:
     sf::RenderWindow *const p_window = nullptr;
     std::list<sf::Drawable *> m_drawables;
     MouseCache* m_mouseCache;
-    ActionObserver* m_observer;
 
 public:
-    explicit Scene(sf::RenderWindow &window) : p_window(&window), m_mouseCache(MouseCache::getInstance(window)), m_observer(ActionObserver::getInstance()) {}
+    explicit Scene(sf::RenderWindow &window) : p_window(&window), m_mouseCache(MouseCache::getInstance(window)) {}
     virtual ~Scene();
     virtual void update() = 0;
     virtual void draw();
