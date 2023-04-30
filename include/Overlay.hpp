@@ -41,7 +41,7 @@ public:
     /**
      * Return main wrapper container
     */
-    const Container* getWrapper() { return m_wrapper; }
+    const Container* getWrapper();
     /**
      * Add child container to UI
     */

@@ -19,6 +19,13 @@ Container::Container(const sf::Vector2f& size,
     init();
 }
 
+Container::Container(const Container& other) : sf::RectangleShape(other) {
+    padding = other.padding;
+    m_visible = other.m_visible;
+    m_children = other.m_children;
+    enf = other.enf;
+}
+
 void Container::addChildElement(const Container& child) {
     m_children.push_back(child);
 }

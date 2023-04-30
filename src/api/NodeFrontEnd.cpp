@@ -64,23 +64,25 @@ void NodeFrontEnd::init()
     say("frontend initialized");
 }
 
-void NodeFrontEnd::mergeOverlay(Overlay *child) {
-    m_uis.push_back(child);
+void NodeFrontEnd::mergeOverlay(Overlay &child) {
+    Overlay** p_ui = m_uis.createResource();
+    *p_ui = &child;
 }
 
-void NodeFrontEnd::divideOverlay(Overlay *child) {
-    m_uis.erase(std::remove_if(m_uis.begin(), m_uis.end(), [&child](Overlay *element) -> bool {
-        if (&element == &child) return true;
-        return false;
-    }), m_uis.end());
-}
+// void NodeFrontEnd::divideOverlay(Overlay* child) {
+//     m_uis.erase(std::remove_if(m_uis.begin(), m_uis.end(), [&child](Overlay *element) -> bool {
+//         if (&element == &child) return true;
+//         return false;
+//     }), m_uis.end());
+// }
 
 int NodeFrontEnd::launch_and_loop()
 {
     Overlay ui;
     ui.createWrapper({{100,100}, {10,10}, {10,10}});
     ui.addContainer(Container {{80, 50}, {20,20}});
-    mergeOverlay(&ui);
+    Overlay** p_ui = m_uis.createResource();
+    *p_ui = &ui;
     sf::Context context;
     bool running = true;
 
@@ -107,13 +109,22 @@ int NodeFrontEnd::launch_and_loop()
 
         m_ss.updateScene();
         m_ss.drawScene();
-        for (auto *el : m_uis) {
-            if (!el->isHidden()) {
-                const auto ef = static_cast<const EventFlags*>(m_ss.getSceneFlags(Flags::Type::Event));
-                el->update(*m_window, *ef, resized);
-                el->draw(*m_window);
+
+        // Draw UI after scene updates
+        for (Resource<Overlay*>::iterator el = m_uis.begin(); el != m_uis.end();) {
+            if (!(*el)) {
+                el = m_uis.erase(el);
+                continue;
             }
+
+            if (!(**el)->isHidden()) {
+                const auto ef = static_cast<const EventFlags*>(m_ss.getSceneFlags(Flags::Type::Event));
+                (**el)->update(*m_window, *ef, resized);
+                (**el)->draw(*m_window);
+            }
+            ++el;
         }
+
         m_window->display();
         m_window->clear(m_backgroundColor);
 

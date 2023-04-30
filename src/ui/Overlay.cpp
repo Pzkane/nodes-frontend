@@ -3,6 +3,8 @@
 
 using namespace nf;
 
+struct Wrapper_Not_Created{};
+
 void Overlay::createWrapper(const Container& container){
     if (m_wrapper) return;
     m_wrapper = new Container(container);
@@ -55,7 +57,6 @@ Overlay& Overlay::operator=(Overlay&& o) {
     return *this;
 }
 
-
 void Overlay::addContainer(Container&& container) {
     struct Wrapper_Not_Created{};
     if (m_wrapper == nullptr) throw Wrapper_Not_Created{};
@@ -67,6 +68,7 @@ void Overlay::addContainer(const Container& container) {
 }
 
 void Overlay::update(sf::RenderWindow& window, const EventFlags& ef, bool resized) {
+    if (m_wrapper == nullptr) throw Wrapper_Not_Created{};
     Mouse& m = MouseCache::getInstance(window)->gMouse;
     
     if (resized) {
@@ -82,6 +84,11 @@ void Overlay::update(sf::RenderWindow& window, const EventFlags& ef, bool resize
         else
             m_wrapper->setMovable(false);
     }
+}
+
+const Container* Overlay::getWrapper() {
+    if (m_wrapper == nullptr) throw Wrapper_Not_Created{};
+    return m_wrapper;
 }
 
 void Overlay::draw(sf::RenderWindow& window) {

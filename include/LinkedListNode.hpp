@@ -5,6 +5,7 @@
 #include "GenericAPINode.hpp"
 #include "Overlay.hpp"
 #include "MouseCache.hpp"
+#include "Resource.hpp"
 
 namespace nf {
 /**
@@ -14,6 +15,7 @@ template <class C, typename T>
 class LinkedListNode : public GenericAPINode<C,T>
 {
     LinkedListNode *m_next = nullptr;
+    Resource<Overlay> m_overlay_pool;
 protected:
     C *m_next_derived = nullptr;
 public:
@@ -50,11 +52,15 @@ public:
     };
 
     void invoke() override {
-        // TODO: Resource management
-        Overlay *ll_ui = new Overlay();
-        ll_ui->createWrapper(Container{sf::Vector2f{50, 50}, sf::Vector2f{MouseCache::getInstance(*Node::m_api->getWindow())->gMouse.getPosition(*Node::m_api->getWindow())}, sf::Vector2i{}});
+        Overlay* ll_ui = m_overlay_pool.createResource();
+        ll_ui->createWrapper(Container{
+            sf::Vector2f{50, 50},
+            sf::Vector2f{MouseCache::getInstance(
+                    *Node::m_api->getWindow()
+                )->gMouse.getPosition(*Node::m_api->getWindow())},
+            sf::Vector2i{}});
         ll_ui->addContainer(Container{sf::Vector2f{50, 20}, ll_ui->getWrapper()->getPosition(), sf::Vector2i{10, 10}});
-        Node::m_api->mergeOverlay(ll_ui);
+        Node::m_api->mergeOverlay(*ll_ui);
     }
 };
 

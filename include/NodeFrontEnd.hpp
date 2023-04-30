@@ -10,6 +10,7 @@
 #include "utils.hpp"
 #include "Observable.hpp"
 #include "Overlay.hpp"
+#include "Resource.hpp"
 
 namespace nf {
 
@@ -41,7 +42,7 @@ class NodeFrontEnd
     const Context m_settings;
     SceneSwitcher m_ss;
     NodeImpl* m_highlighted_node = nullptr;
-    std::vector<Overlay*> m_uis;
+    Resource<Overlay*> m_uis;
 
     void _cleanup();
 public:
@@ -89,11 +90,11 @@ public:
     /**
      * Add new overlay section
     */
-    void mergeOverlay(Overlay *child);
+    void mergeOverlay(Overlay &child);
     /**
      * Remove overlay section from vector
     */
-    void divideOverlay(Overlay *child);
+    // void divideOverlay(Overlay *child);
 };
 
 };

@@ -31,6 +31,7 @@ public:
     Container(const sf::Vector2f& size,
               const sf::Vector2f& pos = {},
               const sf::Vector2i& padding = {});
+    Container(const Container& other);
 
     /**
      * Append a copy of the new child element to the container child list
