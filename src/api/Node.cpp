@@ -21,7 +21,7 @@ void Node::checkHighlight() const {
 void Node::nodeSanityCheck() const {
     if (m_node == nullptr) {
         std::ostringstream err;
-        err << "Node " << this << " already was destroyed!";
+        err << "Node " << this << " was already destroyed!";
         throw std::runtime_error(err.str());
     }
 }

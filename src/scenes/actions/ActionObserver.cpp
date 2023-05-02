@@ -13,15 +13,17 @@ ActionObserver* ActionObserver::getInstance() {
     return m_observer;
 }
 
+ActionObserver::~ActionObserver() {
+    destroy();
+}
+
 void ActionObserver::setOriginAction(Action *action) {
-    if (m_originAction)
-        delete m_originAction;
+    destroyOriginAction();
     m_originAction = action;
 }
 
 void ActionObserver::setCallbackAction(Action *action) {
-    if (m_callbackAction)
-        delete m_callbackAction;
+    destroyCallbackAction();
     m_callbackAction = action;
 }
 
@@ -40,4 +42,21 @@ void ActionObserver::performOriginAction() {
 
 void ActionObserver::performCallbackAction() {
     m_callbackAction->execute();
+}
+
+void ActionObserver::destroyOriginAction () {
+    if (m_originAction)
+        delete m_originAction;
+}
+
+void ActionObserver::destroyCallbackAction () {
+    if (m_callbackAction)
+        delete m_callbackAction;
+}
+
+void ActionObserver::destroy() {
+    destroyOriginAction();
+    destroyCallbackAction();
+    if (m_observer)
+        delete m_observer;
 }

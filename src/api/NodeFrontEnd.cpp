@@ -48,6 +48,7 @@ static void event_pool(Tw &main_m_window, Utils::SafeQueue<sf::Event> &m_eventQu
             }
             m_eventQueue.pop();
         }
+    main_m_window.setActive(false);
 }
 
 NodeFrontEnd::NodeFrontEnd(const Context& settings, const char *n_title) : m_settings(settings)
@@ -57,6 +58,7 @@ void NodeFrontEnd::init()
 {
     say("frontend initialization...");
     m_window = new sf::RenderWindow(m_settings.m_videoMode, m_title, sf::Style::Default, m_settings);
+    m_window->setActive(false);
     m_thEventPool = new std::thread(event_pool<sf::RenderWindow>, std::ref(*m_window), std::ref(m_eventQueue), std::ref(m_ss), std::ref(lf));
     MainScene *m_mainScene = new MainScene(*m_window);
     m_ss.switchTo(m_mainScene);
@@ -64,25 +66,9 @@ void NodeFrontEnd::init()
     say("frontend initialized");
 }
 
-void NodeFrontEnd::mergeOverlay(Overlay &child) {
-    Overlay** p_ui = m_uis.createResource();
-    *p_ui = &child;
-}
-
-// void NodeFrontEnd::divideOverlay(Overlay* child) {
-//     m_uis.erase(std::remove_if(m_uis.begin(), m_uis.end(), [&child](Overlay *element) -> bool {
-//         if (&element == &child) return true;
-//         return false;
-//     }), m_uis.end());
-// }
-
 int NodeFrontEnd::launch_and_loop()
 {
-    Overlay ui;
-    ui.createWrapper({{100,100}, {10,10}, {10,10}});
-    ui.addContainer(Container {{80, 50}, {20,20}});
-    Overlay** p_ui = m_uis.createResource();
-    *p_ui = &ui;
+    // TODO: Transfer UI control to MainScene
     sf::Context context;
     bool running = true;
 
@@ -110,21 +96,6 @@ int NodeFrontEnd::launch_and_loop()
         m_ss.updateScene();
         m_ss.drawScene();
 
-        // Draw UI after scene updates
-        for (Resource<Overlay*>::iterator el = m_uis.begin(); el != m_uis.end();) {
-            if (!(*el)) {
-                el = m_uis.erase(el);
-                continue;
-            }
-
-            if (!(**el)->isHidden()) {
-                const auto ef = static_cast<const EventFlags*>(m_ss.getSceneFlags(Flags::Type::Event));
-                (**el)->update(*m_window, *ef, resized);
-                (**el)->draw(*m_window);
-            }
-            ++el;
-        }
-
         m_window->display();
         m_window->clear(m_backgroundColor);
 
@@ -149,8 +120,9 @@ void NodeFrontEnd::_cleanup()
     m_ss.cleanup();
     if (m_window)
     {
-        say("Destroying main window...");
+        say("Deactivating main window...");
         m_window->setActive(false);
+        say("Closing main window...");
         m_window->close();
         delete m_window;
         m_window = nullptr;
@@ -167,11 +139,13 @@ void NodeFrontEnd::_cleanup()
 
 void NodeFrontEnd::setWindowColor(const sf::Color &color)
 {
+    if (lf.f_t_ep_done) return;
     m_backgroundColor = color;
 }
 
 NodeImpl* NodeFrontEnd::addNode(const char *text, float x, float y, bool visible, NodeType n_type, Observable *entity)
 {
+    if (lf.f_t_ep_done) return nullptr;
     auto p = reinterpret_cast<NodeImpl *>(m_ss.updateInput(EventType::addNode));
     p->setText(text);
     p->setVisibility(visible);
@@ -192,11 +166,13 @@ NodeImpl* NodeFrontEnd::addNode(const char *text, float x, float y, bool visible
 
 void NodeFrontEnd::connectNodes(NodeImpl *n1, NodeImpl *n2)
 {
+    if (lf.f_t_ep_done) return;
     auto p = reinterpret_cast<Edge *>(m_ss.updateInput(EventType::addEdge));
     p->setNodeEndings(n1, n2);
 }
 void NodeFrontEnd::connectWeightNodes(NodeImpl *n1, NodeImpl *n2, float weight)
 {
+    if (lf.f_t_ep_done) return;
     auto p = reinterpret_cast<WeightedEdge *>(m_ss.updateInput(EventType::addWEdge));
     p->setNodeEndings(n1, n2);
     p->setWeight(weight);
@@ -204,12 +180,15 @@ void NodeFrontEnd::connectWeightNodes(NodeImpl *n1, NodeImpl *n2, float weight)
 
 void NodeFrontEnd::connectOrientedNodes(NodeImpl *n1, NodeImpl *n2)
 {
+    if (lf.f_t_ep_done) return;
     auto p = reinterpret_cast<Edge *>(m_ss.updateInput(EventType::addOEdge));
     p->setNodeEndings(n1, n2);
 }
 
 void NodeFrontEnd::disconnectNodes(NodeImpl *n1, NodeImpl *n2)
 {
+    if (lf.f_t_ep_done) return;
+    // LEAK
     Nodes2ptr *pn = new Nodes2ptr{n1, n2};
     m_ss.updateInput(EventType::disconnectNodes, pn);
 }
@@ -220,18 +199,33 @@ void NodeFrontEnd::destroyNode(NodeImpl *n) {
 
 void NodeFrontEnd::setNodePosition(NodeImpl *node, float x, float y)
 {
+    if (lf.f_t_ep_done) return;
     setNodePosition(node, sf::Vector2f(x, y));
 }
 
 void NodeFrontEnd::setNodePosition(NodeImpl *node, sf::Vector2f vf)
 {
+    if (lf.f_t_ep_done) return;
     node->setPosition(vf);
 }
 
 void NodeFrontEnd::highlightNode(NodeImpl *n) {
+    if (lf.f_t_ep_done) return;
     n->setOutlineThickness(LL_HIGHLIGHT_THICKNESS);
     if (m_highlighted_node && &*n != &*m_highlighted_node) {
         m_highlighted_node->setOutlineThickness(LL_DEFAULT_THICKNESS);
     }
     m_highlighted_node = n;
 }
+
+void NodeFrontEnd::mergeOverlay(Overlay &child) {
+    Overlay* p_ui = &child;
+    m_ss.updateInput(EventType::addOverlay, p_ui);
+}
+
+// void NodeFrontEnd::divideOverlay(Overlay* child) {
+//     m_uis.erase(std::remove_if(m_uis.begin(), m_uis.end(), [&child](Overlay *element) -> bool {
+//         if (&element == &child) return true;
+//         return false;
+//     }), m_uis.end());
+// }

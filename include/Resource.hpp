@@ -16,7 +16,7 @@ class Resource : public std::vector<T*>
 {
 public:
     /**
-     * Create new heap data from temporary into object's pool inplace
+     * Create new heap data inplace from temporary into object's pool
     */
     T* createResource() {
         T* data = new T;

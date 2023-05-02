@@ -7,6 +7,8 @@
 #include "EventType.hpp"
 #include "OrientedEdge.hpp"
 #include "WeightedEdge.hpp"
+#include "Overlay.hpp"
+#include "Resource.hpp"
 
 namespace nf {
 
@@ -16,11 +18,16 @@ namespace nf {
 class MainScene : public Scene
 {
     bool m_b_mousePressed = false;
+    /// @brief List of nodes in scene
     std::list<NodeImpl*> m_nodes;
+    /// @brief List of edges in scene
     std::list<Edge*> m_edges;
+    /// @brief Current event flags (button presses, global node states (deprecated))
     EventFlags ef;
-    bool m_node_marked_for_delete = false;
-
+    /// @brief This scene UI elements
+    Resource<Overlay*> m_uis{};
+    /// @brief Call to update UI 
+    void updateUI(bool resized = false);
 public:
     MainScene(sf::RenderWindow &window);
     ~MainScene();
@@ -44,6 +51,14 @@ public:
      * Illusion, view is untouched, everything else is moved by offset
     */
     void moveView(int offset_x, int offset_y);
+    /**
+     * Add new overlay section
+    */
+    void mergeOverlay(Overlay* child);
+    /**
+     * Remove overlay section from vector
+    */
+    // void divideOverlay(Overlay *child);
 
     void update() override;
     void draw() override;

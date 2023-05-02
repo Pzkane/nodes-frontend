@@ -10,7 +10,6 @@
 #include "utils.hpp"
 #include "Observable.hpp"
 #include "Overlay.hpp"
-#include "Resource.hpp"
 
 namespace nf {
 
@@ -42,7 +41,6 @@ class NodeFrontEnd
     const Context m_settings;
     SceneSwitcher m_ss;
     NodeImpl* m_highlighted_node = nullptr;
-    Resource<Overlay*> m_uis;
 
     void _cleanup();
 public:

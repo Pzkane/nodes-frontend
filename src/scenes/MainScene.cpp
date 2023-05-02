@@ -19,6 +19,11 @@ MainScene::MainScene(sf::RenderWindow &window) : ef(), Scene(window)
         pushNode(node);
     }
 #endif
+    // Overlay* ui = new Overlay();
+    // ui->createWrapper({{100,100}, {10,10}, {10,10}});
+    // ui->addContainer(Container {{80, 50}, {20,20}});
+    // Overlay** p_ui = m_uis.createResource();
+    // *p_ui = *&ui;
 }
 
 MainScene::~MainScene()
@@ -136,11 +141,22 @@ void MainScene::moveView(int offset_x, int offset_y)
     }
 }
 
+void MainScene::mergeOverlay(Overlay* child) {
+    Overlay** p_ui = m_uis.createResource();
+    *p_ui = *&child;
+}
+
+// void MainScene::divideOverlay(Overlay* child) {
+//     m_uis.erase(std::remove_if(m_uis.begin(), m_uis.end(), [&child](Overlay *element) -> bool {
+//         if (&element == &child) return true;
+//         return false;
+//     }), m_uis.end());
+// }
+
 void MainScene::update()
 {
     Cache::CursorType cursorType = Cache::CursorType::Arrow;
 
-    // m_node_marked_for_delete = false;
     for (auto it = m_nodes.rbegin(); it != m_nodes.rend();)
     {
         if ((*it)->enf.f_delete_self)
@@ -238,6 +254,21 @@ void MainScene::update()
         /* Force RMB flag release to avoid setting starting node */
         say("BUTTONS CLEARED");
     }
+    updateUI();
+}
+
+void MainScene::updateUI(bool resized) {
+    for (Resource<Overlay*>::iterator el = m_uis.begin(); el != m_uis.end();) {
+        if (!(*el)) {
+            el = m_uis.erase(el);
+            continue;
+        }
+
+        if (!(**el)->isHidden()) {
+            (**el)->update(*p_window, ef, resized);
+        }
+        ++el;
+    }
 }
 
 void MainScene::draw()
@@ -252,6 +283,17 @@ void MainScene::draw()
     {
         if (it->isVisible())
             it->draw(*p_window);
+    }
+
+    for (Resource<Overlay*>::iterator el = m_uis.begin(); el != m_uis.end();) {
+        if (!(*el)) {
+            el = m_uis.erase(el);
+            continue;
+        }
+        if (!(**el)->isHidden()) {
+            (**el)->draw(*p_window);
+        }
+        ++el;
     }
 }
 
@@ -351,6 +393,10 @@ void *MainScene::updateInput(const sf::Event &event, void* payload)
         }
         break;
 
+    case sf::Event::Resized:
+        updateUI(true);
+        break;
+
     default:
         break;
     }
@@ -376,6 +422,9 @@ void* MainScene::updateInput(const EventType &eventType, void* payload)
         return createOEdge();
     case EventType::addWEdge:
         return createWEdge();
+    case EventType::addOverlay:
+        mergeOverlay(reinterpret_cast<Overlay*>(payload));
+        return nullptr;
     case EventType::disconnectNodes:
         removeEdge(reinterpret_cast<Nodes2ptr*>(payload));
         return nullptr;

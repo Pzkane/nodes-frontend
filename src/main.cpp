@@ -21,6 +21,7 @@ static nf::NodeFrontEndWrapper NFWrap(nf::Context{
 });
 */
 
+
 /**
  * 
  * How to declare and use custom type:
@@ -266,7 +267,7 @@ void cycle_nodes(LoopTypeNode* curr) {
         curr->highlight();
         nf::Utils::delay(750);
         curr = curr->getNext();
-    } while(1);
+    } while(!NFWrap.isDone()); // to actually join thread
 }
 
 // For looping test

@@ -1,11 +1,15 @@
 #ifndef SRC_ENTITIES_CONTAINER_HPP_INCLUDED
 #define SRC_ENTITIES_CONTAINER_HPP_INCLUDED
 
+#include <functional>
+#include <string>
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "AbstractShape.hpp"
 #include "Draggable.hpp"
 #include "Entity.hpp"
+#include "Callbacks.hpp"
+#include "Label.hpp"
 
 namespace nf {
 
@@ -18,20 +22,29 @@ namespace nf {
 */
 class Container : public Entity, public AbstractShape, public Draggable, public sf::RectangleShape
 {
+    static int ID;
     using ChildContainers = std::vector<Container>;
     ChildContainers m_children;
     bool m_visible = true;
+    std::function<void*(void*)> m_callback;
     void init();
 
     friend class Overlay;
 public:
+    int m_id;
     sf::Vector2i padding = {0, 0};
+    sf::Text m_label;
 
     Container() : sf::RectangleShape() { init(); }
     Container(const sf::Vector2f& size,
               const sf::Vector2f& pos = {},
               const sf::Vector2i& padding = {});
-    Container(const Container& other);
+    Container(const std::string& text,
+              const std::function<void*(void*)> callback,
+              const sf::Vector2f& size,
+              const sf::Vector2f& pos = {},
+              const sf::Vector2i& padding = {});
+    // Container(const Container& other);
 
     /**
      * Append a copy of the new child element to the container child list
@@ -97,7 +110,7 @@ public:
     sf::FloatRect getGlobalBounds() override;
 
     void update(const sf::RenderWindow &window, EventFlags &ef) override;
-    void draw(sf::RenderWindow &window) {};
+    void draw(sf::RenderWindow &window) override;
 };
 
 };

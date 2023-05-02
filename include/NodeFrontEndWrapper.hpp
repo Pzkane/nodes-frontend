@@ -14,7 +14,7 @@
 namespace nf {
 
 /**
- * Friendly wrapper around API dispatcher
+ * User-friendly wrapper around API dispatcher
 */
 class NodeFrontEndWrapper
 {

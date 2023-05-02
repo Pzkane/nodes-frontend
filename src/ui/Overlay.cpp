@@ -8,6 +8,8 @@ struct Wrapper_Not_Created{};
 void Overlay::createWrapper(const Container& container){
     if (m_wrapper) return;
     m_wrapper = new Container(container);
+    // Transparent wrapper by default
+    m_wrapper->setFillColor(sf::Color{0, 0, 0, 0});
 }
 
 void Overlay::destroyWrapper() {
@@ -58,13 +60,13 @@ Overlay& Overlay::operator=(Overlay&& o) {
 }
 
 void Overlay::addContainer(Container&& container) {
-    struct Wrapper_Not_Created{};
     if (m_wrapper == nullptr) throw Wrapper_Not_Created{};
     m_wrapper->addChildElement(std::move(container));
 }
 
 void Overlay::addContainer(const Container& container) {
-    addContainer(std::move(container));
+    if (m_wrapper == nullptr) throw Wrapper_Not_Created{};
+    m_wrapper->addChildElement(container);
 }
 
 void Overlay::update(sf::RenderWindow& window, const EventFlags& ef, bool resized) {
@@ -93,7 +95,9 @@ const Container* Overlay::getWrapper() {
 
 void Overlay::draw(sf::RenderWindow& window) {
     window.draw(*m_wrapper);
+    say(m_wrapper->m_id)
     for (auto && it : m_wrapper->m_children) {
-        window.draw(it);
+        // say(it.m_id)
+        it.draw(window);
     }
 }

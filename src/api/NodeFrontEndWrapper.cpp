@@ -9,7 +9,7 @@ static void launchWindow(NodeFrontEnd *api, const Context& settings, std::atomic
 {
     api->init();
     api->launch_and_loop();
-    say("It is done");
+    say("API is done");
     isDone = true;
 }
 

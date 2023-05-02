@@ -1,14 +1,18 @@
 #include "Container.hpp"
 #include "MouseCache.hpp"
+#include "FontFlags.hpp"
 #include "utils.hpp"
 
 using namespace nf;
 
+int Container::ID = 0;
+
 void Container::init() {
-    static sf::Color uiBG {0, 0, 0, 75};
+    static sf::Color uiBG {0, 0, 0, 45};
     sf::RectangleShape::setFillColor(uiBG);
     sf::RectangleShape::setOutlineColor(sf::Color::Black);
     sf::RectangleShape::setOutlineThickness(1.5);
+    m_id = ID++;
 }
 
 Container::Container(const sf::Vector2f& size,
@@ -19,11 +23,17 @@ Container::Container(const sf::Vector2f& size,
     init();
 }
 
-Container::Container(const Container& other) : sf::RectangleShape(other) {
-    padding = other.padding;
-    m_visible = other.m_visible;
-    m_children = other.m_children;
-    enf = other.enf;
+Container::Container(const std::string& text,
+                     const std::function<void*(void*)> callback,
+                     const sf::Vector2f& size,
+                     const sf::Vector2f& pos,
+                     const sf::Vector2i& padding)
+    : Container(size, pos, padding) {
+    m_label.setFont(ff.font);
+    m_label.setString(text);
+    m_label.setScale(1, 1);
+    m_label.setFillColor(sf::Color::Black);
+    m_callback = callback;
 }
 
 void Container::addChildElement(const Container& child) {
@@ -84,6 +94,22 @@ void Container::update(const sf::RenderWindow &window, EventFlags &ef) {
     setEventFlags(ef);
     trackMousePointer(window);
 
+    const float PADDING = 0.3f;
+    m_label.setPosition(getPosition());
+    // Diameter
+    const float D = getLocalBounds().width;
+    const sf::FloatRect l_bounds = m_label.getLocalBounds();
+    // Scale text size and position to fit into node
+    const sf::Vector2f sizeScale(l_bounds.width / D + PADDING, l_bounds.height / D + PADDING);
+    const float maxScale = std::max(sizeScale.x, sizeScale.y);
+    if (maxScale > 1)
+        m_label.setScale(1 / maxScale, 1 / maxScale);
+    else
+    {
+        m_label.setOrigin(sf::Vector2f(m_label.getLocalBounds().width / 2, m_label.getLocalBounds().height * 1.4));
+        m_label.setScale(1, 1);
+    }
+
     if (mouseInside(Utils::getMousePosf(window))) {
         Mouse& m = MouseCache::getInstance(window)->gMouse;
         if (ef.f_lmb) {
@@ -93,5 +119,17 @@ void Container::update(const sf::RenderWindow &window, EventFlags &ef) {
             if (m.getEntity() == this)
                 m.releaseEntity();
         }
+    }
+
+    for (auto && it : this->m_children) {
+        it.update(window, ef);
+    }
+}
+
+void Container::draw(sf::RenderWindow &window) {
+    window.draw(*this);
+    window.draw(m_label);
+    for (auto && it : this->m_children) {
+        it.draw(window);
     }
 }

@@ -54,12 +54,20 @@ public:
     void invoke() override {
         Overlay* ll_ui = m_overlay_pool.createResource();
         ll_ui->createWrapper(Container{
-            sf::Vector2f{50, 50},
+            sf::Vector2f{70, 44},
             sf::Vector2f{MouseCache::getInstance(
                     *Node::m_api->getWindow()
                 )->gMouse.getPosition(*Node::m_api->getWindow())},
             sf::Vector2i{}});
-        ll_ui->addContainer(Container{sf::Vector2f{50, 20}, ll_ui->getWrapper()->getPosition(), sf::Vector2i{10, 10}});
+        ll_ui->addContainer(
+            Container{"setNext", [&](void* lnode){ this->setNext(*reinterpret_cast<C*>(lnode)); return nullptr; },
+                sf::Vector2f{70, 20}, ll_ui->getWrapper()->getPosition(), sf::Vector2i{10, 10}}
+        );
+        if (m_next_derived)
+            ll_ui->addContainer(
+                Container{"removeNext", [&](void* lnode){ this->setNext(nullptr); return nullptr; },
+                sf::Vector2f{70, 20}, {ll_ui->getWrapper()->getPosition().x, ll_ui->getWrapper()->getPosition().y+22}, sf::Vector2i{10, 10}}
+            );
         Node::m_api->mergeOverlay(*ll_ui);
     }
 };

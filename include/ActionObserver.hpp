@@ -16,16 +16,15 @@ class ActionObserver {
 protected:
     static ActionObserver* m_observer;
     static std::mutex m_observerMutex;
-    
-    /**
-     * Directive used to process set scene action
-    */
-    void handleAction();
 
     Action *m_originAction = nullptr, *m_callbackAction = nullptr;
+
+    void destroyOriginAction();
+    void destroyCallbackAction();
+    void destroy();
 public:
-    ActionObserver() {}
-    ~ActionObserver() = default;
+    ActionObserver() = default;
+    ~ActionObserver();
 
     ActionObserver(ActionObserver&) = delete;
     void operator=(const ActionObserver&) = delete;
