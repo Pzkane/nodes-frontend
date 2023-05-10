@@ -68,7 +68,6 @@ void NodeFrontEnd::init()
 
 int NodeFrontEnd::launch_and_loop()
 {
-    // TODO: Transfer UI control to MainScene
     sf::Context context;
     bool running = true;
 

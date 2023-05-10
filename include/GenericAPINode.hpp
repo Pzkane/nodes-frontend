@@ -84,6 +84,15 @@ public:
         nodeSanityCheck();
         return m_data;
     }
+
+    /**
+     * @brief Highlight node on press
+     * Override from Observable
+    */
+    void registerEntity() override {
+        Observable::registerEntity();
+        highlight();
+    }
 };
 
 };

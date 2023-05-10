@@ -209,10 +209,11 @@ int test08_ll_with_transition() {
     // Dynamically create nodes
     MyNodeTyped1* head = new MyNodeTyped1();
     head->setData(TestAddr{0, 42});
+    short delay = 20;
 
     MyNodeTyped1* curr = head;
     for(size_t i = 1; i < 5; ++i) {
-        nf::Utils::delay(500);
+        nf::Utils::delay(delay);
         MyNodeTyped1* node = new MyNodeTyped1();
         node->setData(TestAddr{i, 42+i});
         curr->setNext(*node);
@@ -225,33 +226,33 @@ int test08_ll_with_transition() {
     short i = 0;
     while(curr != nullptr) {
         ++i;
-        nf::Utils::delay(500);
+        nf::Utils::delay(delay);
         curr->highlight();
         // Insert new node into middle
         if (i == 2) {
-            nf::Utils::delay(500);
+            nf::Utils::delay(delay);
             MyNodeTyped1* middle = new MyNodeTyped1();
             middle->setPosition(375, 650);
             middle->setData(TestAddr{0,1});
             auto* tmp = curr->getNext();
-            nf::Utils::delay(500);
+            nf::Utils::delay(delay);
             curr->setNext(middle);
-            nf::Utils::delay(500);
+            nf::Utils::delay(delay);
             middle->setNext(tmp);
         }
 
         // Replace 4th original node
         if (i == 4) {
-            nf::Utils::delay(500);
+            nf::Utils::delay(delay);
             MyNodeTyped1* new_4th = new MyNodeTyped1();
             new_4th->setData(TestAddr{1,2});
             new_4th->setPosition(600, 650);
             auto* tmp = curr->getNext();
-            nf::Utils::delay(500);
+            nf::Utils::delay(delay);
             curr->setNext(new_4th);
-            nf::Utils::delay(500);
+            nf::Utils::delay(delay);
             new_4th->setNext(tmp->getNext());
-            nf::Utils::delay(500);
+            nf::Utils::delay(delay);
             delete tmp;
         }
 
@@ -343,6 +344,13 @@ int test11_bt_nodes() {
     return 0;
 }
 
+int test12_ll_node_set_next_nullptr() {
+    MyNodeTyped1* head = new MyNodeTyped1();
+    head->setData(TestAddr{0, 42});
+    head->setNext(nullptr);
+    return 0;
+}
+
 ///
 /// Driver
 ///
@@ -362,6 +370,7 @@ int main(int argc, char** argv)
      + test09_ll_loop_on_thread()
      + test10_dbl_ll()
      + test11_bt_nodes()
+     + test12_ll_node_set_next_nullptr()
     );
     if (test_suite != 0) return test_suite;
     say("Tests have passed!");

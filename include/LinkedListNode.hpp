@@ -28,11 +28,13 @@ public:
     void setNext(C* lnode)
     {
         Node::nodeSanityCheck();
+        if (lnode == this) return;
         if (m_next)
         {
             Node::m_api->disconnectNodes(Node::m_node, const_cast<NodeImpl*>(m_next->getInnerNode()));
         }
-        Node::m_api->connectOrientedNodes(Node::m_node, const_cast<NodeImpl*>(lnode->getInnerNode()));
+        if (lnode != nullptr)
+            Node::m_api->connectOrientedNodes(Node::m_node, const_cast<NodeImpl*>(lnode->getInnerNode()));
         m_next = lnode;
         m_next_derived = lnode;
     }
@@ -60,12 +62,30 @@ public:
                 )->gMouse.getPosition(*Node::m_api->getWindow())},
             sf::Vector2i{}});
         ll_ui->addContainer(
-            Container{"setNext", [&](void* lnode){ this->setNext(*reinterpret_cast<C*>(lnode)); return nullptr; },
+            ///
+            /// Container: takes last highlighted Linked List node and performs
+            ///     setNext(C*) on it.
+            ///
+            Container{"setNext", [&](void*){
+                    // Cast order: from `void*` to -> from `Observable*` to  -> C*
+                    //                                           ^
+                    //                                           |
+                    //                                          ~~~
+                    // (to retrieve type of a value under the pointer to allow proper cast up)
+                    this->setNext(
+                        *dynamic_cast<C*>(
+                            reinterpret_cast<Observable*>(
+                                ActionObserver::getInstance()->getCallbackParameter())));
+                    return nullptr;
+                }, false,
                 sf::Vector2f{70, 20}, ll_ui->getWrapper()->getPosition(), sf::Vector2i{10, 10}}
         );
         if (m_next_derived)
             ll_ui->addContainer(
-                Container{"removeNext", [&](void* lnode){ this->setNext(nullptr); return nullptr; },
+                ///
+                /// Container: removes pointer to the next node.
+                ///
+                Container{"removeNext", [&](void*){ this->setNext(nullptr); return nullptr; }, true,
                 sf::Vector2f{70, 20}, {ll_ui->getWrapper()->getPosition().x, ll_ui->getWrapper()->getPosition().y+22}, sf::Vector2i{10, 10}}
             );
         Node::m_api->mergeOverlay(*ll_ui);

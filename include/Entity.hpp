@@ -18,7 +18,7 @@ class Entity
 public:
     EntityFlags enf;
     Entity() = default;
-    ~Entity() = default;
+    virtual ~Entity() = default;
     /**
      * Update entity's state. Should be overriden
      * @param window RenderWindow in which given entity is being drawn

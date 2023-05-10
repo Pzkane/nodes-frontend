@@ -26,7 +26,8 @@ class Container : public Entity, public AbstractShape, public Draggable, public 
     using ChildContainers = std::vector<Container>;
     ChildContainers m_children;
     bool m_visible = true;
-    std::function<void*(void*)> m_callback;
+    std::function<void*(void*)> m_callback = nullptr;
+    bool m_destroy = false, m_originating = false;
     void init();
 
     friend class Overlay;
@@ -36,15 +37,28 @@ public:
     sf::Text m_label;
 
     Container() : sf::RectangleShape() { init(); }
+    /**
+     * Just visual container
+    */
     Container(const sf::Vector2f& size,
               const sf::Vector2f& pos = {},
               const sf::Vector2i& padding = {});
+    /**
+     * @brief COntainer with callbacks
+     * @param text std::string& displayed name of operation
+     * @param callback std::function<void*(void*)> callback procedure for ActionObserver
+     * @param originating bool if originating - callback will be called with parameters
+     *              from ActionObserver, otherwise - callback will receive `nullptr` as input
+     * @param size sf::Vector2f&
+     * @param pos sf::Vector2f&
+     * @param padding sf::Vector2f&
+    */
     Container(const std::string& text,
               const std::function<void*(void*)> callback,
+              const bool originating,
               const sf::Vector2f& size,
               const sf::Vector2f& pos = {},
               const sf::Vector2i& padding = {});
-    // Container(const Container& other);
 
     /**
      * Append a copy of the new child element to the container child list
@@ -108,6 +122,19 @@ public:
      * @returns sf::Vector2f
     */
     sf::FloatRect getGlobalBounds() override;
+
+    /**
+     * @brief Set state of a container to destruction
+    */
+    void markDestroy(bool state);
+
+    /**
+     * @brief Return current state of all of the containers
+     * If at least 1 of the containers (including children) is marked
+     * for destruction - return true. Useful for parenting.
+     * @returns bool stacked state
+    */
+    bool markedForDestroy() const;
 
     void update(const sf::RenderWindow &window, EventFlags &ef) override;
     void draw(sf::RenderWindow &window) override;

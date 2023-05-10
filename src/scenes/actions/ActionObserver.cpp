@@ -22,17 +22,14 @@ void ActionObserver::setOriginAction(Action *action) {
     m_originAction = action;
 }
 
-void ActionObserver::setCallbackAction(Action *action) {
-    destroyCallbackAction();
-    m_callbackAction = action;
+void ActionObserver::setCallbackParameter(void* param) {
+    m_callbackParameter = param;
 }
 
-const Action* ActionObserver::getOriginAction() const {
-    return m_originAction;
-}
-
-const Action* ActionObserver::getCallbackAction() const {
-    return m_callbackAction;
+void* ActionObserver::getCallbackParameter() {
+    void* tmp = m_callbackParameter;
+    m_callbackParameter = nullptr;
+    return tmp;
 }
 
 void ActionObserver::performOriginAction() {
@@ -40,23 +37,13 @@ void ActionObserver::performOriginAction() {
     m_originAction->execute();
 }
 
-void ActionObserver::performCallbackAction() {
-    m_callbackAction->execute();
-}
-
-void ActionObserver::destroyOriginAction () {
+void ActionObserver::destroyOriginAction() {
     if (m_originAction)
         delete m_originAction;
 }
 
-void ActionObserver::destroyCallbackAction () {
-    if (m_callbackAction)
-        delete m_callbackAction;
-}
-
 void ActionObserver::destroy() {
     destroyOriginAction();
-    destroyCallbackAction();
     if (m_observer)
         delete m_observer;
 }

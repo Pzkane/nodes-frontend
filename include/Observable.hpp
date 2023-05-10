@@ -1,6 +1,8 @@
 #ifndef SRC_PROPERTIES_OBSERVABLE_HPP_INCLUDED
 #define SRC_PROPERTIES_OBSERVABLE_HPP_INCLUDED
 
+#include "ActionObserver.hpp"
+
 namespace nf {
 
 /**
@@ -9,6 +11,13 @@ namespace nf {
 class Observable {
 public:
     virtual ~Observable() = default;
+
+    /**
+     * Set this as callback parameter
+    */
+    virtual void registerEntity() {
+        ActionObserver::getInstance()->setCallbackParameter(this);
+    }
     /**
      * Activate observable
     */

@@ -1,6 +1,7 @@
 #include "Container.hpp"
 #include "MouseCache.hpp"
 #include "FontFlags.hpp"
+#include "ActionObserver.hpp"
 #include "utils.hpp"
 
 using namespace nf;
@@ -25,6 +26,7 @@ Container::Container(const sf::Vector2f& size,
 
 Container::Container(const std::string& text,
                      const std::function<void*(void*)> callback,
+                     const bool originating,
                      const sf::Vector2f& size,
                      const sf::Vector2f& pos,
                      const sf::Vector2i& padding)
@@ -34,6 +36,7 @@ Container::Container(const std::string& text,
     m_label.setScale(1, 1);
     m_label.setFillColor(sf::Color::Black);
     m_callback = callback;
+    m_originating = originating;
 }
 
 void Container::addChildElement(const Container& child) {
@@ -90,6 +93,20 @@ sf::FloatRect Container::getGlobalBounds() {
     return sf::RectangleShape::getGlobalBounds();
 }
 
+void Container::markDestroy(bool state) {
+    m_destroy = state;
+}
+
+bool Container::markedForDestroy() const {
+    if (m_destroy) return true;
+    bool toDestroy;
+    for(auto &c : m_children) {
+        toDestroy = c.markedForDestroy();
+        if (toDestroy) return true;
+    }
+    return false;
+}
+
 void Container::update(const sf::RenderWindow &window, EventFlags &ef) {
     setEventFlags(ef);
     trackMousePointer(window);
@@ -99,7 +116,7 @@ void Container::update(const sf::RenderWindow &window, EventFlags &ef) {
     // Diameter
     const float D = getLocalBounds().width;
     const sf::FloatRect l_bounds = m_label.getLocalBounds();
-    // Scale text size and position to fit into node
+    // Scale text size and position to fit into container
     const sf::Vector2f sizeScale(l_bounds.width / D + PADDING, l_bounds.height / D + PADDING);
     const float maxScale = std::max(sizeScale.x, sizeScale.y);
     if (maxScale > 1)
@@ -115,6 +132,16 @@ void Container::update(const sf::RenderWindow &window, EventFlags &ef) {
         if (ef.f_lmb) {
             if (m.isCaptureEmpty())
                 m.captureEntity(this);
+            if (m_callback) {
+                say("There's callback")
+                say(m_label.getString().toAnsiString())
+                if (m_originating)
+                    m_callback(ActionObserver::getInstance()->getCallbackParameter());
+                else
+                    m_callback(nullptr);
+                markDestroy(true);
+                ef.f_lmb = false;
+            }
         } else {
             if (m.getEntity() == this)
                 m.releaseEntity();

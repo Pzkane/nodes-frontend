@@ -35,7 +35,7 @@ class NodeImpl : public Entity, public CircleShape, public Clickable<VoidCallbac
     ///
     /// High-level node pointer
     ///
-    Observable * m_hl_node;
+    Observable * m_hl_node = nullptr;
 
     void updateText();
 public:

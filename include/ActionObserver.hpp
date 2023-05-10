@@ -18,9 +18,9 @@ protected:
     static std::mutex m_observerMutex;
 
     Action *m_originAction = nullptr, *m_callbackAction = nullptr;
+    void *m_callbackParameter = nullptr, *m_originParameter = nullptr;
 
     void destroyOriginAction();
-    void destroyCallbackAction();
     void destroy();
 public:
     ActionObserver() = default;
@@ -41,30 +41,19 @@ public:
     void setOriginAction(Action *action);
 
     /**
-     * @brief Set action callback (e.g. left click on node to confirm)
-     * (Re-)Initializes resource
+     * Set callback parameter to be returned
     */
-    void setCallbackAction(Action *action);
+    void setCallbackParameter(void* param);
 
     /**
-     * Return last notified action conditions
+     * Return specified callback parameter
     */
-    const Action* getOriginAction() const;
-
-    /**
-     * Return action callback
-    */
-    const Action* getCallbackAction() const;
+    void* getCallbackParameter();
 
     /**
      * Execute action conditions
     */
     void performOriginAction();
-    
-    /**
-     * Execute response action
-    */
-    void performCallbackAction();
 };
 
 }; // namespace nf

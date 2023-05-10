@@ -51,6 +51,8 @@ void NodeImpl::update(const sf::RenderWindow &window, EventFlags &ef)
         {
             if (m.isCaptureEmpty())
                 m.captureEntity(this);
+            if (m_hl_node)
+                m_hl_node->registerEntity();
         } else {
             if (m.getEntity() == this)
                 m.releaseEntity();
@@ -62,7 +64,7 @@ void NodeImpl::update(const sf::RenderWindow &window, EventFlags &ef)
             if (m.isCaptureEmpty())
                 m.captureEntity(this);
             if (m.getEntity() == this) {
-                invokeRMBCallback();
+                // invokeRMBCallback();
                 ActionObservable *p = new ActionObservable{m_hl_node};
                 ActionObserver::getInstance()->setOriginAction(p);
                 ActionObserver::getInstance()->performOriginAction();

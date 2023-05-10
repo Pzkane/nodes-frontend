@@ -15,7 +15,7 @@ public:
     explicit ActionObservable(Observable *entity) : m_entity(entity) {}
 
     /**
-     * Perform observable's action
+     * Perform observable's originating action
     */
     void execute() override;
 };

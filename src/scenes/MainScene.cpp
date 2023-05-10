@@ -157,6 +157,8 @@ void MainScene::update()
 {
     Cache::CursorType cursorType = Cache::CursorType::Arrow;
 
+    updateUI();
+
     for (auto it = m_nodes.rbegin(); it != m_nodes.rend();)
     {
         if ((*it)->enf.f_delete_self)
@@ -254,7 +256,6 @@ void MainScene::update()
         /* Force RMB flag release to avoid setting starting node */
         say("BUTTONS CLEARED");
     }
-    updateUI();
 }
 
 void MainScene::updateUI(bool resized) {
@@ -266,6 +267,11 @@ void MainScene::updateUI(bool resized) {
 
         if (!(**el)->isHidden()) {
             (**el)->update(*p_window, ef, resized);
+        }
+
+        if ((**el)->enf.f_delete_self) {
+            delete (**el);
+            (*el) = nullptr;
         }
         ++el;
     }

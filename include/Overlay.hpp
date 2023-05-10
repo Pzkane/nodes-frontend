@@ -2,6 +2,7 @@
 #define SRC_UI_OVERLAY_HPP_INCLUDED
 
 #include "Container.hpp"
+#include "Entity.hpp"
 
 namespace nf {
 
@@ -10,7 +11,7 @@ namespace nf {
  * 
  * Overlay consists of containers with text
 */
-class Overlay
+class Overlay : public Entity
 {
     bool m_visible = true;
     Container* m_wrapper = nullptr;
@@ -48,7 +49,10 @@ public:
     void addContainer(Container&& container);
     void addContainer(const Container& container);
     void update(sf::RenderWindow& window, const EventFlags& ef, bool resized);
-    void draw(sf::RenderWindow& window);
+    void draw(sf::RenderWindow& window) override;
+
+    // Stub
+    void update(const sf::RenderWindow &window, EventFlags &ef) {};
 };
 
 };

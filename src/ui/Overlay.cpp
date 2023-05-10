@@ -95,9 +95,10 @@ const Container* Overlay::getWrapper() {
 
 void Overlay::draw(sf::RenderWindow& window) {
     window.draw(*m_wrapper);
-    say(m_wrapper->m_id)
+    if (m_wrapper->markedForDestroy())
+        enf.f_delete_self = true;
+
     for (auto && it : m_wrapper->m_children) {
-        // say(it.m_id)
         it.draw(window);
     }
 }
