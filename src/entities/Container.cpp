@@ -11,7 +11,7 @@ int Container::ID = 0;
 void Container::init() {
     static sf::Color uiBG {0, 0, 0, 45};
     sf::RectangleShape::setFillColor(uiBG);
-    sf::RectangleShape::setOutlineColor(sf::Color::Black);
+    // sf::RectangleShape::setOutlineColor(sf::Color::Black);
     sf::RectangleShape::setOutlineThickness(1.5);
     m_id = ID++;
 }

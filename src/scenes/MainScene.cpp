@@ -41,6 +41,7 @@ MainScene::~MainScene()
         ++it;
         delete *tmp_;
     }
+    m_uis.freeAll();
 }
 
 NodeImpl* MainScene::createNode(Observable *entity = nullptr, float radius = DEF_NODE_RAD)
@@ -142,7 +143,7 @@ void MainScene::moveView(int offset_x, int offset_y)
 }
 
 void MainScene::mergeOverlay(Overlay* child) {
-    Overlay** p_ui = m_uis.createResource();
+    Overlay** p_ui = m_uis.createResource(true);
     *p_ui = *&child;
 }
 

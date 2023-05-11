@@ -86,3 +86,7 @@ void Node::destroy() {
 void Node::highlight() {
     m_api->highlightNode(m_node);
 }
+
+void Node::select() {
+    m_api->selectNode(m_node);
+}

@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <utility>
+#include <type_traits>
 
 namespace nf {
 
@@ -17,17 +18,24 @@ class Resource : public std::vector<T*>
 public:
     /**
      * Create new heap data inplace from temporary into object's pool
+     *   or store it as in element
     */
-    T* createResource() {
+    T* createResource(bool emplace = false) {
         T* data = new T;
-        this->push_back(data);
+        if (emplace || this->size() == 0)
+            this->push_back(data);
+        else if (this->size() > 0)
+            this->operator[](0) = data;
         return data;
     }
     /**
-     * Free all allocated resources and invalidates all pointers
+     * Free all allocated resources and invalidates all pointers + underlying resource
+     *   if it's a pointer
     */
     virtual void freeAll() {
         for (auto resource = this->begin(); resource != this->end(); ++resource) {
+            // if (std::is_pointer_v<decltype(*resource)>)
+                // delete **resource;
             delete *resource;
             *resource = nullptr;
         }

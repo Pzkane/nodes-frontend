@@ -14,9 +14,11 @@
 namespace nf {
 
 /**
- * Color and thickness of an outline during highlight
+ * Color and thickness of an outline and background during highlight/select
 */
 extern sf::Color LL_HIGHLIGHT_COLOR;
+extern sf::Color LL_SELECT_COLOR;
+extern sf::Color LL_DEFAULT_COLOR;
 extern float LL_HIGHLIGHT_THICKNESS;
 extern const float LL_DEFAULT_THICKNESS;
 
@@ -40,7 +42,8 @@ class NodeFrontEnd
     sf::Color m_backgroundColor = sf::Color::Black;
     const Context m_settings;
     SceneSwitcher m_ss;
-    NodeImpl* m_highlighted_node = nullptr;
+    NodeImpl *m_highlighted_node = nullptr
+           , *m_selected_node = nullptr;
 
     void _cleanup();
 public:
@@ -84,6 +87,14 @@ public:
      * @param n NodeImpl*
     */
     void highlightNode(NodeImpl *n);
+    /**
+     * Set or swap a single node to be selected on mouse press
+     * @param n NodeImpl*
+    */
+    void selectNode(NodeImpl *n);
+    /**
+     * @brief Determine if window and its internals were initialized
+    */
     bool isInit() { return m_initizlized; };
     /**
      * Add new overlay section

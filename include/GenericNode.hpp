@@ -4,18 +4,23 @@
 #include "custom_type_traits.hpp"
 #include "Node.hpp"
 #include "Observable.hpp"
+#include "Resource.hpp"
 
 namespace nf {
 /**
  * @brief Wrapper around concrete wrapper `Node` for all API nodes
 */
 template <class C, typename T>
-class GenericAPINode : public Node, public Observable
+class GenericNode : public Node, public Observable
 {
     T m_data;
+protected:
+    /// @brief Real overlay locations in memory
+    Resource<Overlay> m_overlay;
 public:
-    explicit GenericAPINode(NodeFrontEnd *api, NodeType type = NodeType::Generic, bool visible = true) : Node(api, this, type, visible) {}
-    virtual ~GenericAPINode() {
+    explicit GenericNode(NodeFrontEnd *api, NodeType type = NodeType::Generic, bool visible = true) : Node(api, this, type, visible) {}
+    /// All UI elements are managed by scene so no need to push on vector or free memory
+    virtual ~GenericNode() {
         if (!m_destroyed) {
             destroy();
         }
@@ -91,7 +96,7 @@ public:
     */
     void registerEntity() override {
         Observable::registerEntity();
-        highlight();
+        select();
     }
 };
 

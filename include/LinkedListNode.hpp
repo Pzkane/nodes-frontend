@@ -2,24 +2,22 @@
 #define SRC_API_LISNKEDLISTNODEIMPL_HPP_INCLUDED
 
 #include "custom_type_traits.hpp"
-#include "GenericAPINode.hpp"
+#include "GenericNode.hpp"
 #include "Overlay.hpp"
 #include "MouseCache.hpp"
-#include "Resource.hpp"
 
 namespace nf {
 /**
  * @brief Represents single node of a singly linked list
 */
 template <class C, typename T>
-class LinkedListNode : public GenericAPINode<C,T>
+class LinkedListNode : public GenericNode<C,T>
 {
     LinkedListNode *m_next = nullptr;
-    Resource<Overlay> m_overlay_pool;
 protected:
     C *m_next_derived = nullptr;
 public:
-    explicit LinkedListNode(NodeFrontEnd *api, bool visible = true) : GenericAPINode<C,T>(api, NodeType::List, visible) {}
+    explicit LinkedListNode(NodeFrontEnd *api, bool visible = true) : GenericNode<C,T>(api, NodeType::List, visible) {}
 
     /**
      * Set next node
@@ -53,8 +51,11 @@ public:
         return m_next_derived;
     };
 
+    /**
+     * Apply actions on contextual menu press
+    */
     void invoke() override {
-        Overlay* ll_ui = m_overlay_pool.createResource();
+        Overlay* ll_ui = this->m_overlay.createResource();
         ll_ui->createWrapper(Container{
             sf::Vector2f{70, 44},
             sf::Vector2f{MouseCache::getInstance(

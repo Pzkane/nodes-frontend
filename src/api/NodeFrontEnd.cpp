@@ -12,6 +12,8 @@ using namespace nf;
 
 static Cache cache;
 sf::Color nf::LL_HIGHLIGHT_COLOR = sf::Color::Black;
+sf::Color nf::LL_SELECT_COLOR = sf::Color{200, 200, 200};
+sf::Color nf::LL_DEFAULT_COLOR = sf::Color{220, 220, 220};
 float nf::LL_HIGHLIGHT_THICKNESS = 2.f;
 const float nf::LL_DEFAULT_THICKNESS = 1.f;
 
@@ -215,6 +217,15 @@ void NodeFrontEnd::highlightNode(NodeImpl *n) {
         m_highlighted_node->setOutlineThickness(LL_DEFAULT_THICKNESS);
     }
     m_highlighted_node = n;
+}
+
+void NodeFrontEnd::selectNode(NodeImpl *n) {
+    if (lf.f_t_ep_done) return;
+    n->setFillColor(LL_SELECT_COLOR);
+    if (m_selected_node && &*n != &*m_selected_node) {
+        m_selected_node->setFillColor(LL_DEFAULT_COLOR);
+    }
+    m_selected_node = n;
 }
 
 void NodeFrontEnd::mergeOverlay(Overlay &child) {

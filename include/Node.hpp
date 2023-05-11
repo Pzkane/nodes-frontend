@@ -13,6 +13,7 @@ class Node
 protected:
     NodeImpl *m_node;
     NodeFrontEnd *m_api;
+    bool m_destroyed = false;
 
     void createNode(bool visible, NodeType type, Observable *observable);
     /**
@@ -21,7 +22,10 @@ protected:
     */
     void nodeSanityCheck() const;
     void checkHighlight() const;
-    bool m_destroyed = false;
+    /**
+     * Request API to highlight current node from mouse click
+    */
+    void select();
 public:
     bool highlighted = false;
 
@@ -45,7 +49,7 @@ public:
     */
     void destroy();
     /**
-     * Request API to highlight current node
+     * Request API to highlight current node (publicly available)
     */
     void highlight();
 };

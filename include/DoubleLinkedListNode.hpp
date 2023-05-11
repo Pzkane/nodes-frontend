@@ -25,7 +25,8 @@ public:
         {
             Node::m_api->disconnectNodes(Node::m_node, const_cast<NodeImpl*>(m_prev->getInnerNode()));
         }
-        Node::m_api->connectOrientedNodes(Node::m_node, const_cast<NodeImpl*>(lnode->getInnerNode()));
+        if (lnode)
+            Node::m_api->connectOrientedNodes(Node::m_node, const_cast<NodeImpl*>(lnode->getInnerNode()));
         m_prev = lnode;
         m_prev_derived = lnode;
     }
@@ -52,7 +53,28 @@ public:
         return m_prev_derived;
     };
 
-    void invoke() override {}
+    void invoke() override {
+        LinkedListNode<C,T>::invoke();
+        Overlay* dll_ui = this->m_overlay[0];
+        dll_ui->addContainer(
+            Container{"setPrev", [&](void*){
+                    this->setPrev(
+                        *dynamic_cast<C*>(
+                            reinterpret_cast<Observable*>(
+                                ActionObserver::getInstance()->getCallbackParameter())));
+                    return nullptr;
+                }, false,
+                sf::Vector2f{70, 20}, {dll_ui->getWrapper()->getPosition().x, dll_ui->getWrapper()->getPosition().y+(this->m_next_derived ? 44 : 22)}, sf::Vector2i{10, 10}}
+        );
+        if (m_prev_derived)
+            dll_ui->addContainer(
+                ///
+                /// Container: removes pointer to the previous node.
+                ///
+                Container{"removePrev", [&](void*){ this->setPrev(nullptr); return nullptr; }, true,
+                sf::Vector2f{70, 20}, {dll_ui->getWrapper()->getPosition().x, dll_ui->getWrapper()->getPosition().y+(this->m_next_derived ? 66 : 44)}, sf::Vector2i{10, 10}}
+            );
+    }
 };
 
 };
