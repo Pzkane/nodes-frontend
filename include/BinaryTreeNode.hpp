@@ -109,16 +109,14 @@ public:
                 )->gMouse.getPosition(*Node::m_api->getWindow())},
             sf::Vector2i{}});
         bt_ui->addContainer(
-            Container{"setLeft", [&](void*){
+            Container{"setLeft", [&](){
                     this->setLeft(dynamic_cast<C*>(Node::m_api->getSelectedNode()->getObservable()), false);
-                    return nullptr;
                 }, false,
                 sf::Vector2f{70, 20}, bt_ui->getWrapper()->getPosition(), sf::Vector2i{10, 10}}
         );
         bt_ui->addContainer(
-            Container{"setRight", [&](void*){
+            Container{"setRight", [&](){
                     this->setRight(dynamic_cast<C*>(Node::m_api->getSelectedNode()->getObservable()), false);
-                    return nullptr;
                 }, false,
                 sf::Vector2f{70, 20}, {bt_ui->getWrapper()->getPosition().x, bt_ui->getWrapper()->getPosition().y+22}, sf::Vector2i{10, 10}}
         );
@@ -127,7 +125,7 @@ public:
                 ///
                 /// Container: removes pointer to the left node.
                 ///
-                Container{"removeLeft", [&](void*){ this->setLeft(nullptr); return nullptr; }, true,
+                Container{"removeLeft", [&](){ this->setLeft(nullptr); }, true,
                     sf::Vector2f{70, 20}, {bt_ui->getWrapper()->getPosition().x, bt_ui->getWrapper()->getPosition().y+44}, sf::Vector2i{10, 10}}
             );
         if (m_right_derived)
@@ -135,7 +133,7 @@ public:
                 ///
                 /// Container: removes pointer to the right node.
                 ///
-                Container{"removeRight", [&](void*){ this->setRight(nullptr); return nullptr; }, true,
+                Container{"removeRight", [&](){ this->setRight(nullptr); }, true,
                     sf::Vector2f{70, 20}, {bt_ui->getWrapper()->getPosition().x, bt_ui->getWrapper()->getPosition().y+(m_left_derived ? 66 : 44)}, sf::Vector2i{10, 10}}
             );
         Node::m_api->mergeOverlay(*bt_ui);

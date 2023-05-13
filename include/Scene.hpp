@@ -6,7 +6,6 @@
 #include "EventFlags.hpp"
 #include "EventType.hpp"
 #include "MouseCache.hpp"
-#include "ActionObserver.hpp"
 
 namespace nf {
 

@@ -6,8 +6,7 @@
 #include "FontFlags.hpp"
 #include "utils.hpp"
 #include "MouseCache.hpp"
-#include "ActionObserver.hpp"
-#include "ActionObservable.hpp"
+#include "Observable.hpp"
 
 using namespace nf;
 
@@ -64,25 +63,10 @@ void NodeImpl::update(const sf::RenderWindow &window, EventFlags &ef)
             if (m.isCaptureEmpty())
                 m.captureEntity(this);
             if (m.getEntity() == this) {
-                // invokeRMBCallback();
-                ActionObservable *p = new ActionObservable{m_hl_node};
-                ActionObserver::getInstance()->setOriginAction(p);
-                ActionObserver::getInstance()->performOriginAction();
                 // Reset RMB flag to get 1 click, not press
+                m_hl_node->invoke();
                 ef.f_rmb = false;
             }
-            /*
-            if (!ef.p_start_node && ef.p_end_node != this)
-            {
-                say("START_NODE");
-                ef.p_start_node = this;
-            }
-            else if (!ef.p_end_node && ef.p_start_node != this)
-            {
-                say("END_NODE");
-                ef.p_end_node = this;
-            }
-            */
         }
 
         // For destroying

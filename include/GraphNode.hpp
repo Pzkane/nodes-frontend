@@ -57,11 +57,11 @@ public:
     bool removeNeighbor(C* lnode, bool doSameForOpposite = true) {
         auto setGrEl = m_neighbors.find(lnode->ID);
         if (setGrEl == m_neighbors.end()) return false;
-        m_neighbors.erase(setGrEl);
         if (doSameForOpposite) {
             Node::m_api->disconnectNodes(Node::m_node, const_cast<NodeImpl*>((*setGrEl).second->getInnerNode()));
             lnode->GraphNode::removeNeighbor(dynamic_cast<C*>(this), false);
         }
+        m_neighbors.erase(setGrEl);
         return true;
     }
 
@@ -94,9 +94,8 @@ public:
             ///
             /// Container: takes last highlighted Graph node and connects to the current
             ///
-            Container{"addNeighbor", [&](void*){
+            Container{"addNeighbor", [&](){
                     this->addNeighbor(dynamic_cast<C*>(Node::m_api->getSelectedNode()->getObservable()));
-                    return nullptr;
                 }, false,
                 sf::Vector2f{90, 20}, gn_ui->getWrapper()->getPosition(), sf::Vector2i{10, 10}}
         );
@@ -107,9 +106,8 @@ public:
                 ///
                 /// Container: removes pointer to one of the neighbors.
                 ///
-                Container{"removeNeighbor", [&](void*){ 
+                Container{"removeNeighbor", [&](){ 
                         this->removeNeighbor(dynamic_cast<C*>(Node::m_api->getSelectedNode()->getObservable()));
-                        return nullptr;
                     }, false,
                     sf::Vector2f{90, 20}, {gn_ui->getWrapper()->getPosition().x, gn_ui->getWrapper()->getPosition().y+22}, sf::Vector2i{10, 10}}
             );

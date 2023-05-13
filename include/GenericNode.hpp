@@ -95,7 +95,6 @@ public:
      * Override from Observable
     */
     void registerEntity() override {
-        Observable::registerEntity();
         select();
     }
 };

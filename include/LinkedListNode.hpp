@@ -66,9 +66,8 @@ public:
             /// Container: takes last highlighted Linked List node and performs
             ///     setNext(C*) on it.
             ///
-            Container{"setNext", [&](void*){
+            Container{"setNext", [&](){
                     this->setNext(dynamic_cast<C*>(Node::m_api->getSelectedNode()->getObservable()));
-                    return nullptr;
                 }, false,
                 sf::Vector2f{70, 20}, ll_ui->getWrapper()->getPosition(), sf::Vector2i{10, 10}}
         );
@@ -77,7 +76,7 @@ public:
                 ///
                 /// Container: removes pointer to the next node.
                 ///
-                Container{"removeNext", [&](void*){ this->setNext(nullptr); return nullptr; }, true,
+                Container{"removeNext", [&](){ this->setNext(nullptr); }, true,
                     sf::Vector2f{70, 20}, {ll_ui->getWrapper()->getPosition().x, ll_ui->getWrapper()->getPosition().y+22}, sf::Vector2i{10, 10}}
             );
         Node::m_api->mergeOverlay(*ll_ui);

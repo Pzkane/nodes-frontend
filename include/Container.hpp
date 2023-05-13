@@ -26,7 +26,7 @@ class Container : public Entity, public AbstractShape, public Draggable, public 
     using ChildContainers = std::vector<Container>;
     ChildContainers m_children;
     bool m_visible = true;
-    std::function<void*(void*)> m_callback = nullptr;
+    std::function<void()> m_callback = nullptr;
     bool m_destroy = false, m_originating = false;
     void init();
 
@@ -54,7 +54,7 @@ public:
      * @param padding sf::Vector2f&
     */
     Container(const std::string& text,
-              const std::function<void*(void*)> callback,
+              const std::function<void()> callback,
               const bool originating,
               const sf::Vector2f& size,
               const sf::Vector2f& pos = {},

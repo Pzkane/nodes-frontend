@@ -1,7 +1,6 @@
 #include "Container.hpp"
 #include "MouseCache.hpp"
 #include "FontFlags.hpp"
-#include "ActionObserver.hpp"
 #include "utils.hpp"
 
 using namespace nf;
@@ -25,7 +24,7 @@ Container::Container(const sf::Vector2f& size,
 }
 
 Container::Container(const std::string& text,
-                     const std::function<void*(void*)> callback,
+                     const std::function<void()> callback,
                      const bool originating,
                      const sf::Vector2f& size,
                      const sf::Vector2f& pos,
@@ -135,10 +134,7 @@ void Container::update(const sf::RenderWindow &window, EventFlags &ef) {
             if (m_callback) {
                 say("There's callback")
                 say(m_label.getString().toAnsiString())
-                if (m_originating)
-                    m_callback(ActionObserver::getInstance()->getCallbackParameter());
-                else
-                    m_callback(nullptr);
+                m_callback();
                 markDestroy(true);
                 ef.f_lmb = false;
             }

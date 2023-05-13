@@ -39,8 +39,6 @@ add_subdirectory(mouse)
 add_library(scenesLib)
 add_subdirectory(scenes)
 
-add_library(actionsLib)
-add_subdirectory(scenes/actions)
 
 add_library(uiLib)
 add_subdirectory(ui)
@@ -49,8 +47,8 @@ target_link_libraries(helpersLib sfml-graphics)
 target_link_libraries(stateLib sfml-window helpersLib)
 target_link_libraries(shapesLib sfml-graphics propertiesLib)
 target_link_libraries(mouseLib sfml-graphics helpersLib)
-target_link_libraries(scenesLib actionsLib mouseLib)
-target_link_libraries(entitiesLib actionsLib mouseLib stateLib shapesLib)
+target_link_libraries(scenesLib mouseLib)
+target_link_libraries(entitiesLib mouseLib stateLib shapesLib)
 target_link_libraries(uiLib entitiesLib)
 target_link_libraries(${apiLib} sfml-window sfml-system sfml-graphics ${OPENGL_LIBRARIES}
     mouseLib

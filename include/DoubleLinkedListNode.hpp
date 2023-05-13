@@ -57,9 +57,8 @@ public:
         LinkedListNode<C,T>::invoke();
         Overlay* dll_ui = this->m_overlay[0];
         dll_ui->addContainer(
-            Container{"setPrev", [&](void*){
+            Container{"setPrev", [&](){
                     this->setPrev(dynamic_cast<C*>(Node::m_api->getSelectedNode()->getObservable()));
-                    return nullptr;
                 }, false,
                 sf::Vector2f{70, 20}, {dll_ui->getWrapper()->getPosition().x, dll_ui->getWrapper()->getPosition().y+(this->m_next_derived ? 44 : 22)}, sf::Vector2i{10, 10}}
         );
@@ -68,7 +67,7 @@ public:
                 ///
                 /// Container: removes pointer to the previous node.
                 ///
-                Container{"removePrev", [&](void*){ this->setPrev(nullptr); return nullptr; }, true,
+                Container{"removePrev", [&](){ this->setPrev(nullptr); }, true,
                     sf::Vector2f{70, 20}, {dll_ui->getWrapper()->getPosition().x, dll_ui->getWrapper()->getPosition().y+(this->m_next_derived ? 66 : 44)}, sf::Vector2i{10, 10}}
             );
     }
