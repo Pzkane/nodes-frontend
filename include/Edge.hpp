@@ -24,7 +24,7 @@ protected:
 public:
     explicit Edge(sf::Color color = sf::Color::Black);
     Edge(NodeImpl *const &start_node, NodeImpl *const &end_node, sf::Color color = sf::Color::Black);
-    ~Edge() = default;
+    virtual ~Edge() = default;
     void setNodeEndings(NodeImpl *const &start_node, NodeImpl *const &end_node);
     NodeRef& getNodeEndings() const;
 

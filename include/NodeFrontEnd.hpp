@@ -39,7 +39,7 @@ class NodeFrontEnd
     sf::RenderWindow *m_window;
     Utils::SafeQueue<sf::Event> m_eventQueue;
     std::thread *m_thEventPool;
-    sf::Color m_backgroundColor = sf::Color::Black;
+    sf::Color m_backgroundColor = sf::Color(210, 210, 210);
     const Context m_settings;
     SceneSwitcher m_ss;
     NodeImpl *m_highlighted_node = nullptr
@@ -57,6 +57,9 @@ public:
     static size_t BT_PARENT_NODE_CENTER_OFFSET_X;
     static size_t BT_PARENT_NODE_CENTER_OFFSET_Y;
 
+    // Graph shift properties
+    static int RANDOM_SPACING;
+
     NodeFrontEnd(const Context& settings, const char *n_title);
     NodeFrontEnd() = delete;
     ~NodeFrontEnd();
@@ -72,10 +75,11 @@ public:
     */
     void setLinkedListShiftPos(sf::Vector2f pad) { m_ll_shift = pad; }
     void setLinkedListHighlightThickness(float thickness) { LL_HIGHLIGHT_THICKNESS = thickness; }
-    NodeImpl* addNode(const char *text = "", float x = 0, float y = 0, bool visible = true, NodeType n_type = NodeType::Generic, Observable *entity = nullptr);
+    NodeImpl* addNode(const char *text = "", float x = 0, float y = 0, bool visible = true, LayoutType n_type = LayoutType::None, Observable *entity = nullptr);
     void connectNodes(NodeImpl *n1, NodeImpl *n2);
     void connectOrientedNodes(NodeImpl *n1, NodeImpl *n2);
     void connectWeightNodes(NodeImpl *n1, NodeImpl *n2, float weight = 0);
+    void connectWeightOrientedNodes(NodeImpl *n1, NodeImpl *n2);
     void disconnectNodes(NodeImpl *n1, NodeImpl *n2);
     /**
      * Notify scene to destroy given node
@@ -92,6 +96,10 @@ public:
      * @param n NodeImpl*
     */
     void selectNode(NodeImpl *n);
+    /**
+     * Get currently selected node under the mouse pointer
+    */
+    NodeImpl* getSelectedNode();
     /**
      * @brief Determine if window and its internals were initialized
     */

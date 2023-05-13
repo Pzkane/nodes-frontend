@@ -340,6 +340,7 @@ int test11_bt_nodes() {
     right->setRight(r_right);
     left->setPosition(root->getPosition().x-200, right->getPosition().y);
     left->setRight(r_left);
+    root->highlight();
 
     return 0;
 }
@@ -348,6 +349,53 @@ int test12_ll_node_set_next_nullptr() {
     MyNodeTyped1* head = new MyNodeTyped1();
     head->setData(TestAddr{0, 42});
     head->setNext(nullptr);
+    return 0;
+}
+
+int test13_generic_graph() {
+    StringGraphNode* node1 = new StringGraphNode();
+    StringGraphNode* node2 = new StringGraphNode();
+    StringGraphNode* node3 = new StringGraphNode();
+    StringGraphNode* node4 = new StringGraphNode();
+
+    node1->setData("node1");
+    node2->setData("node2");
+    node3->setData("node3");
+    node4->setData("node4");
+
+    node1->addNeighbor(node2);
+    node1->addNeighbor(node3);
+
+    node2->addNeighbor(node3);
+    node3->addNeighbor(node4);
+
+    node1->removeNeighbor(node2);
+
+    return 0;
+}
+
+
+int test14_weighted_graph() {
+    StringWeightGraphNode* node1 = new StringWeightGraphNode();
+    node1->setPosition(1000, 1000);
+    StringWeightGraphNode* node2 = new StringWeightGraphNode();
+    StringWeightGraphNode* node3 = new StringWeightGraphNode();
+    StringWeightGraphNode* node4 = new StringWeightGraphNode();
+
+
+    node1->setData("node1");
+    node2->setData("node2");
+    node3->setData("node3");
+    node4->setData("node4");
+
+    node1->addNeighbor(node2, 40);
+    node1->addNeighbor(node3, 50);
+
+    node2->addNeighbor(node3, 20);
+    node3->addNeighbor(node4, 10);
+
+    node1->removeNeighbor(node2);
+
     return 0;
 }
 
@@ -371,6 +419,8 @@ int main(int argc, char** argv)
      + test10_dbl_ll()
      + test11_bt_nodes()
      + test12_ll_node_set_next_nullptr()
+     + test13_generic_graph()
+     + test14_weighted_graph()
     );
     if (test_suite != 0) return test_suite;
     say("Tests have passed!");

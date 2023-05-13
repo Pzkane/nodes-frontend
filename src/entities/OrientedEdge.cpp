@@ -5,9 +5,10 @@
 
 using namespace nf;
 
-void OrientedEdge::update(const sf::RenderWindow &window, EventFlags &ef) {
+void OrientedEdge::_update(const sf::RenderWindow &window, EventFlags &ef, bool updateEdge) {
     if (!m_nodeRef.start || !m_nodeRef.end) return;
-    Edge::update(window, ef);
+    if (updateEdge)
+        Edge::update(window, ef);
 
     // Explanation: https://www.codeproject.com/Articles/3274/Drawing-Arrows
     sf::Vector2f primaryVec  = { m_nodeRef.end->getPosition().x - m_nodeRef.start->getPosition().x,
@@ -56,9 +57,10 @@ void OrientedEdge::update(const sf::RenderWindow &window, EventFlags &ef) {
     }
 }
 
-void OrientedEdge::draw(sf::RenderWindow &window) {
+void OrientedEdge::_draw(sf::RenderWindow &window, bool drawEdge) {
     if (!m_nodeRef.start || !m_nodeRef.end) return;
-    Edge::draw(window);
+    if (drawEdge)
+        Edge::draw(window);
     window.draw(m_ahPos0.left_line);
     window.draw(m_ahPos0.right_line);
     if (m_2way) {
@@ -67,3 +69,10 @@ void OrientedEdge::draw(sf::RenderWindow &window) {
     }
 }
 
+void OrientedEdge::update(const sf::RenderWindow &window, EventFlags &ef) {
+    _update(window, ef, true);
+}
+
+void OrientedEdge::draw(sf::RenderWindow &window) {
+    _draw(window, true);
+}

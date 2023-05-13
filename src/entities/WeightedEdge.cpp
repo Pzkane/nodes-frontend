@@ -25,15 +25,17 @@ WeightedEdge::WeightedEdge(sf::Color color, float _weight) : m_weight(_weight), 
     init();
 }
 
-WeightedEdge::WeightedEdge(NodeImpl *const &start_node, NodeImpl *const &end_node, sf::Color color, float _weight) : m_weight(_weight), Edge(start_node, end_node, color)
+WeightedEdge::WeightedEdge(NodeImpl *const &start_node, NodeImpl *const &end_node, sf::Color color, float _weight)
+    : m_weight(_weight), Edge(start_node, end_node, color)
 {
     init();
 }
 
-void WeightedEdge::update(const sf::RenderWindow &window, EventFlags &ef)
+void WeightedEdge::_update(const sf::RenderWindow &window, EventFlags &ef, bool updateEdge)
 {
     if (!m_nodeRef.start || !m_nodeRef.end) return;
-    Edge::update(window, ef);
+    if (updateEdge)
+        Edge::update(window, ef);
     auto idx0 = getIdxPosition(0);
     auto idx1 = getIdxPosition(1);
     float min_x = idx0.position.x < idx1.position.x ? idx0.position.x : idx1.position.x,
@@ -43,10 +45,19 @@ void WeightedEdge::update(const sf::RenderWindow &window, EventFlags &ef)
     m_weight_label.setPosition(x-15, y-20);
 }
 
-void WeightedEdge::draw(sf::RenderWindow &window)
+void WeightedEdge::_draw(sf::RenderWindow &window, bool drawEdge)
 {
     if (!m_nodeRef.start || !m_nodeRef.end) return;
-    Edge::draw(window);
+    if (drawEdge)
+        Edge::draw(window);
     window.draw(m_weight_label.getBox());
     window.draw(m_weight_label);
+}
+
+void WeightedEdge::update(const sf::RenderWindow &window, EventFlags &ef) {
+    _update(window, ef, true);
+}
+
+void WeightedEdge::draw(sf::RenderWindow &window) {
+    _draw(window, true);
 }

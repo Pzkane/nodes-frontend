@@ -31,7 +31,6 @@ class NodeImpl : public Entity, public CircleShape, public Clickable<VoidCallbac
          m_destroy = false;
     sf::Text m_text;
     std::list<NodeImpl*> m_connected_nodes;
-    NodeType m_hl_type = NodeType::Generic;
     ///
     /// High-level node pointer
     ///
@@ -55,9 +54,13 @@ public:
     void setTextColor(const sf::Color& clr);
     /**
      * Set high-level observable node
-     * @param type NodeType
+     * @param entity Observable*
     */
     void setObservable(Observable *entity) { m_hl_node = entity; }
+    /**
+     * Get high-level assigned observable node
+    */
+    Observable* getObservable() { return m_hl_node; }
     /**
      * Register node into list of edge connected nodes
      * @param node NodeImpl *const

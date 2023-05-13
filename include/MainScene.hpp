@@ -7,6 +7,7 @@
 #include "EventType.hpp"
 #include "OrientedEdge.hpp"
 #include "WeightedEdge.hpp"
+#include "WeightedOrientedEdge.hpp"
 #include "Overlay.hpp"
 #include "Resource.hpp"
 
@@ -35,6 +36,7 @@ public:
     Edge* createEdge();
     OrientedEdge* createOEdge();
     WeightedEdge* createWEdge();
+    WeightedOrientedEdge* createWOEdge();
     void removeNode(NodeImpl *node_ptr_payload);
     void removeEdge(Nodes2ptr* ptr_payload);
     void pushNode(NodeImpl* node);

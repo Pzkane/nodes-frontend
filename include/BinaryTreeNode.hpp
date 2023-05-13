@@ -10,7 +10,7 @@ namespace nf {
  * @brief Represents single node of a binary tree
 */
 template <class C, typename T>
-class BinaryTreeNode : public GenericNode<C,T>
+class BinaryTreeNode : public GenericNode<T>
 {
     BinaryTreeNode *m_left = nullptr,
                    *m_right = nullptr;
@@ -18,7 +18,7 @@ protected:
     C *m_left_derived = nullptr,
       *m_right_derived = nullptr;
 public:
-    explicit BinaryTreeNode(NodeFrontEnd *api, bool visible = true) : GenericNode<C,T>(api, NodeType::List, visible) {}
+    explicit BinaryTreeNode(NodeFrontEnd *api, bool visible = true) : GenericNode<T>(api, LayoutType::Line, visible) {}
 
     /**
      * Set left node
@@ -110,20 +110,14 @@ public:
             sf::Vector2i{}});
         bt_ui->addContainer(
             Container{"setLeft", [&](void*){
-                    this->setLeft(
-                        *dynamic_cast<C*>(
-                            reinterpret_cast<Observable*>(
-                                ActionObserver::getInstance()->getCallbackParameter())), false);
+                    this->setLeft(dynamic_cast<C*>(Node::m_api->getSelectedNode()->getObservable()), false);
                     return nullptr;
                 }, false,
                 sf::Vector2f{70, 20}, bt_ui->getWrapper()->getPosition(), sf::Vector2i{10, 10}}
         );
         bt_ui->addContainer(
             Container{"setRight", [&](void*){
-                    this->setRight(
-                        *dynamic_cast<C*>(
-                            reinterpret_cast<Observable*>(
-                                ActionObserver::getInstance()->getCallbackParameter())), false);
+                    this->setRight(dynamic_cast<C*>(Node::m_api->getSelectedNode()->getObservable()), false);
                     return nullptr;
                 }, false,
                 sf::Vector2f{70, 20}, {bt_ui->getWrapper()->getPosition().x, bt_ui->getWrapper()->getPosition().y+22}, sf::Vector2i{10, 10}}
@@ -134,7 +128,7 @@ public:
                 /// Container: removes pointer to the left node.
                 ///
                 Container{"removeLeft", [&](void*){ this->setLeft(nullptr); return nullptr; }, true,
-                sf::Vector2f{70, 20}, {bt_ui->getWrapper()->getPosition().x, bt_ui->getWrapper()->getPosition().y+44}, sf::Vector2i{10, 10}}
+                    sf::Vector2f{70, 20}, {bt_ui->getWrapper()->getPosition().x, bt_ui->getWrapper()->getPosition().y+44}, sf::Vector2i{10, 10}}
             );
         if (m_right_derived)
             bt_ui->addContainer(
@@ -142,7 +136,7 @@ public:
                 /// Container: removes pointer to the right node.
                 ///
                 Container{"removeRight", [&](void*){ this->setRight(nullptr); return nullptr; }, true,
-                sf::Vector2f{70, 20}, {bt_ui->getWrapper()->getPosition().x, bt_ui->getWrapper()->getPosition().y+(m_left_derived ? 66 : 44)}, sf::Vector2i{10, 10}}
+                    sf::Vector2f{70, 20}, {bt_ui->getWrapper()->getPosition().x, bt_ui->getWrapper()->getPosition().y+(m_left_derived ? 66 : 44)}, sf::Vector2i{10, 10}}
             );
         Node::m_api->mergeOverlay(*bt_ui);
     }

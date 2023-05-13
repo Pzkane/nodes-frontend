@@ -27,9 +27,7 @@ void ActionObserver::setCallbackParameter(void* param) {
 }
 
 void* ActionObserver::getCallbackParameter() {
-    void* tmp = m_callbackParameter;
-    m_callbackParameter = nullptr;
-    return tmp;
+    return m_callbackParameter;
 }
 
 void ActionObserver::performOriginAction() {

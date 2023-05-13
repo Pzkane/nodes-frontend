@@ -15,7 +15,7 @@ protected:
     NodeFrontEnd *m_api;
     bool m_destroyed = false;
 
-    void createNode(bool visible, NodeType type, Observable *observable);
+    void createNode(bool visible, LayoutType type, Observable *observable);
     /**
      * Check if owned node pointer is valid
      * @throws std::runtime_error
@@ -29,7 +29,7 @@ protected:
 public:
     bool highlighted = false;
 
-    Node(NodeFrontEnd *api, Observable *observable, NodeType type = NodeType::Generic, bool visible = true);
+    Node(NodeFrontEnd *api, Observable *observable, LayoutType type = LayoutType::None, bool visible = true);
     virtual ~Node() = default;
 
     Node& operator=(const Node& node);

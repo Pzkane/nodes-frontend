@@ -88,6 +88,13 @@ WeightedEdge* MainScene::createWEdge()
     return conn;
 }
 
+WeightedOrientedEdge* MainScene::createWOEdge()
+{
+    WeightedOrientedEdge* conn = new WeightedOrientedEdge;
+    pushEdge(conn);
+    return conn;
+}
+
 void MainScene::removeNode(NodeImpl *node_ptr_payload)
 {
     for (auto* it : m_nodes)
@@ -429,6 +436,8 @@ void* MainScene::updateInput(const EventType &eventType, void* payload)
         return createOEdge();
     case EventType::addWEdge:
         return createWEdge();
+    case EventType::addWOEdge:
+        return createWOEdge();
     case EventType::addOverlay:
         mergeOverlay(reinterpret_cast<Overlay*>(payload));
         return nullptr;

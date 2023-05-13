@@ -6,7 +6,7 @@ if [ $# -ne 0 ] ; then
     else
         params=""
         for param in $@ ; do
-            params="$params -D$param"
+            params="$params -D$param=1"
         done
         cmake -DCMAKE_BUILD_TYPE=Debug -DDEBUG=1 $params -S ./ -B ./build/ -G "MSYS Makefiles"
         echo $(tput setaf 0;tput setab 3) cmake -DCMAKE_BUILD_TYPE=Debug -DDEBUG=1 $params -S ./ -B ./build/ -G "MSYS Makefiles" $(tput setab 0)

@@ -10,7 +10,7 @@ namespace nf {
 /**
  * @brief Wrapper around concrete wrapper `Node` for all API nodes
 */
-template <class C, typename T>
+template <typename T>
 class GenericNode : public Node, public Observable
 {
     T m_data;
@@ -18,7 +18,7 @@ protected:
     /// @brief Real overlay locations in memory
     Resource<Overlay> m_overlay;
 public:
-    explicit GenericNode(NodeFrontEnd *api, NodeType type = NodeType::Generic, bool visible = true) : Node(api, this, type, visible) {}
+    explicit GenericNode(NodeFrontEnd *api, LayoutType type = LayoutType::None, bool visible = true) : Node(api, this, type, visible) {}
     /// All UI elements are managed by scene so no need to push on vector or free memory
     virtual ~GenericNode() {
         if (!m_destroyed) {

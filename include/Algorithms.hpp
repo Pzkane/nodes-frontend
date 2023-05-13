@@ -6,7 +6,7 @@ namespace nf {
 /**
  * @brief Type of node used in its creation
 */
-enum class NodeType { Generic, List };
+enum class LayoutType { None, Line, Random };
 
 };
 

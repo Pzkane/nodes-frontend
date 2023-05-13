@@ -51,4 +51,12 @@ struct StringBTNode : public nf::BinaryTreeNode<StringBTNode, std::string> {
     StringBTNode() : BinaryTreeNode<StringBTNode, std::string>(NFWrap.api()) {}
 };
 
+struct StringGraphNode : public nf::GraphNode<StringGraphNode, std::string> {
+    StringGraphNode() : GraphNode<StringGraphNode, std::string>(NFWrap.api()) {}
+};
+
+struct StringWeightGraphNode : public nf::WeightedGraphNode<StringWeightGraphNode, std::string> {
+    StringWeightGraphNode() : WeightedGraphNode<StringWeightGraphNode, std::string>(NFWrap.api()) {}
+};
+
 #endif // SRC_MAIN_HPP

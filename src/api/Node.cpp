@@ -5,7 +5,7 @@
 
 using namespace nf;
 
-void Node::createNode(bool visible, NodeType type, Observable *observable)
+void Node::createNode(bool visible, LayoutType type, Observable *observable)
 {
     m_node = m_api->addNode("API", m_api->m_ll_shift.x, m_api->m_ll_shift.y, visible, type, observable);
 }
@@ -26,7 +26,7 @@ void Node::nodeSanityCheck() const {
     }
 }
 
-Node::Node(NodeFrontEnd *api, Observable *observable, NodeType type, bool visible) : m_api(api)
+Node::Node(NodeFrontEnd *api, Observable *observable, LayoutType type, bool visible) : m_api(api)
 {
     createNode(visible, type, observable);
 }

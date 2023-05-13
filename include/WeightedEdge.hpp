@@ -6,11 +6,14 @@
 
 namespace nf {
 
-class WeightedEdge : public Edge
+class WeightedEdge : virtual public Edge
 {
     float m_weight;
     Label m_weight_label;
     void init();
+protected:
+    void _draw(sf::RenderWindow &window, bool drawEdge);
+    void _update(const sf::RenderWindow &window, EventFlags &ef, bool updateEdge);
 public:
     WeightedEdge(sf::Color color = sf::Color::Black, float _weight = 0.f);
     WeightedEdge(NodeImpl *const &start_node, NodeImpl *const &end_node, sf::Color color = sf::Color::Black, float _weight = 0.f);

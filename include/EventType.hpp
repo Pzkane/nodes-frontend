@@ -11,6 +11,7 @@ enum class EventType
     addEdge,
     addOEdge,
     addWEdge,
+    addWOEdge,
     addOverlay,
     disconnectNodes,
     destroyNode

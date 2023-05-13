@@ -19,6 +19,7 @@ const float nf::LL_DEFAULT_THICKNESS = 1.f;
 
 float NodeFrontEnd::PADDING = 50;
 size_t NodeFrontEnd::LL_NODE_SPACING = 150;
+int NodeFrontEnd::RANDOM_SPACING = 500;
 
 size_t NodeFrontEnd::BT_PARENT_NODE_CENTER_OFFSET_X = 75;
 size_t NodeFrontEnd::BT_PARENT_NODE_CENTER_OFFSET_Y = 100;
@@ -39,7 +40,6 @@ static void event_pool(Tw &main_m_window, Utils::SafeQueue<sf::Event> &m_eventQu
 
             case sf::Event::Resized:
             {
-                glViewport(0, 0, event.size.width, event.size.height);
                 sf::View new_view(sf::FloatRect(0, 0, event.size.width, event.size.height));
                 main_m_window.setView(new_view);
                 break;
@@ -144,20 +144,26 @@ void NodeFrontEnd::setWindowColor(const sf::Color &color)
     m_backgroundColor = color;
 }
 
-NodeImpl* NodeFrontEnd::addNode(const char *text, float x, float y, bool visible, NodeType n_type, Observable *entity)
+NodeImpl* NodeFrontEnd::addNode(const char *text, float x, float y, bool visible, LayoutType l_type, Observable *entity)
 {
     if (lf.f_t_ep_done) return nullptr;
     auto p = reinterpret_cast<NodeImpl *>(m_ss.updateInput(EventType::addNode));
     p->setText(text);
     p->setVisibility(visible);
-    switch (n_type)
+    switch (l_type)
     {
-    case NodeType::List:
+    case LayoutType::Line:
         p->setPosition(x+LL_NODE_SPACING, y);
         p->setObservable(entity);
         m_ll_shift = {m_ll_shift.x + LL_NODE_SPACING, m_ll_shift.y};
         break;
-    
+    case LayoutType::Random:
+        p->setPosition(Utils::get_random_number(x, x+RANDOM_SPACING)
+                     , Utils::get_random_number(y, y+RANDOM_SPACING));
+        p->setObservable(entity);
+        break;
+
+    case LayoutType::None:
     default:
         p->setPosition(x, y);
         break;
@@ -182,15 +188,22 @@ void NodeFrontEnd::connectWeightNodes(NodeImpl *n1, NodeImpl *n2, float weight)
 void NodeFrontEnd::connectOrientedNodes(NodeImpl *n1, NodeImpl *n2)
 {
     if (lf.f_t_ep_done) return;
-    auto p = reinterpret_cast<Edge *>(m_ss.updateInput(EventType::addOEdge));
+    auto p = reinterpret_cast<OrientedEdge *>(m_ss.updateInput(EventType::addOEdge));
+    p->setNodeEndings(n1, n2);
+}
+
+void NodeFrontEnd::connectWeightOrientedNodes(NodeImpl *n1, NodeImpl *n2)
+{
+    if (lf.f_t_ep_done) return;
+    auto p = reinterpret_cast<Edge *>(m_ss.updateInput(EventType::addWOEdge));
     p->setNodeEndings(n1, n2);
 }
 
 void NodeFrontEnd::disconnectNodes(NodeImpl *n1, NodeImpl *n2)
 {
     if (lf.f_t_ep_done) return;
-    // LEAK
-    Nodes2ptr *pn = new Nodes2ptr{n1, n2};
+    Nodes2ptr nodes{n1, n2};
+    Nodes2ptr *pn = &nodes;
     m_ss.updateInput(EventType::disconnectNodes, pn);
 }
 
@@ -226,6 +239,10 @@ void NodeFrontEnd::selectNode(NodeImpl *n) {
         m_selected_node->setFillColor(LL_DEFAULT_COLOR);
     }
     m_selected_node = n;
+}
+
+NodeImpl* NodeFrontEnd::getSelectedNode() {
+    return m_selected_node;
 }
 
 void NodeFrontEnd::mergeOverlay(Overlay &child) {

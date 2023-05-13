@@ -1,7 +1,6 @@
 #ifndef SRC_API_LISNKEDLISTNODEIMPL_HPP_INCLUDED
 #define SRC_API_LISNKEDLISTNODEIMPL_HPP_INCLUDED
 
-#include "custom_type_traits.hpp"
 #include "GenericNode.hpp"
 #include "Overlay.hpp"
 #include "MouseCache.hpp"
@@ -11,13 +10,13 @@ namespace nf {
  * @brief Represents single node of a singly linked list
 */
 template <class C, typename T>
-class LinkedListNode : public GenericNode<C,T>
+class LinkedListNode : public GenericNode<T>
 {
     LinkedListNode *m_next = nullptr;
 protected:
     C *m_next_derived = nullptr;
 public:
-    explicit LinkedListNode(NodeFrontEnd *api, bool visible = true) : GenericNode<C,T>(api, NodeType::List, visible) {}
+    explicit LinkedListNode(NodeFrontEnd *api, bool visible = true) : GenericNode<T>(api, LayoutType::Line, visible) {}
 
     /**
      * Set next node
@@ -68,15 +67,7 @@ public:
             ///     setNext(C*) on it.
             ///
             Container{"setNext", [&](void*){
-                    // Cast order: from `void*` to -> from `Observable*` to  -> C*
-                    //                                           ^
-                    //                                           |
-                    //                                          ~~~
-                    // (to retrieve type of a value under the pointer to allow proper cast up)
-                    this->setNext(
-                        *dynamic_cast<C*>(
-                            reinterpret_cast<Observable*>(
-                                ActionObserver::getInstance()->getCallbackParameter())));
+                    this->setNext(dynamic_cast<C*>(Node::m_api->getSelectedNode()->getObservable()));
                     return nullptr;
                 }, false,
                 sf::Vector2f{70, 20}, ll_ui->getWrapper()->getPosition(), sf::Vector2i{10, 10}}
@@ -87,7 +78,7 @@ public:
                 /// Container: removes pointer to the next node.
                 ///
                 Container{"removeNext", [&](void*){ this->setNext(nullptr); return nullptr; }, true,
-                sf::Vector2f{70, 20}, {ll_ui->getWrapper()->getPosition().x, ll_ui->getWrapper()->getPosition().y+22}, sf::Vector2i{10, 10}}
+                    sf::Vector2f{70, 20}, {ll_ui->getWrapper()->getPosition().x, ll_ui->getWrapper()->getPosition().y+22}, sf::Vector2i{10, 10}}
             );
         Node::m_api->mergeOverlay(*ll_ui);
     }

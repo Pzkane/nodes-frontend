@@ -1,12 +1,12 @@
 add_library(merged INTERFACE)
 
-add_library(srcLib)
+add_library(stateLib)
 
-target_sources(srcLib
+target_sources(stateLib
     PRIVATE
         Cache.cpp
 )
-target_include_directories(srcLib PUBLIC ${SFML_INCLUDE_DIR} ${LOCAL_INCLUDE_DIR})
+target_include_directories(stateLib PUBLIC ${SFML_INCLUDE_DIR} ${LOCAL_INCLUDE_DIR})
 
 target_include_directories(merged INTERFACE ${OPENGL_INCLUDE_DIRS} ${LOCAL_INCLUDE_DIR})
 target_link_libraries(merged INTERFACE sfml-window sfml-system sfml-graphics ${OPENGL_LIBRARIES})
@@ -46,16 +46,16 @@ add_library(uiLib)
 add_subdirectory(ui)
 
 target_link_libraries(helpersLib sfml-graphics)
-target_link_libraries(srcLib sfml-window helpersLib)
+target_link_libraries(stateLib sfml-window helpersLib)
 target_link_libraries(shapesLib sfml-graphics propertiesLib)
 target_link_libraries(mouseLib sfml-graphics helpersLib)
 target_link_libraries(scenesLib actionsLib mouseLib)
-target_link_libraries(entitiesLib actionsLib mouseLib srcLib shapesLib)
+target_link_libraries(entitiesLib actionsLib mouseLib stateLib shapesLib)
 target_link_libraries(uiLib entitiesLib)
 target_link_libraries(${apiLib} sfml-window sfml-system sfml-graphics ${OPENGL_LIBRARIES}
     mouseLib
     scenesLib
-    srcLib
+    stateLib
     shapesLib
     helpersLib
     entitiesLib
