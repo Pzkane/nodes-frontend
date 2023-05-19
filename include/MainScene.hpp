@@ -39,6 +39,7 @@ public:
     WeightedOrientedEdge* createWOEdge();
     void removeNode(NodeImpl *node_ptr_payload);
     void removeEdge(Nodes2ptr* ptr_payload);
+    Edge* queryEdge(Nodes2ptr *ptr_payload);
     void pushNode(NodeImpl* node);
     void pushEdge(Edge* conn);
     /**

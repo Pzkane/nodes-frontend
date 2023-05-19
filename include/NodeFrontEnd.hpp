@@ -79,7 +79,7 @@ public:
     void connectNodes(NodeImpl *n1, NodeImpl *n2);
     void connectOrientedNodes(NodeImpl *n1, NodeImpl *n2);
     void connectWeightNodes(NodeImpl *n1, NodeImpl *n2, float weight = 0);
-    void connectWeightOrientedNodes(NodeImpl *n1, NodeImpl *n2);
+    void connectWeightOrientedNodes(NodeImpl *n1, NodeImpl *n2, float weight = 0);
     void disconnectNodes(NodeImpl *n1, NodeImpl *n2);
     /**
      * Notify scene to destroy given node

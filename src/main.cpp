@@ -7,8 +7,8 @@
 #include <thread>
 #include "main.hpp"
 
-// 1: Include wrapper header
-#include "NodeFrontEndWrapper.hpp"
+// 1: Include header
+#include "nf.hpp"
 
 // 2: Define [static] wrapper instance ...
 nf::NodeFrontEndWrapper NFWrap;
@@ -358,10 +358,10 @@ int test13_generic_graph() {
     StringGraphNode* node3 = new StringGraphNode();
     StringGraphNode* node4 = new StringGraphNode();
 
-    node1->setData("node1");
-    node2->setData("node2");
-    node3->setData("node3");
-    node4->setData("node4");
+    node1->setData("node1G");
+    node2->setData("node2G");
+    node3->setData("node3G");
+    node4->setData("node4G");
 
     node1->addNeighbor(node2);
     node1->addNeighbor(node3);
@@ -382,11 +382,10 @@ int test14_weighted_graph() {
     StringWeightGraphNode* node3 = new StringWeightGraphNode();
     StringWeightGraphNode* node4 = new StringWeightGraphNode();
 
-
-    node1->setData("node1");
-    node2->setData("node2");
-    node3->setData("node3");
-    node4->setData("node4");
+    node1->setData("node1W");
+    node2->setData("node2W");
+    node3->setData("node3W");
+    node4->setData("node4W");
 
     node1->addNeighbor(node2, 40);
     node1->addNeighbor(node3, 50);
@@ -396,6 +395,51 @@ int test14_weighted_graph() {
 
     node1->removeNeighbor(node2);
 
+    return 0;
+}
+
+int test15_oriented_graph() {
+    StringOrientedGraphNode* node1 = new StringOrientedGraphNode();
+    node1->setPosition(1500, 1000);
+    StringOrientedGraphNode* node2 = new StringOrientedGraphNode();
+    StringOrientedGraphNode* node3 = new StringOrientedGraphNode();
+    StringOrientedGraphNode* node4 = new StringOrientedGraphNode();
+
+    node1->setData("node1O");
+    node2->setData("node2O");
+    node3->setData("node3O");
+    node4->setData("node4O");
+
+    node1->addNeighbor(node2);
+    node1->addNeighbor(node3);
+
+    node2->addNeighbor(node3);
+    node3->addNeighbor(node4);
+    node3->addNeighbor(node2);
+
+    node1->removeNeighbor(node2);
+    return 0;
+}
+
+int test16_weighted_oriented_graph() {
+    StringWeightOrientedGraphNode* node1 = new StringWeightOrientedGraphNode();
+    node1->setPosition(1700, 500);
+    StringWeightOrientedGraphNode* node2 = new StringWeightOrientedGraphNode();
+    StringWeightOrientedGraphNode* node3 = new StringWeightOrientedGraphNode();
+    StringWeightOrientedGraphNode* node4 = new StringWeightOrientedGraphNode();
+
+    node1->setData("node1WO");
+    node2->setData("node2WO");
+    node3->setData("node3WO");
+    node4->setData("node4WO");
+
+    node1->addNeighbor(node2, 40);
+    node1->addNeighbor(node3, 50);
+
+    node2->addNeighbor(node3, 20);
+    node3->addNeighbor(node4, 10);
+
+    node1->removeNeighbor(node2);
     return 0;
 }
 
@@ -421,6 +465,8 @@ int main(int argc, char** argv)
      + test12_ll_node_set_next_nullptr()
      + test13_generic_graph()
      + test14_weighted_graph()
+     + test15_oriented_graph()
+     + test16_weighted_oriented_graph()
     );
     if (test_suite != 0) return test_suite;
     say("Tests have passed!");

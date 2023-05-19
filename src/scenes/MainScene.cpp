@@ -120,6 +120,22 @@ void MainScene::removeEdge(Nodes2ptr *ptr_payload)
     }
 }
 
+
+Edge* MainScene::queryEdge(Nodes2ptr *ptr_payload)
+{
+    for (auto &&it : m_edges)
+    {
+        auto nodeRef = it->getNodeEndings();
+        if (
+            (nodeRef.start == ptr_payload->n1 || nodeRef.start == ptr_payload->n2)
+            &&
+            (nodeRef.end == ptr_payload->n1 || nodeRef.end == ptr_payload->n2)
+        )
+            return it;
+    }
+    return nullptr;
+}
+
 void MainScene::pushNode(NodeImpl *node)
 {
     m_nodes.push_back(node);
@@ -447,6 +463,8 @@ void* MainScene::updateInput(const EventType &eventType, void* payload)
     case EventType::destroyNode:
         removeNode(reinterpret_cast<NodeImpl*>(payload));
         return nullptr;
+    case EventType::queryEdge:
+        return queryEdge(reinterpret_cast<Nodes2ptr*>(payload));
     default:
         break;
     }

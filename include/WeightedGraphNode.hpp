@@ -7,10 +7,10 @@
 
 namespace nf {
 /**
- * @brief Represents single node of a singly linked list
+ * @brief Represents single node of a weighted graph
 */
 template <class C, typename T>
-class WeightedGraphNode : public GraphNode<C,T>
+class WeightedGraphNode : virtual public GraphNode<C,T>
 {
 protected:
     std::map<int, float> m_weights;
@@ -65,7 +65,7 @@ public:
         if (lnode == nullptr || lnode == this) return;
         m_weights[lnode->ID] = weight;
         if (doSameForOpposite)
-            lnode->setWeight(dynamic_cast<C*>(this), weight, false);
+            lnode->WeightedGraphNode::setWeight(dynamic_cast<C*>(this), weight, false);
     }
 
     /**

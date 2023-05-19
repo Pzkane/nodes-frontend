@@ -188,15 +188,39 @@ void NodeFrontEnd::connectWeightNodes(NodeImpl *n1, NodeImpl *n2, float weight)
 void NodeFrontEnd::connectOrientedNodes(NodeImpl *n1, NodeImpl *n2)
 {
     if (lf.f_t_ep_done) return;
+    for (NodeImpl* neighbor : n1->getConnectedNodes()) {
+        if (&(*neighbor) == &(*n2)) {
+            Nodes2ptr nodes{n1, n2};
+            Nodes2ptr *pn = &nodes;
+            auto p = reinterpret_cast<OrientedEdge *>(m_ss.updateInput(EventType::queryEdge, pn));
+            auto nodeRef = p->getNodeEndings();
+            if (&(*(nodeRef.start)) == &(*n2))
+                p->m_2way = true;
+            return;
+        }
+    }
     auto p = reinterpret_cast<OrientedEdge *>(m_ss.updateInput(EventType::addOEdge));
     p->setNodeEndings(n1, n2);
 }
 
-void NodeFrontEnd::connectWeightOrientedNodes(NodeImpl *n1, NodeImpl *n2)
+void NodeFrontEnd::connectWeightOrientedNodes(NodeImpl *n1, NodeImpl *n2, float weight)
 {
     if (lf.f_t_ep_done) return;
-    auto p = reinterpret_cast<Edge *>(m_ss.updateInput(EventType::addWOEdge));
+    for (NodeImpl* neighbor : n1->getConnectedNodes()) {
+        if (&(*neighbor) == &(*n2)) {
+            Nodes2ptr nodes{n1, n2};
+            Nodes2ptr *pn = &nodes;
+            auto p = reinterpret_cast<WeightedOrientedEdge *>(m_ss.updateInput(EventType::queryEdge, pn));
+            p->setWeight(weight);
+            auto nodeRef = p->getNodeEndings();
+            if (&(*(nodeRef.start)) == &(*n2))
+                p->m_2way = true;
+            return;
+        }
+    }
+    auto p = reinterpret_cast<WeightedOrientedEdge *>(m_ss.updateInput(EventType::addWOEdge));
     p->setNodeEndings(n1, n2);
+    p->setWeight(weight);
 }
 
 void NodeFrontEnd::disconnectNodes(NodeImpl *n1, NodeImpl *n2)
@@ -249,10 +273,3 @@ void NodeFrontEnd::mergeOverlay(Overlay &child) {
     Overlay* p_ui = &child;
     m_ss.updateInput(EventType::addOverlay, p_ui);
 }
-
-// void NodeFrontEnd::divideOverlay(Overlay* child) {
-//     m_uis.erase(std::remove_if(m_uis.begin(), m_uis.end(), [&child](Overlay *element) -> bool {
-//         if (&element == &child) return true;
-//         return false;
-//     }), m_uis.end());
-// }

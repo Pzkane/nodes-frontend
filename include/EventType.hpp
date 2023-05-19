@@ -14,7 +14,8 @@ enum class EventType
     addWOEdge,
     addOverlay,
     disconnectNodes,
-    destroyNode
+    destroyNode,
+    queryEdge
 };
 
 };

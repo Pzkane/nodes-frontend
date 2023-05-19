@@ -39,7 +39,6 @@ add_subdirectory(mouse)
 add_library(scenesLib)
 add_subdirectory(scenes)
 
-
 add_library(uiLib)
 add_subdirectory(ui)
 

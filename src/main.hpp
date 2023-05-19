@@ -3,7 +3,7 @@
 
 // For Tests and Demo
 
-#include "NodeFrontEndWrapper.hpp"
+#include "nf.hpp"
 
 extern nf::NodeFrontEndWrapper NFWrap;
 
@@ -56,7 +56,21 @@ struct StringGraphNode : public nf::GraphNode<StringGraphNode, std::string> {
 };
 
 struct StringWeightGraphNode : public nf::WeightedGraphNode<StringWeightGraphNode, std::string> {
-    StringWeightGraphNode() : WeightedGraphNode<StringWeightGraphNode, std::string>(NFWrap.api()) {}
+    StringWeightGraphNode()
+        : GraphNode<StringWeightGraphNode, std::string>(NFWrap.api())
+        , WeightedGraphNode<StringWeightGraphNode, std::string>(NFWrap.api()) {}
+};
+
+struct StringOrientedGraphNode : public nf::OrientedGraphNode<StringOrientedGraphNode, std::string> {
+    StringOrientedGraphNode()
+        : GraphNode<StringOrientedGraphNode, std::string>(NFWrap.api())
+        , OrientedGraphNode<StringOrientedGraphNode, std::string>(NFWrap.api()) {}
+};
+
+struct StringWeightOrientedGraphNode : public nf::WeightedOrientedGraphNode<StringWeightOrientedGraphNode, std::string> {
+    StringWeightOrientedGraphNode()
+        : GraphNode<StringWeightOrientedGraphNode, std::string>(NFWrap.api())
+        , WeightedOrientedGraphNode<StringWeightOrientedGraphNode, std::string>(NFWrap.api()) {}
 };
 
 #endif // SRC_MAIN_HPP
