@@ -55,18 +55,27 @@ struct StringGraphNode : public nf::GraphNode<StringGraphNode, std::string> {
     StringGraphNode() : GraphNode<StringGraphNode, std::string>(NFWrap.api()) {}
 };
 
+/**
+ * @brief Due to WeightedGraphNode's virtual base it is also required to explicitly provide used GraphNode base class
+*/
 struct StringWeightGraphNode : public nf::WeightedGraphNode<StringWeightGraphNode, std::string> {
     StringWeightGraphNode()
         : GraphNode<StringWeightGraphNode, std::string>(NFWrap.api())
         , WeightedGraphNode<StringWeightGraphNode, std::string>(NFWrap.api()) {}
 };
 
+/**
+ * @brief Due to OrientedGraphNode's virtual base it is also required to explicitly provide used GraphNode base class
+*/
 struct StringOrientedGraphNode : public nf::OrientedGraphNode<StringOrientedGraphNode, std::string> {
     StringOrientedGraphNode()
         : GraphNode<StringOrientedGraphNode, std::string>(NFWrap.api())
         , OrientedGraphNode<StringOrientedGraphNode, std::string>(NFWrap.api()) {}
 };
 
+/**
+ * @brief Due to WeightedOrientedGraphNode's virtual base it is also required to explicitly provide used GraphNode base class
+*/
 struct StringWeightOrientedGraphNode : public nf::WeightedOrientedGraphNode<StringWeightOrientedGraphNode, std::string> {
     StringWeightOrientedGraphNode()
         : GraphNode<StringWeightOrientedGraphNode, std::string>(NFWrap.api())

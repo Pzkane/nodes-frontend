@@ -6,7 +6,7 @@
 
 namespace nf {
 /**
- * @brief Represents single node of a oriented graph
+ * @brief Represents single node of a weighted-oriented graph
 */
 template <class C, typename T>
 class WeightedOrientedGraphNode : public OrientedGraphNode<C,T>, public WeightedGraphNode<C,T>
