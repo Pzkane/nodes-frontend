@@ -15,13 +15,18 @@ namespace nf {
 */
 class NodeFrontEndWrapper
 {
-    bool m_terminated;
+    bool m_terminated, m_initialized = false;
     std::atomic<bool> m_done;
     std::thread *m_nfLoop;
     nf::NodeFrontEnd* m_api;
     Context m_settings;
-    void init(const char* title = nullptr);
 public:
+    /**
+     * @brief Force-init API wrapper
+     * Used in some instances where linked could not instantiate wrapper object
+     *  in global scope
+    */
+    void init(const std::string& title = "");
     explicit NodeFrontEndWrapper(const Context& settings);
     NodeFrontEndWrapper();
     void destroy();

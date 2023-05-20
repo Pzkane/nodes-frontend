@@ -1,0 +1,2 @@
+g++ binary_tree.cpp -o binary_tree.exe -I ../../include -I $(cat  ../../.env | awk '{print $2}')/include -L $(cat  ../../.env | awk '{print $2}')/lib ../../libnf.a -lsfml-window -lsfml-graphics -lsfml-system
+cp -r binary_tree.exe ../../resources $(cat  ../../.env | awk '{print $2}')/bin

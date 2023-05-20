@@ -449,6 +449,14 @@ int test16_weighted_oriented_graph() {
 int main(int argc, char** argv)
 {
     ///
+    /// 0. Sometimes due to linker behavior global scope NFWrap would not
+    ///     be initialized. In that case use `init("Title")` method to
+    ///     force initialization. Generally it is safe and recommended to
+    ///     explicitly initialize wrapper even if it was already launched.
+    ///
+    // NFWrap.init("Title is optional");
+
+    ///
     /// 1. Setup environment
     ///
     unsigned test_suite = (

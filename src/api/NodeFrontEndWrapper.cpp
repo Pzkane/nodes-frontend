@@ -13,11 +13,18 @@ static void launchWindow(NodeFrontEnd *api, const Context& settings, std::atomic
     isDone = true;
 }
 
-void NodeFrontEndWrapper::init(const char* title) {
+void NodeFrontEndWrapper::init(const std::string& title) {
+    if (m_initialized) {
+        m_api->setTitle(title);
+        return;
+    }
     m_terminated = false;
     m_done = false;
-    m_api = new NodeFrontEnd(m_settings, title ? title : TITLE); // ptr to manage lifecycle
+    m_api = new NodeFrontEnd(m_settings, title.empty() ? TITLE : title); // ptr to manage lifecycle
+    if (!title.empty())
+        m_api->setTitle(title);
     m_nfLoop = new std::thread(launchWindow, std::ref(m_api), m_settings, std::ref(m_done));
+    m_initialized = true;
     say("Waiting for init...");
     while (!m_api->isInit()) {}
 }

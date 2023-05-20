@@ -8,7 +8,6 @@
 #include "AbstractShape.hpp"
 #include "Draggable.hpp"
 #include "Entity.hpp"
-#include "Callbacks.hpp"
 #include "Label.hpp"
 
 namespace nf {

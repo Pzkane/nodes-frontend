@@ -34,7 +34,7 @@ struct Context : public sf::ContextSettings {
 
 class NodeFrontEnd
 {
-    bool m_initizlized = false;
+    bool m_initialized = false;
     std::string m_title;
     sf::RenderWindow *m_window;
     Utils::SafeQueue<sf::Event> m_eventQueue;
@@ -60,7 +60,7 @@ public:
     // Graph shift properties
     static int RANDOM_SPACING;
 
-    NodeFrontEnd(const Context& settings, const char *n_title);
+    NodeFrontEnd(const Context& settings, const std::string& n_title);
     NodeFrontEnd() = delete;
     ~NodeFrontEnd();
     void init();
@@ -103,15 +103,12 @@ public:
     /**
      * @brief Determine if window and its internals were initialized
     */
-    bool isInit() { return m_initizlized; };
+    bool isInit() { return m_initialized; };
     /**
      * Add new overlay section
     */
     void mergeOverlay(Overlay &child);
-    /**
-     * Remove overlay section from vector
-    */
-    // void divideOverlay(Overlay *child);
+    void setTitle(const std::string& title);
 };
 
 };

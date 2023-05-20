@@ -2,9 +2,7 @@
 #define SRC_SHAPES_ABSTRACTSHAPE_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
-
 #include "EventFlags.hpp"
-#include "Callbacks.hpp"
 
 namespace nf {
 

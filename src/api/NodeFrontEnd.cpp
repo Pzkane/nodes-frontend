@@ -53,7 +53,8 @@ static void event_pool(Tw &main_m_window, Utils::SafeQueue<sf::Event> &m_eventQu
     main_m_window.setActive(false);
 }
 
-NodeFrontEnd::NodeFrontEnd(const Context& settings, const char *n_title) : m_settings(settings)
+NodeFrontEnd::NodeFrontEnd(const Context& settings, const std::string& n_title)
+    : m_settings(settings), m_title(n_title)
 {}
 
 void NodeFrontEnd::init()
@@ -64,7 +65,7 @@ void NodeFrontEnd::init()
     m_thEventPool = new std::thread(event_pool<sf::RenderWindow>, std::ref(*m_window), std::ref(m_eventQueue), std::ref(m_ss), std::ref(lf));
     MainScene *m_mainScene = new MainScene(*m_window);
     m_ss.switchTo(m_mainScene);
-    m_initizlized = true;
+    m_initialized = true;
     say("frontend initialized");
 }
 
@@ -272,4 +273,9 @@ NodeImpl* NodeFrontEnd::getSelectedNode() {
 void NodeFrontEnd::mergeOverlay(Overlay &child) {
     Overlay* p_ui = &child;
     m_ss.updateInput(EventType::addOverlay, p_ui);
+}
+
+void NodeFrontEnd::setTitle(const std::string& title) {
+    m_title = title;
+    m_window->setTitle(title);
 }

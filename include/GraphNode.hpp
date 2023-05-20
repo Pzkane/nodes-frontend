@@ -8,7 +8,7 @@
 
 namespace nf {
 /**
- * @brief Represents single node of a graph
+ * @brief Represents single node of a graph. Graph node will appear on random position (near specified)
 */
 template <class C, typename T>
 class GraphNode : public GenericNode<T>
