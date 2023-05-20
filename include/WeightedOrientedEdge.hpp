@@ -6,10 +6,13 @@
 
 namespace nf {
 
+/**
+ * @brief Represents merge of weighted and oriented connection between nodes
+*/
 class WeightedOrientedEdge : public WeightedEdge, public OrientedEdge
 {
 public:
-    WeightedOrientedEdge(sf::Color color = sf::Color::Black, float _weight = 0.f)
+    explicit WeightedOrientedEdge(sf::Color color = sf::Color::Black, float _weight = 0.f)
         : WeightedEdge(color, _weight) {}
     WeightedOrientedEdge(NodeImpl *const &start_node, NodeImpl *const &end_node, sf::Color color = sf::Color::Black, float _weight = 0.f)
         : WeightedEdge(start_node, end_node, color, _weight) {}

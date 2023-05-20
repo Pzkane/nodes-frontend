@@ -8,6 +8,9 @@ namespace nf {
 /* Forward declaration */
 class NodeImpl;
 
+/**
+ * @brief Flags for current state of inputs/entities
+*/
 class EventFlags : public Flags
 {
 public:

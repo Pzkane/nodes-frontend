@@ -1,7 +1,6 @@
 target_sources(shapesLib
     PRIVATE
         AbstractShape.cpp
-        GL_Triangle.cpp
         CircleShape.cpp
         Line.cpp
 )

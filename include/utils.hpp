@@ -22,14 +22,26 @@ constexpr float radian = 180 / pi;
 
 namespace Utils
 {
+    /**
+     * Get random number in range (distribution: mt19937)
+     * @param from T
+     * @param to T
+    */
     template <typename T>
     T get_random_number(T from, T to);
+    /**
+     * Retrieve mouse position inside of a window
+     * @param window sf::RenderWindow&
+    */
     sf::Vector2f getMousePosf(const sf::RenderWindow &window);
     void delay(unsigned int ms);
 }
 
 };
 
+/**
+ * Helper for sf::Vector2f output onto outstream
+*/
 std::ostream& operator<<(std::ostream& out, const sf::Vector2f& vec);
 
 #endif // SRC_HELPERS_UTILS_HPP_INCLUDED

@@ -5,6 +5,9 @@
 
 namespace nf {
 
+/**
+ * @brief Represents oriented connection between nodes
+*/
 class OrientedEdge : virtual public Edge
 {
     struct ArrowHead {
@@ -20,6 +23,9 @@ public:
     OrientedEdge(NodeImpl *const &start_node, NodeImpl *const &end_node, sf::Color color = sf::Color::Black)
         : Edge(start_node, end_node, color) {}
 
+    /**
+     * Flip this to draw two-way connection
+    */
     bool m_2way = false;
     void update(const sf::RenderWindow &window, EventFlags &ef) override;
     void draw(sf::RenderWindow &window) override;

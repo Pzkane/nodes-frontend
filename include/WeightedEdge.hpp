@@ -6,6 +6,9 @@
 
 namespace nf {
 
+/**
+ * @brief Represents weighted connection between nodes
+*/
 class WeightedEdge : virtual public Edge
 {
     float m_weight;
@@ -19,6 +22,9 @@ public:
     WeightedEdge(NodeImpl *const &start_node, NodeImpl *const &end_node, sf::Color color = sf::Color::Black, float _weight = 0.f);
     ~WeightedEdge() = default;
 
+    /**
+     * Set weight for given connection
+    */
     void setWeight(float weight);
     void update(const sf::RenderWindow &window, EventFlags &ef) override;
     void draw(sf::RenderWindow &window) override;

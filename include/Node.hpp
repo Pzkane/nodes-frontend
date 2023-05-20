@@ -1,13 +1,14 @@
 #ifndef SRC_API_NODE_HPP_INCLUDED
 #define SRC_API_NODE_HPP_INCLUDED
 
-/* Node class abstraction as API */
-
 #include "NodeFrontEnd.hpp"
 #include "Observable.hpp"
 
 namespace nf {
 
+/**
+ * NodeImpl abstraction as API for all nodes. Use GenericNode instead of this one.
+*/
 class Node
 {
 protected:

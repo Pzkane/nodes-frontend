@@ -5,6 +5,9 @@
 
 namespace nf {
 
+/**
+ * @brief Flags for main drawing/updating loop
+*/
 class LoopFlags : public Flags
 {
 public:

@@ -5,6 +5,9 @@
 
 namespace nf {
 
+/**
+ * Enum for MainScene update by input
+*/
 enum class EventType
 {
     addNode,

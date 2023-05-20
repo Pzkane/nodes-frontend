@@ -3,12 +3,18 @@
 
 namespace nf {
 
+/**
+ * @brief Generic flag class
+*/
 class Flags
 {
 public:
     enum class Type { Event };
     Flags() {}
     virtual ~Flags() = default;
+    /**
+     * Check some property, should be overridden
+    */
     virtual bool switchedOff() { return false; }
 };
 

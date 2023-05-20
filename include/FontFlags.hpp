@@ -7,6 +7,9 @@
 
 namespace nf {
 
+/**
+ * @brief Flags for loaded fonts
+*/
 class FontFlags : public Flags
 {
 public:

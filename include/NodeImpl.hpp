@@ -9,7 +9,6 @@
 #include "EventFlags.hpp"
 #include "Entity.hpp"
 #include "Edge.hpp"
-#include "Clickable.hpp"
 #include "Observable.hpp"
 #include "Algorithms.hpp"
 
@@ -23,7 +22,7 @@ const size_t DEF_NODE_RAD = 40;
 /**
  * Internal Node implementation
 */
-class NodeImpl : public Entity, public CircleShape, public Clickable<VoidCallback>
+class NodeImpl : public Entity, public CircleShape
 {
     static unsigned id;
     bool m_isDragged = false,

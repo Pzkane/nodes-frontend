@@ -7,7 +7,7 @@
 namespace nf {
 
 /**
- * @brief Abstract class for entities to inherit from if used in render
+ * @brief Abstract class for entities to inherit from if used for rendering
  * 
  * Primarily consists of 2 methods:
  *  1. first handle events and update entity's state

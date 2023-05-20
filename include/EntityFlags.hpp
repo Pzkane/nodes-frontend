@@ -5,6 +5,9 @@
 
 namespace nf {
 
+/**
+ * @brief Generic flags for Entity objects
+*/
 class EntityFlags : public Flags
 {
 public:

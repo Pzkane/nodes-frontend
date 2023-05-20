@@ -7,6 +7,9 @@
 
 namespace nf {
 
+/**
+ * @brief Singleton for mouse object
+*/
 class MouseCache
 {
     MouseCache(const sf::RenderWindow& window) : gMouse(window) {}

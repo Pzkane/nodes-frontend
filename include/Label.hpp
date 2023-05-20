@@ -6,6 +6,9 @@
 
 namespace nf {
 
+/**
+ * @brief Drawable text label
+*/
 class Label : public sf::Text {
 private:
     sf::RectangleShape m_box;

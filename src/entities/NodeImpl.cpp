@@ -13,7 +13,7 @@ using namespace nf;
 unsigned NodeImpl::id = 0;
 
 NodeImpl::NodeImpl(Observable * hlNode, float radius, std::size_t pointCount, const std::size_t ms)
-    : m_hl_node(hlNode), RADIUS(radius), CircleShape(radius, pointCount), Clickable(ms)
+    : m_hl_node(hlNode), RADIUS(radius), CircleShape(radius, pointCount)
 {
     const sf::Vector2f center = CircleShape::getPosition();
     sf::CircleShape::setOrigin(center.x + RADIUS, center.y + RADIUS);
@@ -21,11 +21,6 @@ NodeImpl::NodeImpl(Observable * hlNode, float radius, std::size_t pointCount, co
     sf::CircleShape::setOutlineColor(sf::Color(75, 75, 75));
     sf::CircleShape::setFillColor({220, 220, 220});
 
-    auto setHelloText = [&](){
-        // setText(std::to_string(id));
-    };
-
-    setRMBCallback(setHelloText);
     m_text.setFont(ff.font);
     m_text.setScale(0, 0);
     m_text.setFillColor(sf::Color::Black);

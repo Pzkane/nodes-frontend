@@ -7,6 +7,9 @@
 
 namespace nf {
 
+/**
+ * @brief Mouse which can hold (capture) 1 entity for two-way logic operations
+*/
 class Mouse : public sf::Mouse
 {
     const sf::RenderWindow& m_window;
@@ -14,8 +17,18 @@ class Mouse : public sf::Mouse
 public:
     explicit Mouse(const sf::RenderWindow &window, Entity* entity = nullptr)
         : m_window(window), m_capture(entity) {}
+    /**
+     * Remember pointer to entity
+     * @param e Entity*
+    */
     void captureEntity(Entity* e) { m_capture = e; }
+    /**
+     * Forget pointer to entity
+    */
     void releaseEntity() { m_capture = nullptr; }
+    /**
+     * Retrieve active captured entity
+    */
     const Entity* getEntity() { return m_capture; }
     bool isCaptureEmpty() { return !getEntity(); }
 };

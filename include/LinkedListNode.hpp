@@ -26,8 +26,7 @@ public:
     {
         Node::nodeSanityCheck();
         if (lnode == this) return;
-        if (m_next)
-        {
+        if (m_next) {
             Node::m_api->disconnectNodes(Node::m_node, const_cast<NodeImpl*>(m_next->getInnerNode()));
         }
         if (lnode != nullptr)
