@@ -11,6 +11,10 @@ namespace nf {
  * @brief Describes object as a resource for dynamic memory management.
  * 
  * Resource object has its own data pool to register/free data to/from.
+ *
+ * In context of NF, resource is used to create heap-allocated data pool to
+ * be able to check and invalidate pointers to the Resource elements (which
+ * also are Resources) in multiple places of a program.
 */
 template<typename T>
 class Resource : public std::vector<T*>

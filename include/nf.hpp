@@ -1,11 +1,15 @@
 #ifndef SRC_API_NF_HPP_INCLUDED
 #define SRC_API_NF_HPP_INCLUDED
 
+/**
+ * @brief Entry header for all necessary tooling
+*/
+
 #include "NodeFrontEndWrapper.hpp"
 
-// Available nodes
+// Available entities (node-based)
 #include "LinkedListNode.hpp"
-#include "DoubleLinkedListNode.hpp"
+#include "DoublyLinkedListNode.hpp"
 #include "BinaryTreeNode.hpp"
 #include "GraphNode.hpp"
 #include "WeightedGraphNode.hpp"

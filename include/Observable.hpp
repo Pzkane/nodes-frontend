@@ -4,14 +4,16 @@
 namespace nf {
 
 /**
- * @brief React to observable object by ActionObserver
+ * @brief Observable is a generic object to create 2-way reference between internal
+ *          implementation and high-level node accessed through API. This means that
+ *          observable will be a user-defined type
 */
 class Observable {
 public:
     virtual ~Observable() = default;
 
     /**
-     * Set this as callback parameter
+     * Set this object as callback parameter
     */
     virtual void registerEntity() = 0;
     /**

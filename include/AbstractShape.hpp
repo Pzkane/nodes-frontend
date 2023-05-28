@@ -9,6 +9,7 @@ namespace nf {
 /**
  * @brief Generalized class for all visual shapes with overridable helper utilities
  * 
+ * Abstract shape provides generic methods for any kind of shape
  * Consists of current EventFlags
 */
 class AbstractShape

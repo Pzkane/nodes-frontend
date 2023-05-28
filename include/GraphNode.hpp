@@ -9,10 +9,13 @@
 namespace nf {
 /**
  * @brief Represents single node of a graph. Graph node will appear on random position (near specified)
+ * 
+ * Each graph node has map of all connected neighbors
 */
 template <class C, typename T>
 class GraphNode : public GenericNode<T>
 {
+    /// @brief Unique identifier used in neighbor maps
     static inline unsigned iter_id = 0;
 protected:
     std::map<int, C*> m_neighbors;

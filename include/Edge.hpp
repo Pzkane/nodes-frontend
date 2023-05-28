@@ -15,7 +15,7 @@ struct NodeRef
 };
 
 /**
- * @brief Main class for generic edge implementation
+ * @brief Main class for generic edge implementation which connects 2 nodes
 */
 class Edge : public Entity, public Line
 {

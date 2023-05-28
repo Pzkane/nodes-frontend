@@ -13,6 +13,19 @@ Consider you have a isolated piece of project you'd want to explain to someone o
 
 The goal of this project is to provide tooling for algorithm explanation with customizable options to explore at your own pace with possibility to move/change structures in real time.
 
+## Docs
+
+Every class is commented to work with *doxygen* document generation. *Doxygen* (https://www.doxygen.nl/) documentation contains class inheritances, class descriptions, their purpose and UML diagrams and relies on *Graphviz* (https://www.graphviz.org/). You can use `Doxyfile` (e.g. with *Doxywizard*) or compile docs yourself through CLI.
+
+If using `Doxyfile`, in file specify:
+* `OUTPUT_DIRECTORY` as output location of generated docs,
+* `INPUT` as full path to the project root,
+* `DOT_PATH` as full path to the *Graphviz* binaries (e.g. `C:/Graphviz/bin`).
+
+Architectural docs are located in `docs` directory
+
+**Notice**: release package contains all the docs
+
 ## Prerequisites
 
 ### For release
@@ -23,6 +36,7 @@ The goal of this project is to provide tooling for algorithm explanation with cu
 
 * buildutils (gcc, ar, ld)
 * SFML 2.5.1 library
+* Cmake >= 3.13
 
 ## Usage
 
@@ -116,6 +130,15 @@ Binary tree example looks as follows (notice: node with value 40 was dragged to 
 * Node with bold outline - programmatically highlighted node using `highlight()` method
 * Node with dimmer background - last selected node using mouse (left click)
 * Container with directives - contextual menu (right click) which is relative to the node that it was pressed on, i.e. node with value 17 has operations to remove currently assigned left child or set selected node with value 35 as right or left child.
+Nodes have on-self sanity check should you try to perform, for example, `setLeft` on node from which contextual menu is being invoked.
+
+## Controls
+
+LMB - select node for contextual use
+RMB - invoke contextual menu
+Left Alt - delete node
+Mouse wheel up/down - scroll up or down
+Left Shift + Mouse wheel up/down - scroll left or right
 
 # How to
 

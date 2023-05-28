@@ -7,7 +7,7 @@
 namespace nf {
 
 /**
- * NodeImpl abstraction as API for all nodes. Use GenericNode instead of this one.
+ * @brief NodeImpl abstraction as API for all nodes. Use GenericNode instead of this one for new APIs.
 */
 class Node
 {

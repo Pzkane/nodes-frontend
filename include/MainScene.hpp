@@ -14,7 +14,7 @@
 namespace nf {
 
 /**
- * @brief Scene for algorithms
+ * @brief Scene for node-based algorithms
 */
 class MainScene : public Scene
 {
@@ -58,15 +58,26 @@ public:
      * Add new overlay section
     */
     void mergeOverlay(Overlay* child);
-    /**
-     * Remove overlay section from vector
-    */
-    // void divideOverlay(Overlay *child);
 
     void update() override;
     void draw() override;
+    /**
+     * Update scene based on SFML event with optionally supplied payload
+     * @param event sf::Event&
+     * @param payload void*
+    */
     void* updateInput(const sf::Event &event, void* payload = nullptr) override;
+    /**
+     * Update scene based on NF event type with optionally supplied payload
+     * @param event EventType
+     * @param payload void*
+    */
     void* updateInput(const EventType &eventType, void* payload = nullptr) override;
+    /**
+     * Retrieve currently active scene flags by type
+     * @param type Flags::Type
+     * @returns const void*
+    */
     const void* getFlags(Flags::Type type) override;
 };
 

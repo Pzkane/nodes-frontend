@@ -11,6 +11,7 @@ namespace nf {
 class LoopFlags : public Flags
 {
 public:
+    /// @brief This flags determines whenever event pool thread is done
     bool f_t_ep_done = false;
     bool f_t_delete_active_scene = false;
     LoopFlags() : Flags() {}

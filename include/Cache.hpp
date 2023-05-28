@@ -10,9 +10,8 @@ namespace nf {
 static const sf::Color gBGColor(210, 210, 210);
 
 /**
- * @brief Manages lifetime of singletons
- * 
- * Manages:
+ * @brief Manages lifetime of singletons:
+ *
  *  * Fonts
  *  * Cursors
 */

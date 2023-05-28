@@ -301,7 +301,7 @@ int test09_ll_loop_on_thread() {
 }
 
 ///
-/// Test DoubleLinkedListNode creation
+/// Test DoublyLinkedListNode creation
 ///
 int test10_dbl_ll() {
     DblLLNode *left = new DblLLNode();

@@ -43,8 +43,8 @@ struct LoopTypeNode : public nf::LinkedListNode<LoopTypeNode, std::string> {
     LoopTypeNode() : LinkedListNode<LoopTypeNode, std::string>(NFWrap.api()) {}
 };
 
-struct DblLLNode : public nf::DoubleLinkedListNode<DblLLNode, std::string> {
-    DblLLNode() : DoubleLinkedListNode<DblLLNode, std::string>(NFWrap.api()) {}
+struct DblLLNode : public nf::DoublyLinkedListNode<DblLLNode, std::string> {
+    DblLLNode() : DoublyLinkedListNode<DblLLNode, std::string>(NFWrap.api()) {}
 };
 
 struct StringBTNode : public nf::BinaryTreeNode<StringBTNode, std::string> {

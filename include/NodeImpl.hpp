@@ -20,7 +20,7 @@ class Edge;
 const size_t DEF_NODE_RAD = 40;
 
 /**
- * Internal Node implementation
+ * @brief Internal visual Node implementation
 */
 class NodeImpl : public Entity, public CircleShape
 {

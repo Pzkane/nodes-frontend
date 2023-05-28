@@ -9,6 +9,8 @@ namespace nf {
 
 /**
  * @brief Mouse which can hold (capture) 1 entity for two-way logic operations
+ * 
+ * Owner of this resource is MouseCache
 */
 class Mouse : public sf::Mouse
 {

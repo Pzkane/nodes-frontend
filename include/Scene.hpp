@@ -9,6 +9,9 @@
 
 namespace nf {
 
+/**
+ * @brief Abstract backbone class for concrete scenes
+*/
 class Scene
 {
     /* Flag to disable processing without destroying the scene */
@@ -17,10 +20,8 @@ class Scene
 protected:
     sf::RenderWindow *const p_window = nullptr;
     std::list<sf::Drawable *> m_drawables;
-    MouseCache* m_mouseCache;
-
 public:
-    explicit Scene(sf::RenderWindow &window) : p_window(&window), m_mouseCache(MouseCache::getInstance(window)) {}
+    explicit Scene(sf::RenderWindow &window) : p_window(&window) {}
     virtual ~Scene();
     virtual void update() = 0;
     virtual void draw();

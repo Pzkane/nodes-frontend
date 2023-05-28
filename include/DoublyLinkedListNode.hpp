@@ -1,18 +1,17 @@
-#ifndef SRC_API_DOUBLELISNKEDLISTNODEIMPL_HPP_INCLUDED
-#define SRC_API_DOUBLELISNKEDLISTNODEIMPL_HPP_INCLUDED
+#ifndef SRC_API_DOUBLYLISNKEDLISTNODEIMPL_HPP_INCLUDED
+#define SRC_API_DOUBLYLISNKEDLISTNODEIMPL_HPP_INCLUDED
 
 #include "LinkedListNode.hpp"
 
 namespace nf {
 /**
- * @brief Represents single node of a double linked list
+ * @brief Represents single node of a doubly linked list
 */
 template <class C, typename T>
-class DoubleLinkedListNode : public LinkedListNode<C,T> {
-    DoubleLinkedListNode *m_next = nullptr, *m_prev = nullptr;
-    C *m_prev_derived = nullptr;
+class DoublyLinkedListNode : public LinkedListNode<C,T> {
+    C *m_next = nullptr, *m_prev = nullptr;
 public:
-    explicit DoubleLinkedListNode(NodeFrontEnd *api, bool visible = true) : LinkedListNode<C,T>(api, visible) {}
+    explicit DoublyLinkedListNode(NodeFrontEnd *api, bool visible = true) : LinkedListNode<C,T>(api, visible) {}
 
     /**
      * Set previous node
@@ -28,7 +27,6 @@ public:
         if (lnode)
             Node::m_api->connectOrientedNodes(Node::m_node, const_cast<NodeImpl*>(lnode->getInnerNode()));
         m_prev = lnode;
-        m_prev_derived = lnode;
     }
 
     void setPrevious(C& lnode) {
@@ -50,7 +48,7 @@ public:
     */
     C* getPrevious() {
         Node::nodeSanityCheck();
-        return m_prev_derived;
+        return m_prev;
     };
 
     void invoke() override {
@@ -60,19 +58,19 @@ public:
             Container{"setPrev", [&](){
                     this->setPrev(dynamic_cast<C*>(Node::m_api->getSelectedNode()->getObservable()));
                 }, false,
-                sf::Vector2f{70, 20}, {dll_ui->getWrapper()->getPosition().x, dll_ui->getWrapper()->getPosition().y+(this->m_next_derived ? 44 : 22)}, sf::Vector2i{10, 10}}
+                sf::Vector2f{70, 20}, {dll_ui->getWrapper()->getPosition().x, dll_ui->getWrapper()->getPosition().y+(this->m_next ? 44 : 22)}, sf::Vector2i{10, 10}}
         );
-        if (m_prev_derived)
+        if (m_prev)
             dll_ui->addContainer(
                 ///
                 /// Container: removes pointer to the previous node.
                 ///
                 Container{"removePrev", [&](){ this->setPrev(nullptr); }, true,
-                    sf::Vector2f{70, 20}, {dll_ui->getWrapper()->getPosition().x, dll_ui->getWrapper()->getPosition().y+(this->m_next_derived ? 66 : 44)}, sf::Vector2i{10, 10}}
+                    sf::Vector2f{70, 20}, {dll_ui->getWrapper()->getPosition().x, dll_ui->getWrapper()->getPosition().y+(this->m_next ? 66 : 44)}, sf::Vector2i{10, 10}}
             );
     }
 };
 
 };
 
-#endif // SRC_API_DOUBLELISNKEDLISTNODEIMPL_HPP_INCLUDED
+#endif // SRC_API_DOUBLYLISNKEDLISTNODEIMPL_HPP_INCLUDED

@@ -12,9 +12,8 @@ namespace nf {
 template <class C, typename T>
 class LinkedListNode : public GenericNode<T>
 {
-    LinkedListNode *m_next = nullptr;
 protected:
-    C *m_next_derived = nullptr;
+    C *m_next = nullptr;
 public:
     explicit LinkedListNode(NodeFrontEnd *api, bool visible = true) : GenericNode<T>(api, LayoutType::Line, visible) {}
 
@@ -32,7 +31,6 @@ public:
         if (lnode != nullptr)
             Node::m_api->connectOrientedNodes(Node::m_node, const_cast<NodeImpl*>(lnode->getInnerNode()));
         m_next = lnode;
-        m_next_derived = lnode;
     }
 
     void setNext(C& lnode) {
@@ -46,7 +44,7 @@ public:
     */
     C* getNext() {
         Node::nodeSanityCheck();
-        return m_next_derived;
+        return m_next;
     };
 
     /**
@@ -70,7 +68,7 @@ public:
                 }, false,
                 sf::Vector2f{70, 20}, ll_ui->getWrapper()->getPosition(), sf::Vector2i{10, 10}}
         );
-        if (m_next_derived)
+        if (m_next)
             ll_ui->addContainer(
                 ///
                 /// Container: removes pointer to the next node.

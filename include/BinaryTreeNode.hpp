@@ -8,15 +8,15 @@
 namespace nf {
 /**
  * @brief Represents single node of a binary tree
+ * 
+ * Binary tree node has left and right child pointers
 */
 template <class C, typename T>
 class BinaryTreeNode : public GenericNode<T>
 {
-    BinaryTreeNode *m_left = nullptr,
-                   *m_right = nullptr;
 protected:
-    C *m_left_derived = nullptr,
-      *m_right_derived = nullptr;
+    C *m_left = nullptr,
+      *m_right = nullptr;
 public:
     explicit BinaryTreeNode(NodeFrontEnd *api, bool visible = true) : GenericNode<T>(api, LayoutType::Line, visible) {}
 
@@ -32,7 +32,6 @@ public:
             Node::m_api->disconnectNodes(Node::m_node, const_cast<NodeImpl*>(m_left->getInnerNode()));
         }
         m_left = lnode;
-        m_left_derived = lnode;
         if (lnode) {
             Node::m_api->connectNodes(Node::m_node, const_cast<NodeImpl*>(lnode->getInnerNode()));
             if (placeOffset) {
@@ -61,7 +60,6 @@ public:
             Node::m_api->disconnectNodes(Node::m_node, const_cast<NodeImpl*>(m_right->getInnerNode()));
         }
         m_right = lnode;
-        m_right_derived = lnode;
         if (lnode) {
             Node::m_api->connectNodes(Node::m_node, const_cast<NodeImpl*>(lnode->getInnerNode()));
             say("placeOffset")
@@ -85,7 +83,7 @@ public:
     */
     C* getLeft() {
         Node::nodeSanityCheck();
-        return m_left_derived;
+        return m_left;
     };
 
     /**
@@ -94,7 +92,7 @@ public:
     */
     C* getRight() {
         Node::nodeSanityCheck();
-        return m_right_derived;
+        return m_right;
     };
 
     /**
@@ -120,7 +118,7 @@ public:
                 }, false,
                 sf::Vector2f{70, 20}, {bt_ui->getWrapper()->getPosition().x, bt_ui->getWrapper()->getPosition().y+22}, sf::Vector2i{10, 10}}
         );
-        if (m_left_derived)
+        if (m_left)
             bt_ui->addContainer(
                 ///
                 /// Container: removes pointer to the left node.
@@ -128,13 +126,13 @@ public:
                 Container{"removeLeft", [&](){ this->setLeft(nullptr); }, true,
                     sf::Vector2f{70, 20}, {bt_ui->getWrapper()->getPosition().x, bt_ui->getWrapper()->getPosition().y+44}, sf::Vector2i{10, 10}}
             );
-        if (m_right_derived)
+        if (m_right)
             bt_ui->addContainer(
                 ///
                 /// Container: removes pointer to the right node.
                 ///
                 Container{"removeRight", [&](){ this->setRight(nullptr); }, true,
-                    sf::Vector2f{70, 20}, {bt_ui->getWrapper()->getPosition().x, bt_ui->getWrapper()->getPosition().y+(m_left_derived ? 66 : 44)}, sf::Vector2i{10, 10}}
+                    sf::Vector2f{70, 20}, {bt_ui->getWrapper()->getPosition().x, bt_ui->getWrapper()->getPosition().y+(m_left ? 66 : 44)}, sf::Vector2i{10, 10}}
             );
         Node::m_api->mergeOverlay(*bt_ui);
     }

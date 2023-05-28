@@ -11,7 +11,7 @@ using namespace nf;
 MainScene::MainScene(sf::RenderWindow &window) : ef(), Scene(window)
 {
 #ifdef BENCHMARK
-    for (int i = 0; i < 30000; ++i)
+    for (int i = 0; i < 10000; ++i)
     {
         NodeImpl *node = new NodeImpl(nullptr, DEF_NODE_RAD);
         node->setFillColor(sf::Color::Red);
@@ -169,13 +169,6 @@ void MainScene::mergeOverlay(Overlay* child) {
     Overlay** p_ui = m_uis.createResource(true);
     *p_ui = *&child;
 }
-
-// void MainScene::divideOverlay(Overlay* child) {
-//     m_uis.erase(std::remove_if(m_uis.begin(), m_uis.end(), [&child](Overlay *element) -> bool {
-//         if (&element == &child) return true;
-//         return false;
-//     }), m_uis.end());
-// }
 
 void MainScene::update()
 {
@@ -387,10 +380,6 @@ void *MainScene::updateInput(const sf::Event &event, void* payload)
     case sf::Event::KeyReleased:
         switch (event.key.code)
         {
-        case sf::Keyboard::LControl:
-            return createNode();
-            break;
-
         case sf::Keyboard::LAlt:
             ef.f_lalt = true;
             break;

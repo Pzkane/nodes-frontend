@@ -11,7 +11,9 @@
 namespace nf {
 
 /**
- * User-friendly wrapper around API dispatcher
+ * @brief User-friendly wrapper around API dispatcher
+ * 
+ * This class is used to easily determine and manage API class lifecycle
 */
 class NodeFrontEndWrapper
 {

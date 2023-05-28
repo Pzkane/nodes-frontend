@@ -32,6 +32,12 @@ struct Context : public sf::ContextSettings {
     Context() : Context(sf::VideoMode{}, sf::ContextSettings{}) {}
 };
 
+/**
+ * @brief API itself
+ * 
+ * This class has variety of methods to manipulate active scene, objects within scene
+ * and access configurations
+*/
 class NodeFrontEnd
 {
     bool m_initialized = false;
