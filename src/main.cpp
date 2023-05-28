@@ -7,10 +7,11 @@
 #include <thread>
 #include "main.hpp"
 
+// Setup
 // 1: Include header
 #include "nf.hpp"
 
-// 2: Define [static] wrapper instance ...
+// 2: Define [static] wrapper instance and macro ...
 nf::NodeFrontEndWrapper NFWrap;
 #define WRAPPER NFWrap
 // 2.1: You can use custom settings

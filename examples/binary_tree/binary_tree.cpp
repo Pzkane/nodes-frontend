@@ -228,15 +228,8 @@ struct MyNode : public nf::LinkedListNode<MyNode, std::string>
 
 int main()
 {
-    NFWrap = nf::NodeFrontEndWrapper();
-    StringGraphNode* gnode = new StringGraphNode();
-    gnode->setPosition(500,250);
-    MyNode *n1 = new MyNode();
-    n1->setPosition(150, 150);
-    n1->setData(std::string("as"));
-    n1->setData("as_c");
+    NFWrap.init("BInary Tree");
     BinaryTree bt = BinaryTree();
-
 
     /* initialize random seed: */
     srand(time(NULL));

@@ -2,6 +2,8 @@
 #define SRC_API_NF_HPP_INCLUDED
 
 #include "NodeFrontEndWrapper.hpp"
+
+// Available nodes
 #include "LinkedListNode.hpp"
 #include "DoubleLinkedListNode.hpp"
 #include "BinaryTreeNode.hpp"

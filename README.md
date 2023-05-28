@@ -1,7 +1,125 @@
 # nodes-frontend
-Data structure and algorithm visualizer
+Data structure and algorithm visualizer/integration for your programs. Currently supports node-based algorithms and their variations such as:
 
-# To compile yourself:
+* linked lists (singly/double)
+* generic trees and graphs
+* binary trees
+
+See `examples` for demo projects
+
+## Intro
+
+Consider you have a isolated piece of project you'd want to explain to someone or just debug it through the code you are writing yourself. No debuggers, no constant print out, just your code with similar semantics.
+
+The goal of this project is to provide tooling for algorithm explanation with customizable options to explore at your own pace with possibility to move/change structures in real time.
+
+## Prerequisites
+
+### For release
+
+* Just grab latest release, it contains SFML distribution, standard C++ library (MSYS) and all the compiled examples
+
+### For compilation
+
+* buildutils (gcc, ar, ld)
+* SFML 2.5.1 library
+
+## Usage
+
+Integrate necessary structures that are available in `include/nf.hpp` into your program. See header files listed in `include/nf.hpp` for available methods to use with given data structure.
+
+Minimal example as follows:
+```cpp
+// 1: Include header
+#include "nf.hpp"
+
+// 2: Define [static] wrapper instance and macro ...
+nf::NodeFrontEndWrapper NFWrap;
+#define WRAPPER NFWrap
+
+// 2.1: You can use custom settings
+
+/*
+static nf::NodeFrontEndWrapper NFWrap(nf::Context{
+    sf::VideoMode{1920, 1080},
+    sf::ContextSettings{24, 8, 8, 3, 0}
+});
+*/
+
+// 3: Define your structure that you want to use. In this case it's BT.
+//
+// Node ctor takes defined nf wrapper
+//
+// Node template takes your class as it's first argument and data type of
+// underlying data as second argument. That means you can define custom
+// structure/class to be stored in your BT node and overload
+// `representation` method to display data on screen. See `src/main.cpp`
+// for more info
+
+struct Person
+{
+    std::string name;
+    short age;
+};
+
+struct StringBTNode : public nf::BinaryTreeNode<StringBTNode, Person> {
+    StringBTNode() : BinaryTreeNode<StringBTNode, Person>(NFWrap.api()) {}
+
+    std::string representation() override {
+        return std::string("['"
+            + getData().name
+            + "', "
+            + std::to_string(getData().age)
+            + "]");
+    }
+};
+
+// 4: Initialize API in entry
+int main() {
+    NFWrap.init("Title is optional");
+
+    // ... your operations, tree traverse, heapifying, ...
+
+    // 5: Launch the loop
+    START_LOOP;
+    return 0;
+}
+```
+
+**Important!** Each operation (node inserts, deletions, updates) need to be managed manually - that is you should specify delay after each action, for example:
+
+```cpp
+// ... we are currently traversing the binary tree ...
+
+void _postOrderPrintRec(Node *node)
+{
+    if (!node) return;
+    _postOrderPrintRec(node->getLeft());
+    _postOrderPrintRec(node->getRight());
+    // Access the data
+    cout << " " << node->getData();
+    // Highlight node on screen
+    node->highlight();
+    // Wait to see changes made on sreen
+    nf::Utils::delay(250);
+}
+
+// ...
+```
+
+Compile and launch. You'll see that some algorithms have automatic offset during node spawning. You can also reset it using `setPosition(x,y)`.
+
+Binary tree example looks as follows (notice: node with value 40 was dragged to the right using mouse to avoid overlap):
+
+![BT](bt_example.PNG)
+
+* Node with bold outline - programmatically highlighted node using `highlight()` method
+* Node with dimmer background - last selected node using mouse (left click)
+* Container with directives - contextual menu (right click) which is relative to the node that it was pressed on, i.e. node with value 17 has operations to remove currently assigned left child or set selected node with value 35 as right or left child.
+
+# How to
+
+## compile it yourself:
 1. Get yourself SFML 2.5.1 libraries (window, graphics, system) somewhere
 2. Create `.env` file in project root (i.e alongside this README file) and specify SFML_PREFIX (see `.env.example`) where your libs are located
 3. Important! Project compiles using MSYS MinGW, change all `-G "MSYS Makefiles"` flags inside of `./configure.sh` if necessary
@@ -11,13 +129,13 @@ Program itself and necessary resources will be placed into `SFML_PREFIX/bin` dir
 
 All code and tests for example program are located in `main.cpp`
 
-# To compile examples:
+## compile examples:
 1. Get yourself SFML 2.5.1 libraries (window, graphics, system) somewhere
 2. Create `.env` file in project root (i.e alongside this README file) and specify SFML_PREFIX (see `.env.example`) where your libs are located
 3. Go to `examples` and choose program
 4. Run `compile.sh`. It will create and copy binary into the `SFML_PREFIX/bin` folder
 
-# To use library with your programs do the following:
+## use library with your programs:
 1. Create static library:
     1. Compile all resources (steps 3 and 4 from compilation steps, use `./build.sh` instead to avoid program launch)
     2. Run `./couple.sh`. This will create `libnf.a`
@@ -30,9 +148,5 @@ All code and tests for example program are located in `main.cpp`
      * `resources` folder (available in root project)
 3. Compile (e.g. using gcc):
 ```
-g++ binary_tree.cpp -o binary_tree.exe
-    -I ./include
-    -I <SFML_include_dir>
-    -L <SFML_lib_dir>
-    ./libnf.a -lsfml-window -lsfml-graphics -lsfml-system
+g++ binary_tree.cpp -o binary_tree.exe -I ./include -I <SFML_include_dir> -L <SFML_lib_dir>./libnf.a -lsfml-window -lsfml-graphics -lsfml-system
 ```
