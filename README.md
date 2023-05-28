@@ -1,7 +1,7 @@
 # nodes-frontend
 Data structure and algorithm visualizer/integration for your programs. Currently supports node-based algorithms and their variations such as:
 
-* linked lists (singly/double)
+* linked lists (singly/doubly)
 * generic trees and graphs
 * binary trees
 
